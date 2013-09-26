@@ -1,0 +1,15 @@
+{
+  "name": "intention.js",
+  "version": "0.9.9",
+  "description": "",
+  "repository": "http://github.com/wsjdesign/intentionjs",
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "grunt-contrib-uglify": "~0.2.2",
+    "chai": "*",
+    "mocha": "*",
+    "grunt-release": "~0.5.1"
+  }
+}

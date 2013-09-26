@@ -1,0 +1,14 @@
+{
+  "name": "intentionjs",
+  "homepage": "https://github.com/wsjdesign/intentionjs",
+  "version": "0.9.9",
+  "_release": "0.9.9",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.9.9",
+    "commit": "e7c5e3c127c9678666e12c658e3f44139ad50899"
+  },
+  "_source": "git://github.com/wsjdesign/intentionjs.git",
+  "_target": "~0.9.9",
+  "_originalSource": "intentionjs"
+}
