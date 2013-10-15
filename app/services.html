@@ -12,14 +12,19 @@
 
 		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-		<link rel="stylesheet" href="styles/css/reset.css">
 		<link rel="stylesheet" href="styles/css/main.css">
+		<link rel="stylesheet" href="bower_components/video.js/video-js.css">
+
 		<script src="bower_components/modernizr/modernizr.js"></script>
+		<script src="bower_components/video.js/video.js"></script>
+		<script>
+		  videojs.options.flash.swf = "bower_components/video.js/video-js.swf"
+		</script>
 	</head>
 	
 	<body>
-		<!--[if lt IE 7]>
-		   <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+		<!--[if lt IE 9]>
+		   <p class="hello-browser">You are using an outdated browser. I would have asked you to grab Chromeframe, but that&rsquo;s been deprecated. In the spirit of inclusion, this site will work all the way back to IE7, but it will feel much smoother with a newer version like Explorer 9, 10 or 11.</p>
 		<![endif]-->
 
 		<!-- Add your site or application content here -->

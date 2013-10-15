@@ -59,8 +59,7 @@ require.config({
 	}
 });
 
-require(['jquery', 'app', 'ajax_load'], function ($, app, ajax_load) {
+require(['jquery', 'navigation'], function ($, navigation) {
     'use strict';
-    console.log(app);
     console.log('Running jQuery %s', $().jquery);
 });
