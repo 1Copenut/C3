@@ -12,10 +12,10 @@ define(['historical'], function (Historical) {
 			// Return immediately and fall back to standard links for
 			// old browsers that don't understand the History API.
 			if (!window.history && window.history.pushState) {
-				Navigation.fetchURL();
+				return;
 			} else {
 				Navigation.fetchHistoryURL();
-				Navigation.windowPopstate();
+				Navigation.windowPopState();
 			}
 		},
 		
@@ -41,24 +41,6 @@ define(['historical'], function (Historical) {
 				Historical.historyEvent(null, null, href);
 				
 				Navigation.switchClass(self);
-				
-			});
-		},
-		
-		fetchURL: function () {
-			var links = $(Navigation.config.links);
-					
-			// Grab the link href on click event
-			links.on('click', function(e) {
-				var self = $(this),
-						href = self.attr('href');
-				
-				e.preventDefault();
-				
-				Historical.loadContent(href);
-				
-				Navigation.switchClass(self);
-				
 			});
 		},
 		
@@ -71,7 +53,7 @@ define(['historical'], function (Historical) {
 			current.addClass('current');
 		},
 		
-		windowPopstate: function () {
+		windowPopState: function () {
 			Historical.popEvent();
 		}
 	};

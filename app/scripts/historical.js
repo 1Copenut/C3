@@ -3,9 +3,10 @@ define([], function () {
 	'use strict';
 	
 	var Historical = {
-		config: {
-			container: '#main'
-		},
+		// config: {
+		// 			container: '#main',
+		// 			links: '#navigation a'
+		// 		},
 		
 		historyEvent: function (stateObj, title, url) {
 			// Change the URL bar in modern browsers
@@ -13,7 +14,6 @@ define([], function () {
 		},
 
 		popEvent: function () {
-			// Enable the back button and load content when pressed
 			window.addEventListener('popstate', function(e) {
 				var targetLink = e.target.location.href;
 
@@ -22,10 +22,15 @@ define([], function () {
 		},
 		
 		loadContent: function (targetLink) {
-			var targetContent = $(Historical.config.container);
-			
-			// Use the $.load() function to populate main content
-			targetContent.load(targetLink + ' #main');
+			// Use the $.ajax() function to populate main content
+			$.ajax({
+				url: 'templates/' + targetLink,
+				dataType: 'html',
+				cache: false,
+				success: function (data) {
+					$('#main').html(data);
+				}
+			});
 		}
 	};
 	
