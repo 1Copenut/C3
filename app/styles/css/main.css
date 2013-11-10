@@ -3,7 +3,6 @@
    v2.0 | 20110126
    License: none (public domain)
 */
-/* line 18, ../sass/_reset.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -22,48 +21,34 @@ time, mark, audio, video {
   border: 0;
   font-size: 100%;
   font: inherit;
-  vertical-align: baseline;
-}
+  vertical-align: baseline; }
 
 /* HTML5 display-role reset for older browsers */
-/* line 28, ../sass/_reset.scss */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
-  display: block;
-}
+  display: block; }
 
-/* line 31, ../sass/_reset.scss */
 body {
-  line-height: 1;
-}
+  line-height: 1; }
 
-/* line 34, ../sass/_reset.scss */
 ol, ul {
-  list-style: none;
-}
+  list-style: none; }
 
-/* line 37, ../sass/_reset.scss */
 blockquote, q {
-  quotes: none;
-}
+  quotes: none; }
 
-/* line 41, ../sass/_reset.scss */
 blockquote:before, blockquote:after,
 q:before, q:after {
   content: '';
-  content: none;
-}
+  content: none; }
 
-/* line 45, ../sass/_reset.scss */
 table {
   border-collapse: collapse;
-  border-spacing: 0;
-}
+  border-spacing: 0; }
 
 /* ----------------------------------
  * http://skybolt.xssl.net/~hexagon2/responsive-video/
  * ---------------------------------- */
-/* line 4, ../sass/_video.scss */
 .video-wrapper {
   position: relative;
   padding-bottom: 41%;
@@ -71,47 +56,34 @@ table {
   padding-top: 0px;
   height: 0;
   z-index: 1000;
-  max-width: 640px;
-}
-/* line 12, ../sass/_video.scss */
-.video-wrapper .video-js {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100% !important;
-  height: 100% !important;
-  z-index: 1;
-  background: #000000;
-  max-height: 340px;
-}
-/* line 24, ../sass/_video.scss */
-.video-wrapper object,
-.video-wrapper embed {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100% !important;
-  z-index: 1;
-}
-/* line 33, ../sass/_video.scss */
-.video-wrapper .vjs-control-bar {
-  z-index: 1002;
-}
-/* line 37, ../sass/_video.scss */
-.video-wrapper .vjs-big-play-button {
-  z-index: 1002;
-}
-/* line 41, ../sass/_video.scss */
-.video-wrapper .vjs-spinner {
-  display: none !important;
-}
-/* line 45, ../sass/_video.scss */
-.video-wrapper .vjs-poster {
-  z-index: 1;
-}
+  max-width: 640px; }
+  .video-wrapper .video-js {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1;
+    background: #000000;
+    max-height: 340px; }
+  .video-wrapper object,
+  .video-wrapper embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100% !important;
+    z-index: 1; }
+  .video-wrapper .vjs-control-bar {
+    z-index: 1002; }
+  .video-wrapper .vjs-big-play-button {
+    z-index: 1002; }
+  .video-wrapper .vjs-spinner {
+    display: none !important; }
+  .video-wrapper .vjs-poster {
+    z-index: 1; }
 
-/* line 4, ../sass/main.scss */
 body {
-  background: lightblue;
-}
+  background: lightblue; }
+
+/*# sourceMappingURL=main.css.map */

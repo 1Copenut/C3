@@ -1,46 +1,50 @@
 <div class="video-wrapper"></div>
 
 <script>
-	var container = $('div.video-wrapper'),
-			attributes = {
+	var VideoObj;
+	
+	var Continuum = function(container, el, shortName) {
+		'use strict';
+		
+		this.container = container;
+		this.el = el;
+		this.shortName = shortName;
+	};
+	
+	Continuum.prototype = {
+		prepareVideo: function() {
+			if(VideoObj) {
+				VideoObj.dispose();
+			}
+			
+			$(this.container).append($(this.el));
+
+			$(this.shortName).attr({
 				'id': 'video_1',
 				'class': 'video-js vjs-default-skin',
 				'controls': true,
 				'poster': 'http://video-js.zencoder.com/oceans-clip.jpg',
 				'preload': false
-			},
-			videoElement = $('<video/>').attr(attributes),
-			videoPlayer;
-			
-	var prepareVideo = function () {
-		if(videoPlayer) {
-			videoPlayer.dispose();
-			
-			container.append(videoElement);
+			});
+		
+			this.createVideoObject('video_1');
+		},
+		
+		createVideoObject: function(vidID) {
+			_V_(vidID, {}, function () {
+				this.vidID = VideoObj = videojs(vidID);
+				
+				this.vidID.src([
+				  { type: "video/mp4", src: "http://video-js.zencoder.com/oceans-clip.mp4" },
+				  { type: "video/webm", src: "http://video-js.zencoder.com/oceans-clip.webm" },
+				  { type: "video/ogg", src: "http://video-js.zencoder.com/oceans-clip.ogv" }
+				]);
 
-			createVideoObject();
-		} else {
-			container.append(videoElement);
-			
-			createVideoObject();
+				this.vidID.pause();
+			});
 		}
 	};
-	
-	var createVideoObject = function () {
-		_V_('video_1', {}, function () {
-			var myVideo = videojs('video_1');
-			
-			myVideo.src([
-			  { type: "video/mp4", src: "http://video-js.zencoder.com/oceans-clip.mp4" },
-			  { type: "video/webm", src: "http://video-js.zencoder.com/oceans-clip.webm" },
-			  { type: "video/ogg", src: "http://video-js.zencoder.com/oceans-clip.ogv" }
-			]);
-			
-			myVideo.pause();
 
-			videoPlayer = myVideo;
-		});
-	};
-			
-prepareVideo();	
+	var vid = new Continuum('div.video-wrapper', '<video/>', 'video');
+	vid.prepareVideo();
 </script>
