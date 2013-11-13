@@ -2,15 +2,27 @@
 define(['historical'], function (Historical) {
 	'use strict';
 	
-	var Navigation = {
+	/**
+	 * The Navigation module handles all of the AJAX link
+	 * loading, and passes information to the Historical
+	 * module, so we can properly handle HTML5 History
+	 * events when Javascript is enabled
+	 */
+	var Navigation = Navigation || {};
+	
+	Navigation = {
 		config: {
 			links: '#navigation a',
 			list: '#navigation li'
 		},
 		
+		/** 
+		 * Return immediately and fall back to standard links for
+		 * old browsers that don't understand the History API.
+		 * Otherwise we should execute the functions to handle
+		 * AJAX links and the History API.
+		 */
 		init: function () {
-			// Return immediately and fall back to standard links for
-			// old browsers that don't understand the History API.
 			if (!window.history && window.history.pushState) {
 				return;
 			} else {
@@ -19,17 +31,17 @@ define(['historical'], function (Historical) {
 			}
 		},
 		
+		/* Ensure the links count is right */
 		counter: function () {
 			var links = $(Navigation.config.links);
 			
-			// Ensure the count of links is right
 			console.log(links.length);
 		},
 		
+		/* Grab the link href on click event */
 		fetchHistoryURL: function () {
 			var links = $(Navigation.config.links);
 					
-			// Grab the link href on click event
 			links.on('click', function(e) {
 				var self = $(this),
 						href = self.attr('href');
@@ -44,6 +56,7 @@ define(['historical'], function (Historical) {
 			});
 		},
 		
+		/* Remove the current class from all list items, add to the clicked one */
 		switchClass: function (currentLink) {
 			var list = $(Navigation.config.list),
 					current = $(currentLink).parent();
@@ -53,6 +66,7 @@ define(['historical'], function (Historical) {
 			current.addClass('current');
 		},
 		
+		/* Add a popstate event so the Back button functions correctly */
 		windowPopState: function () {
 			Historical.popEvent();
 		}

@@ -2,7 +2,9 @@
 define([], function () {
 	'use strict';
 	
-	var Historical = {
+	var Historical = Historical || {};
+	
+	Historical = {
 		/* Change the URL bar in modern browsers */
 		historyEvent: function (stateObj, title, url) {
 			history.pushState(stateObj, title, url);
