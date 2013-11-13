@@ -1,50 +1,35 @@
-<div class="video-wrapper"></div>
+<article class="introduction">
+	<h2 class="call-to-action">Version No. 3 Point 0
+		<span>Tell your friends. We&rsquo;re back!</span>
+	</h2>
+	<p>Continuum makes <strong>things</strong> that get people talking. We fabricate websites, social media, and print with an irreverent <strong>style</strong> that doesn't sway to the trendy Top 40s. Your <strong>business</strong> is unique; we make sure everyone knows it.</p>
 
-<script>
-	var VideoObj;
-	
-	var Continuum = function(container, el, shortName) {
-		'use strict';
-		
-		this.container = container;
-		this.el = el;
-		this.shortName = shortName;
-	};
-	
-	Continuum.prototype = {
-		prepareVideo: function() {
-			if(VideoObj) {
-				VideoObj.dispose();
-			}
-			
-			$(this.container).append($(this.el));
+	<h3>Kick the tires, take it for a spin</h3>
+	<p>Heather and I have 15 years of combined design experience &mdash; everything short of the kitchen sink &mdash; including web and print design, writing for the web, code development, social media, and project management.</p>
 
-			$(this.shortName).attr({
-				'id': 'video_1',
-				'class': 'video-js vjs-default-skin',
-				'controls': true,
-				'poster': 'http://video-js.zencoder.com/oceans-clip.jpg',
-				'preload': false
-			});
-		
-			this.createVideoObject('video_1');
-		},
-		
-		createVideoObject: function(vidID) {
-			_V_(vidID, {}, function () {
-				this.vidID = VideoObj = videojs(vidID);
-				
-				this.vidID.src([
-				  { type: "video/mp4", src: "http://video-js.zencoder.com/oceans-clip.mp4" },
-				  { type: "video/webm", src: "http://video-js.zencoder.com/oceans-clip.webm" },
-				  { type: "video/ogg", src: "http://video-js.zencoder.com/oceans-clip.ogv" }
-				]);
+	<h3>She&rsquo;s the coordinator</h3>
+	<p>Heather applies her talent for order and harmony to all visual designs, making sure they don't come off the rails between concept and delivery. Her strong planning sense keeps things on time, on budget, and on message.</p>
 
-				this.vidID.pause();
-			});
-		}
-	};
+	<h3>But this ain&rsquo; a scene&hellip;</h3>
+	<p>Trevor is the designer and developer. He translates visual designs into industry-current finished products, but secretly dreams of writing funny headlines.</p>
 
-	var vid = new Continuum('div.video-wrapper', '<video/>', 'video');
-	vid.prepareVideo();
-</script>
+	<h3>The dog sleeps soundly</h3>
+	<p>Jake is the lovable Golden Retriever and company mascot. He was last spotted heading for the bedroom, presumably to hide out on the too big for the washing machine comforter, no matter what the sales guy says.</p>
+
+	<h3>Ring us up</h3>
+	<p>Send us your vision or just say hello. Either way, head over to the <a href="contact.html" title="Contact Continuum Design">contact page</a> and let us know how we can help.</p>
+</article>
+<!-- End article.introduction -->
+
+<article class="new-stuff">
+	<h4>New stuff worth crowing about</h4>
+	<figure>
+		<!-- TODO Add a valid image to work here -->
+		<img src="#" alt="Image here" />
+		<figcaption>
+			<h5>Obesity Radar Chart PDF</h5>
+			<p>Not too long ago, I became interested in a seldom-used chart called a radar. Its purpose is to plot the same data for several different control sets. In this case, I was plotting rates of obesity for different generations of Americans. <span class="download">Download: <a href="#" title="Click to download a high resolution PDF">11” x 17” PDF</a></span></p>
+		</figcaption>
+	</figure>
+</article>
+<!-- End article.new-stuff -->

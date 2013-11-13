@@ -16,6 +16,7 @@
 		<link rel="stylesheet" href="bower_components/video.js/video-js.css">
 		
 		<script src="bower_components/modernizr/modernizr.js"></script>
+		<script src="bower_components/jquery/jquery.min.js"></script>
 		<script src="bower_components/video.js/video.js"></script>
 		<script>
 		  videojs.options.flash.swf = "bower_components/video.js/video-js.swf"
@@ -43,11 +44,72 @@
 				</ul>
 			</nav>
 			
-			<section id="main" role="main" class="left">
-				Used to be a video here. Now something else.
+			<section id="main" role="main">
+				<article class="sales-pitch">
+					<h2 class="call-to-action">The 30 Second Sales Pitch!</h2>
+					<p>Continuum Design is focused on small business. Size is our greatest asset&mdash;we adapt over dinner, not the next fiscal quarter. We can improve your customers’ retail experience, from the time they walk in your door to the time they pocket a sales receipt.</p>
+				</article>
+				
+				<article class="no-js">
+					<noscript>
+						<!-- TODO Write a better no-script explaining JS -->
+						You should really get with the program.
+					</noscript>
+				</article>
+				
+				<div class="video-wrapper"></div>
+
+				<script>
+					var VideoObj;
+
+					var Continuum = function(container, el, shortName) {
+						'use strict';
+
+						this.container = container;
+						this.el = el;
+						this.shortName = shortName;
+					};
+
+					Continuum.prototype = {
+						prepareVideo: function() {
+							if(VideoObj) {
+								VideoObj.dispose();
+							}
+
+							$(this.container).append($(this.el));
+
+							$(this.shortName).attr({
+								'id': 'video_1',
+								'class': 'video-js vjs-default-skin',
+								'controls': true,
+								'poster': 'http://video-js.zencoder.com/oceans-clip.jpg',
+								'preload': false
+							});
+
+							this.createVideoObject('video_1');
+						},
+
+						createVideoObject: function(vidID) {
+							_V_(vidID, {}, function () {
+								this.vidID = VideoObj = videojs(vidID);
+
+								this.vidID.src([
+								  { type: "video/mp4", src: "http://video-js.zencoder.com/oceans-clip.mp4" },
+								  { type: "video/webm", src: "http://video-js.zencoder.com/oceans-clip.webm" },
+								  { type: "video/ogg", src: "http://video-js.zencoder.com/oceans-clip.ogv" }
+								]);
+
+								this.vidID.pause();
+							});
+						}
+					};
+
+					var vid = new Continuum('div.video-wrapper', '<video/>', 'video');
+					vid.prepareVideo();
+				</script>
 			</section>
 			
-			<aside id="aside" role="aside" class="right">
+			<aside id="aside" role="aside">
 				This is the sidebar
 			</aside>
 			
