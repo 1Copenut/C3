@@ -31,13 +31,6 @@ define(['historical'], function (Historical) {
 			}
 		},
 		
-		/* Ensure the links count is right */
-		counter: function () {
-			var links = $(Navigation.config.links);
-			
-			console.log(links.length);
-		},
-		
 		/* Grab the link href on click event */
 		fetchHistoryURL: function () {
 			var links = $(Navigation.config.links);
@@ -72,5 +65,5 @@ define(['historical'], function (Historical) {
 		}
 	};
 	
-	return Navigation.init();
+	return Navigation;
 });
