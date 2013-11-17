@@ -40,10 +40,56 @@
 			</nav>
 			
 			<section id="main" role="main" class="left">
-				<form action="contact_submit" method="get" accept-charset="utf-8">
-					<label for="first_name">First Name</label><input type="text" name="first_name" value="" id="first_name" placeholder="First name">
+				<!-- TODO Hook up the contact.php that we used for Matt -->
+				<form action="contact_submit" method="post" accept-charset="utf-8">
+					<fieldset>
+						<legend>Personal Information</legend>
+						
+						<label for="first_name">First Name</label><input type="text" name="first_name" value="" id="first_name" class="required" placeholder="Enter your first name">
+						
+						<label for="last_name">Last Name</label><input type="text" name="last_name" value="" id="last_name" class="required" placeholder="Enter your last name">
+						
+						<label for="e-mail_address">E-mail Address</label><input type="text" name="e-mail_address" value="" id="e-mail_address" class="required" placeholder="Enter a valid e-mail address">
+					</fieldset>
+					
+					<fieldset>
+						<legend>Project Information</legend>
+						
+						<label for="project_type">Project Type</label>
+						<select name="project_type" id="project_type" class="required">
+							<option value="Web design">Web design</option>
+							<option value="Print design">Print design</option>
+							<option value="Brand or logo design">Brand or logo design</option>
+							<option value="Web development">Web development</option>
+							<option value="Other">Other</option>
+						</select>
+						
+						<label for="dream_project">Describe your dream project <span class="form-optional">(optional)</span></label>
+						<textarea name="dream_project" id="dream_project" class="form-optional"></textarea>
+					</fieldset>
+					
+					<fieldset>
+						<legend>Optional Extras</legend>
+						
+						<label for="mobile_phone">Mobile Phone <span class="form-optional">(optional)</span></label><input type="text" name="mobile_phone" value="" id="mobile_phone" class="form-optional" placeholder="Area code + mobile">
+						
+						<label for="office_phone">Office Phone <span class="form-optional"></label><input type="text" name="office_phone" value="" id="office_phone" class="form-optional" placeholder="Area code + office">
+						
+						<label for="website">Website <span class="form-optional"></label><input type="text" name="website" value="" id="website" class="form-optional" placeholder="http://">
+						
+						<label for="facebook">Facebook <span class="form-optional"></label><input type="text" name="facebook" value="" id="facebook" class="form-optional" placeholder="Facebook page">
+					</fieldset>
+					
+					<fieldset class="validation">
+						<legend>Are You a Human?</legend>
+						
+						<label for="verification">Verification</label><input type="text" name="verification" value="" id="verification" class="form-validation" placeholder="Leave this field blank!">
+					</fieldset>
 
-					<p><input type="submit" value="Continue &rarr;"></p>
+					<fieldset>
+						<label for="send_it" class="accessible-hidden">Send It</label><input type="submit" name="send_it" value="Send It" id="send_it">
+						
+					</fieldset>
 				</form>
 			</section>
 			
