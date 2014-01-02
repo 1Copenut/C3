@@ -50,7 +50,7 @@ define([], function () {
 			navLinks.each(function (i) {
 				if ($(this).attr('href') === listTarget) {
 					$(this).parent().addClass('current');
-				};
+				}
 			});
 		}
 	};
