@@ -1,8 +1,9 @@
-/*global _V_, videojs, $:true */
-var ContinuumVideo = function(container, el, shortName) {
+/*global _V_, $:true */
+var ContinuumVideo = function(container, el, shortName, marker) {
 	this.container = container;
 	this.el = el;
 	this.shortName = shortName;
+	this.marker = marker;
 	this.videoObj = false;
 };
 
@@ -21,12 +22,12 @@ ContinuumVideo.prototype.prepareVideo = function() {
 		'preload': false
 	});
 
-	this.createVideoObject('video_1');
+	this.createVideoObject(this.marker);
 };
 
 ContinuumVideo.prototype.createVideoObject = function(videoID) {
 	_V_(videoID, {}, function () {
-		this.videoID = videojs(videoID);
+		this.videoID = _V_(videoID);
 
 		this.videoID.src([
 			{type: "video/mp4", src: "http://vjs.zencdn.net/v/oceans.mp4"},
@@ -41,6 +42,6 @@ ContinuumVideo.prototype.createVideoObject = function(videoID) {
 };
 
 $(document).ready(function (){
-	var video = new ContinuumVideo('div.video-wrapper', '<video/>', 'video');
+	var video = new ContinuumVideo('div.video-wrapper', '<video/>', 'video', 'video_1');
 	video.prepareVideo();
 });
