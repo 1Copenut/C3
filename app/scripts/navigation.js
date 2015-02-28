@@ -12,8 +12,8 @@ define(['historical'], function (Historical) {
 	
 	Navigation = {
 		config: {
-			links: '#navigation a',
-			list: '#navigation li'
+			list: '#navigation li',
+			links: '#navigation a'
 		},
 		
 		/** 
@@ -28,6 +28,7 @@ define(['historical'], function (Historical) {
 			} else {
 				Navigation.fetchHistoryURL();
 				Navigation.windowPopState();
+				Navigation.setCurrentClass('current');
 			}
 		},
 		
@@ -37,7 +38,7 @@ define(['historical'], function (Historical) {
 					
 			links.on('click', function(e) {
 				var self = $(this),
-						href = self.attr('href');
+					href = self.attr('href');
 				
 				e.preventDefault();
 				
@@ -45,18 +46,29 @@ define(['historical'], function (Historical) {
 				
 				Historical.historyEvent(null, null, href);
 				
-				Navigation.switchClass(self);
+				Navigation.switchClass(self, 'current');
 			});
 		},
 		
+		/* Set current class on Home with Javascript, so Home isn't permanently
+		 * current if Javascript is disabled
+		 */
+		setCurrentClass: function(currentClass) {
+			var baseLink = $(Navigation.config.list);
+			
+			baseLink
+				.first()
+				.addClass(currentClass);
+		},
+		
 		/* Remove the current class from all list items, add to the clicked one */
-		switchClass: function (currentLink) {
+		switchClass: function (currentLink, linkClass) {
 			var list = $(Navigation.config.list),
-					current = $(currentLink).parent();
+				current = $(currentLink).parent();
 			
-			list.removeClass('current');
+			list.removeClass(linkClass);
 			
-			current.addClass('current');
+			current.addClass(linkClass);
 		},
 		
 		/* Add a popstate event so the Back button functions correctly */

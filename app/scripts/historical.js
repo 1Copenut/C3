@@ -19,12 +19,12 @@ define([], function () {
 		popEvent: function () {
 			window.addEventListener('popstate', function(e) {
 				var targetLink = e.target.location.href,
-						shortened = targetLink.split('/'),
-						finalTarget = shortened[shortened.length-1];
+					shortened = targetLink.split('/'),
+					finalTarget = shortened[shortened.length-1];
 						
 				Historical.loadContent(finalTarget);
 				
-				Historical.popstateSwitchClass(finalTarget);
+				Navigation.switchClass(finalTarget);
 			});
 		},
 		
@@ -34,22 +34,9 @@ define([], function () {
 				url: 'templates/' + targetLink,
 				dataType: 'html',
 				cache: false,
+				async: true,
 				success: function (data) {
 					$('#main').html(data);
-				}
-			});
-		},
-		
-		/* Remove the current class from all #navigation list items, and add it to the popstate href */
-		popstateSwitchClass: function(listTarget) {
-			var list = $(Historical.config.list),
-					navLinks = $(Historical.config.links);
-			
-			list.removeClass('current');
-			
-			navLinks.each(function (i) {
-				if ($(this).attr('href') === listTarget) {
-					$(this).parent().addClass('current');
 				}
 			});
 		}
