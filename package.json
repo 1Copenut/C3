@@ -5,7 +5,9 @@
   "devDependencies": {
     "gulp": "~3.8.11",
     "express": "~4.12.0",
-    "gulp-express": "~0.1.13"
+    "gulp-express": "~0.1.13",
+    "gulp-sass": "~1.3.3",
+    "gulp-watch": "~4.1.1"
   },
   "engines": {
     "node": ">=0.8.0"

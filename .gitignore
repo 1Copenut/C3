@@ -6,6 +6,8 @@
 
 /node_modules
 
+*.log
+
 *.map
 
 **/.DS_Store
