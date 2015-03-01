@@ -1,18 +1,11 @@
 {
-  "name": "singlepageapp",
-  "version": "0.0.0",
+  "name": "Gulp-Buildtool",
+  "version": "0.0.1",
   "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-contrib-uglify": "~0.2.0",
-    "grunt-contrib-jshint": "~0.5.3",
-    "grunt-contrib-watch": "~0.5.3",
-    "express": "~3.2.4",
-    "consolidate": "~0.9.1",
-    "grunt-contrib-compass": "~0.2.0",
-    "grunt-express-server": "~0.4.3",
-    "grunt-open": "~0.2.2",
-    "grunt-contrib-sass": "~0.5.0"
+    "gulp": "~3.8.11",
+    "express": "~4.12.0",
+    "gulp-express": "~0.1.13"
   },
   "engines": {
     "node": ">=0.8.0"

@@ -1,11 +1,11 @@
 var express = require("express"),
-		app = express(),
-		twig = require("twig");
-		// d_products = require("../data/d_products"),
-		// d_artists = require("../data/d_artists");
+	app = module.exports.app = exports.app = express(),
+	twig = require("twig");
+	// d_products = require("../data/d_products"),
+	// d_artists = require("../data/d_artists");
 
 app.use( express.static( __dirname + "/../app" ) );
-app.set( "view engine", "twig" );
+// app.set( "view engine", "twig" );
 app.set( "views", __dirname + "/../app/templates" );
 
 // // map products to artists by cross-linking data
