@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
     server = require('gulp-express'),
+    sourcemaps = require('gulp-sourcemaps'),
     sass = require('gulp-sass'),
     sasslint = require('gulp-scss-lint'),
     cache = require('gulp-cached');
@@ -11,7 +12,9 @@ gulp.task('server', function() {
 
 gulp.task('sass', function() {
     gulp.src('app/styles/sass/*.scss')
-        .pipe(sass())
+        .pipe(sourcemaps.init())
+            .pipe(sass())
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest('./app/styles/css'));
 });
 

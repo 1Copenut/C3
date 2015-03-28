@@ -1,15 +1,11 @@
-.sass-cache
-/.sass-cache/175e5034de37464d16ba2f915849a8fcf94e7366/_reset.scssc
-/.sass-cache/175e5034de37464d16ba2f915849a8fcf94e7366/_video.scssc
-/.sass-cache/175e5034de37464d16ba2f915849a8fcf94e7366/main.scssc
-/.sass-cache
-
 /node_modules
 
+.DS_Store
+
+*.swp
+
 *.log
+*.sass-cache
 
 *.map
-
-**/.DS_Store
-
-**/*.swp
+*.css
