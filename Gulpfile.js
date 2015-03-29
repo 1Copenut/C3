@@ -2,6 +2,8 @@ var gulp = require('gulp'),
     server = require('gulp-express'),
     sourcemaps = require('gulp-sourcemaps'),
     sass = require('gulp-sass'),
+    autoprefixer = require('gulp-autoprefixer'),
+    concat = require('gulp-concat'),
     sasslint = require('gulp-scss-lint'),
     cache = require('gulp-cached');
 
@@ -15,6 +17,7 @@ gulp.task('sass', function() {
         .pipe(sourcemaps.init())
             .pipe(sass())
         .pipe(sourcemaps.write())
+        .pipe(autoprefixer({browsers: ['last 2 versions']}))
         .pipe(gulp.dest('app/styles/css'));
 });
 
