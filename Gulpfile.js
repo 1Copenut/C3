@@ -15,7 +15,7 @@ gulp.task('sass', function() {
         .pipe(sourcemaps.init())
             .pipe(sass())
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest('./app/styles/css'));
+        .pipe(gulp.dest('app/styles/css'));
 });
 
 gulp.task('sasslint', function() {
