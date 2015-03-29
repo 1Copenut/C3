@@ -3,7 +3,6 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
-    concat = require('gulp-concat'),
     sasslint = require('gulp-scss-lint'),
     cache = require('gulp-cached');
 
