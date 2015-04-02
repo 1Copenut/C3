@@ -1,5 +1,7 @@
 var gulp = require('gulp'),
     server = require('gulp-express'),
+    plumber = require('gulp-plumber'),
+    gulpFilter = require('gulp-filter'),
     sourcemaps = require('gulp-sourcemaps'),
     sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
@@ -12,16 +14,21 @@ gulp.task('server', function() {
 });
 
 gulp.task('sass', function() {
-    gulp.src('app/styles/sass/*.scss')
+    var filter = gulpFilter(['*.css', '!*.map']);
+    
+    return gulp.src('app/styles/sass/*.scss')
+        .pipe(plumber())
         .pipe(sourcemaps.init())
-            .pipe(sass())
-        .pipe(sourcemaps.write())
+        .pipe(sass({ errLogToConsole: true }))
+        .pipe(sourcemaps.write('./'))
+        .pipe(filter)
         .pipe(autoprefixer({browsers: ['last 2 versions']}))
+        .pipe(filter.restore())
         .pipe(gulp.dest('app/styles/css'));
 });
 
 gulp.task('sasslint', function() {
-    gulp.src('app/styles/sass/*.scss')
+    return gulp.src('app/styles/sass/*.scss')
         .pipe(cache('sasslint'))
         .pipe(sasslint());
 });
