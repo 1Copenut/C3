@@ -6,7 +6,9 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
     sasslint = require('gulp-scss-lint'),
-    cache = require('gulp-cached');
+    cache = require('gulp-cached'),
+    uncss = require('gulp-uncss'),
+    csso = require('gulp-csso');
 
 gulp.task('server', function() {
     server.run(['server/server.js']); 
@@ -31,4 +33,13 @@ gulp.task('sasslint', function() {
     return gulp.src('app/styles/sass/*.scss')
         .pipe(cache('sasslint'))
         .pipe(sasslint());
+});
+
+gulp.task('uncss', function() {
+    return gulp.src('app/styles/css/main.css')
+        .pipe(uncss({
+            html: ['app/index.html', 'app/about.html', 'app/contact.html', 'app/services.html', 'app/video.html']
+        }))
+        .pipe(csso())
+        .pipe(gulp.dest('app/styles/css'));
 });
