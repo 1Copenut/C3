@@ -8,38 +8,77 @@ var gulp = require('gulp'),
     sasslint = require('gulp-scss-lint'),
     cache = require('gulp-cached'),
     uncss = require('gulp-uncss'),
-    csso = require('gulp-csso');
+    csso = require('gulp-csso'),
+    critical = require('critical'),
+    rename = require('gulp-rename');
 
+/* ======================================== 
+ * Server task
+ * ======================================== */ 
 gulp.task('server', function() {
     server.run(['server/server.js']); 
     console.log('App is running on port 3000');
 });
 
+/* ======================================== 
+ * Development tasks - CSS
+ * ======================================== */ 
 gulp.task('sass', function() {
     var filter = gulpFilter(['*.css', '!*.map']);
     
     return gulp.src('app/styles/sass/*.scss')
         .pipe(plumber())
         .pipe(sourcemaps.init())
-        .pipe(sass({ errLogToConsole: true }))
+        .pipe(sass({
+            errLogToConsole: true
+        }))
         .pipe(sourcemaps.write('./'))
         .pipe(filter)
-        .pipe(autoprefixer({browsers: ['last 2 versions']}))
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions']
+        }))
         .pipe(filter.restore())
         .pipe(gulp.dest('app/styles/css'));
 });
 
-gulp.task('sasslint', function() {
+gulp.task('sass-lint', function() {
     return gulp.src('app/styles/sass/*.scss')
         .pipe(cache('sasslint'))
         .pipe(sasslint());
 });
 
-gulp.task('uncss', function() {
+/* ======================================== 
+ * Build tasks 
+ * ======================================== */ 
+gulp.task('css-min', function() {
     return gulp.src('app/styles/css/main.css')
         .pipe(uncss({
-            html: ['app/index.html', 'app/about.html', 'app/contact.html', 'app/services.html', 'app/video.html']
+            html: ['app/*.html']
         }))
         .pipe(csso())
-        .pipe(gulp.dest('app/styles/css'));
+        .pipe(gulp.dest('build/styles'));
+});
+
+gulp.task('copy-styles', function() {
+    return gulp.src(['build/styles/main.css'])
+        .pipe(rename({
+            basename: 'site'
+        }))
+        .pipe(gulp.dest('build/styles'));
+});
+
+gulp.task('critical', ['build', 'copy-styles'], function() {
+    return critical.generateInline({
+        base: 'build/',
+        src: 'index.html',
+        styleTarget: 'styles/main.css',
+        htmlTarget: 'index.html',
+        width: 960,
+        height: 768,
+        minify: true
+    });
+});
+
+gulp.task('build', function() {
+    return gulp.start('css-min');
 });
