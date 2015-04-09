@@ -10,7 +10,9 @@ var gulp = require('gulp'),
     uncss = require('gulp-uncss'),
     csso = require('gulp-csso'),
     critical = require('critical'),
-    rename = require('gulp-rename');
+    rename = require('gulp-rename'),
+    htmlbuild = require('gulp-htmlbuild'),
+    es = require('event-stream');
 
 /* ======================================== 
  * Server task
@@ -50,6 +52,20 @@ gulp.task('sass-lint', function() {
 /* ======================================== 
  * Build tasks 
  * ======================================== */ 
+gulp.task('build-index', function () {
+    return gulp.src(['app/index.html'])
+        .pipe(htmlbuild({
+            css: htmlbuild.preprocess.css(function (block) {
+                block.end('css/site.css');
+            }),
+
+            remove: function(block) {
+                block.end();
+            }
+        }))
+        .pipe(gulp.dest('build'));
+});
+
 gulp.task('css-min', function() {
     return gulp.src('app/styles/css/main.css')
         .pipe(uncss({
@@ -68,9 +84,9 @@ gulp.task('copy-styles', function() {
 });
 
 gulp.task('critical', ['build', 'copy-styles'], function() {
-    return critical.generateInline({
+    critical.generateInline({
         base: 'build/',
-        src: 'index.html',
+        src: 'app/index.html',
         styleTarget: 'styles/main.css',
         htmlTarget: 'index.html',
         width: 960,
@@ -80,5 +96,5 @@ gulp.task('critical', ['build', 'copy-styles'], function() {
 });
 
 gulp.task('build', function() {
-    return gulp.start('css-min');
+    return gulp.start(['css-min', 'build-index']);
 });
