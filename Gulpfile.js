@@ -52,11 +52,16 @@ gulp.task('sass-lint', function() {
 /* ======================================== 
  * Build tasks 
  * ======================================== */ 
+gulp.task('build', function() {
+    return gulp.start(['css-min', 'build-index']);
+});
+
+/* Create the index.html file in /build */
 gulp.task('build-index', function () {
     return gulp.src(['app/index.html'])
         .pipe(htmlbuild({
             css: htmlbuild.preprocess.css(function (block) {
-                block.end('css/site.css');
+                block.end('css/main.css');
             }),
 
             remove: function(block) {
@@ -66,6 +71,7 @@ gulp.task('build-index', function () {
         .pipe(gulp.dest('build'));
 });
 
+/* Minify and remove unused CSS */
 gulp.task('css-min', function() {
     return gulp.src('app/styles/css/main.css')
         .pipe(uncss({
@@ -75,6 +81,7 @@ gulp.task('css-min', function() {
         .pipe(gulp.dest('build/styles'));
 });
 
+/* Rename main css file for critical path inlining */
 gulp.task('copy-styles', function() {
     return gulp.src(['build/styles/main.css'])
         .pipe(rename({
@@ -83,6 +90,7 @@ gulp.task('copy-styles', function() {
         .pipe(gulp.dest('build/styles'));
 });
 
+/* Create the critical inline css */
 gulp.task('critical', ['build', 'copy-styles'], function() {
     critical.generateInline({
         base: 'build/',
@@ -93,8 +101,4 @@ gulp.task('critical', ['build', 'copy-styles'], function() {
         height: 768,
         minify: true
     });
-});
-
-gulp.task('build', function() {
-    return gulp.start(['css-min', 'build-index']);
 });
