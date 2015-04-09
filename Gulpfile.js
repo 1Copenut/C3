@@ -53,7 +53,7 @@ gulp.task('sass-lint', function() {
  * Build tasks 
  * ======================================== */ 
 gulp.task('build', function() {
-    return gulp.start(['css-min', 'build-index']);
+    return gulp.start(['build-index']);
 });
 
 /* Create the index.html file in /build */
@@ -63,6 +63,8 @@ gulp.task('build-index', function () {
             css: htmlbuild.preprocess.css(function (block) {
                 block.end('css/main.css');
             }),
+            
+            /* TODO: Add loadCSS async function after critical path working */
 
             remove: function(block) {
                 block.end();
@@ -94,11 +96,11 @@ gulp.task('copy-styles', function() {
 gulp.task('critical', ['build', 'copy-styles'], function() {
     critical.generateInline({
         base: 'build/',
-        src: 'app/index.html',
+        src: 'index.html',
         styleTarget: 'styles/main.css',
         htmlTarget: 'index.html',
         width: 960,
         height: 768,
         minify: true
     });
-});
+}, function(err){ if (err) {console.log(err);}});
