@@ -1,3 +1,4 @@
+'use strict';
 var gulp = require('gulp'),
     server = require('gulp-express'),
     plumber = require('gulp-plumber'),
@@ -53,7 +54,7 @@ gulp.task('sass-lint', function() {
  * Build tasks 
  * ======================================== */ 
 gulp.task('build', function() {
-    return gulp.start(['build-index']);
+    return gulp.start(['css-min', 'build-index']);
 });
 
 /* Create the index.html file in /build */
@@ -61,7 +62,7 @@ gulp.task('build-index', function () {
     return gulp.src(['app/index.html'])
         .pipe(htmlbuild({
             css: htmlbuild.preprocess.css(function (block) {
-                block.end('css/main.css');
+                block.end('styles/main.css');
             }),
             
             /* TODO: Add loadCSS async function after critical path working */
