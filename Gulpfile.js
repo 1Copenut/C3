@@ -1,19 +1,21 @@
 'use strict';
 var gulp = require('gulp'),
-    server = require('gulp-express'),
-    plumber = require('gulp-plumber'),
-    gulpFilter = require('gulp-filter'),
-    sourcemaps = require('gulp-sourcemaps'),
-    sass = require('gulp-sass'),
+
     autoprefixer = require('gulp-autoprefixer'),
-    sasslint = require('gulp-scss-lint'),
-    cache = require('gulp-cached'),
-    uncss = require('gulp-uncss'),
-    csso = require('gulp-csso'),
     critical = require('critical'),
-    rename = require('gulp-rename'),
+    csso = require('gulp-csso'),
+    del = require('del'),
     htmlbuild = require('gulp-htmlbuild'),
-    es = require('event-stream');
+    rename = require('gulp-rename'),
+    sass = require('gulp-sass'),
+    sasslint = require('gulp-scss-lint'),
+    sequence = require('run-sequence'),
+    server = require('gulp-express'),
+    sourcemaps = require('gulp-sourcemaps'),
+    uncss = require('gulp-uncss'),
+    vinylPaths = require('vinyl-paths'),
+    
+    $ = require('gulp-load-plugins')();
 
 /* ======================================== 
  * Server task
@@ -26,11 +28,13 @@ gulp.task('server', function() {
 /* ======================================== 
  * Development tasks - CSS
  * ======================================== */ 
+
+/* Concatenate sass files, add source maps and Autoprefix CSS */
 gulp.task('sass', function() {
-    var filter = gulpFilter(['*.css', '!*.map']);
+    var filter = $.filter(['*.css', '!*.map']);
     
     return gulp.src('app/styles/sass/*.scss')
-        .pipe(plumber())
+        .pipe($.plumber())
         .pipe(sourcemaps.init())
         .pipe(sass({
             errLogToConsole: true
@@ -44,17 +48,30 @@ gulp.task('sass', function() {
         .pipe(gulp.dest('app/styles/css'));
 });
 
+/* Style check the sass */
 gulp.task('sass-lint', function() {
     return gulp.src('app/styles/sass/*.scss')
-        .pipe(cache('sasslint'))
+        .pipe($.cache('sasslint'))
         .pipe(sasslint());
 });
 
 /* ======================================== 
  * Build tasks 
  * ======================================== */ 
+
+/* Remove the build folder, minify CSS, copy index */
 gulp.task('build', function() {
-    return gulp.start(['css-min', 'build-index']);
+    sequence(
+        'build-remove',
+        ['css-min', 'build-index']
+    );
+});
+
+/* Remove the build folder each time we rebuild */
+gulp.task('build-remove', function() {
+    return gulp.src('build/')
+        .pipe($.notify('Removing the build directory'))
+        .pipe(vinylPaths(del));
 });
 
 /* Create the index.html file in /build */
@@ -71,7 +88,8 @@ gulp.task('build-index', function () {
                 block.end();
             }
         }))
-        .pipe(gulp.dest('build'));
+        .pipe(gulp.dest('build'))
+        .pipe($.notify('Copying index.html'));
 });
 
 /* Minify and remove unused CSS */
@@ -81,7 +99,8 @@ gulp.task('css-min', function() {
             html: ['app/*.html']
         }))
         .pipe(csso())
-        .pipe(gulp.dest('build/styles'));
+        .pipe(gulp.dest('build/styles'))
+        .pipe($.notify('Copying main.css to site.css'));
 });
 
 /* Rename main css file for critical path inlining */
