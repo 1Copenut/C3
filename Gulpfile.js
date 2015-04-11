@@ -1,19 +1,23 @@
 'use strict';
 var gulp = require('gulp'),
-
     autoprefixer = require('gulp-autoprefixer'),
+    browserify = require('browserify'),
     critical = require('critical'),
     csso = require('gulp-csso'),
     del = require('del'),
     htmlbuild = require('gulp-htmlbuild'),
     rename = require('gulp-rename'),
+    paths = require('vinyl-paths'),
     sass = require('gulp-sass'),
     sasslint = require('gulp-scss-lint'),
     sequence = require('run-sequence'),
     server = require('gulp-express'),
+    shim = require('browserify-shim'),
+    source = require('vinyl-source-stream'),
     sourcemaps = require('gulp-sourcemaps'),
+    transform = require('vinyl-transform'),
+    uglify = require('gulp-uglify'),
     uncss = require('gulp-uncss'),
-    vinylPaths = require('vinyl-paths'),
     
     $ = require('gulp-load-plugins')();
 
@@ -56,6 +60,17 @@ gulp.task('sass-lint', function() {
 });
 
 /* ======================================== 
+ * Development tasks - Javascript
+ * ======================================== */ 
+gulp.task('browserify', function() {
+    return browserify('./app/scripts/main.js')
+        .bundle()
+        .pipe(source('output.js'))
+        .pipe(gulp.dest('build/scripts'))
+        .pipe($.notify('Hey, it worked!'));
+});
+
+/* ======================================== 
  * Build tasks 
  * ======================================== */ 
 
@@ -71,7 +86,7 @@ gulp.task('build', function() {
 gulp.task('build-remove', function() {
     return gulp.src('build/')
         .pipe($.notify('Removing the build directory'))
-        .pipe(vinylPaths(del));
+        .pipe(paths(del));
 });
 
 /* Create the index.html file in /build */
