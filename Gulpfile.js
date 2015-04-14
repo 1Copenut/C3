@@ -55,7 +55,7 @@ gulp.task('sass', function() {
 /* Style check the sass */
 gulp.task('sass-lint', function() {
     return gulp.src('app/styles/sass/*.scss')
-        .pipe($.cache('sasslint'))
+        .pipe($.cached('sasslint'))
         .pipe(sasslint());
 });
 
@@ -96,8 +96,6 @@ gulp.task('build-index', function () {
             css: htmlbuild.preprocess.css(function (block) {
                 block.end('styles/main.css');
             }),
-            
-            /* TODO: Add loadCSS async function after critical path working */
 
             remove: function(block) {
                 block.end();
@@ -115,7 +113,7 @@ gulp.task('css-min', function() {
         }))
         .pipe(csso())
         .pipe(gulp.dest('build/styles'))
-        .pipe($.notify('Copying main.css to site.css'));
+        .pipe($.notify('Minifying and removing unused CSS'));
 });
 
 /* Rename main css file for critical path inlining */
@@ -128,7 +126,7 @@ gulp.task('copy-styles', function() {
 });
 
 /* Create the critical inline css */
-gulp.task('critical', ['build', 'copy-styles'], function() {
+gulp.task('critical', ['css-min', 'build-index', 'copy-styles'], function() {
     critical.generateInline({
         base: 'build/',
         src: 'index.html',
