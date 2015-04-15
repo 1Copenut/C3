@@ -1,4 +1,4 @@
-'use strict';
+/* global require */
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     browserify = require('browserify'),
@@ -14,11 +14,10 @@ var gulp = require('gulp'),
     sasslint = require('gulp-scss-lint'),
     sequence = require('run-sequence'),
     server = require('gulp-express'),
-    shim = require('browserify-shim'),
+    /* shim = require('browserify-shim'), */
     source = require('vinyl-source-stream'),
     sourcemaps = require('gulp-sourcemaps'),
     stylish = require('jshint-stylish'),
-    transform = require('vinyl-transform'),
     uglify = require('gulp-uglify'),
     uncss = require('gulp-uncss'),
     
@@ -30,6 +29,7 @@ var gulp = require('gulp'),
  * ======================================== */ 
 /* Remove the build folder, minify CSS, copy index */
 gulp.task('build', function() {
+	'use strict';
     sequence(
         'build-remove',
         ['build-index', 'css-min', 'js-min']
@@ -38,6 +38,7 @@ gulp.task('build', function() {
 
 /* Remove the build folder each time we rebuild */
 gulp.task('build-remove', function() {
+	'use strict';
     return gulp.src('build/')
         .pipe($.notify('Removing the build directory'))
         .pipe(paths(del));
@@ -45,6 +46,7 @@ gulp.task('build-remove', function() {
 
 /* Create the index.html file in /build */
 gulp.task('build-index', function () {
+	'use strict';
     return gulp.src(['app/index.html'])
         .pipe(htmlbuild({
             css: htmlbuild.preprocess.css(function (block) {
@@ -61,6 +63,7 @@ gulp.task('build-index', function () {
 
 /* Create the critical inline css */
 gulp.task('critical', ['build-index','css-min', 'copy-styles'], function() {
+	'use strict';
     critical.generateInline({
         base: 'build/',
         src: 'index.html',
@@ -78,6 +81,7 @@ gulp.task('critical', ['build-index','css-min', 'copy-styles'], function() {
  * ======================================== */ 
 /* Concatenate sass files, add source maps and Autoprefix CSS */
 gulp.task('sass', ['sass-lint'], function() {
+	'use strict';
     var filter = $.filter(['*.css', '!*.map']);
     
     return gulp.src('app/styles/sass/*.scss')
@@ -101,6 +105,7 @@ gulp.task('sass', ['sass-lint'], function() {
 
 /* Style check the sass */
 gulp.task('sass-lint', function() {
+	'use strict';
     return gulp.src('app/styles/sass/*.scss')
         .pipe($.cached('sasslint'))
         .pipe(sasslint())
@@ -112,6 +117,7 @@ gulp.task('sass-lint', function() {
 
 /* Minify and remove unused CSS */
 gulp.task('css-min', function() {
+	'use strict';
     return gulp.src('app/styles/css/main.css')
         .pipe(uncss({
             html: ['app/*.html']
@@ -130,6 +136,7 @@ gulp.task('css-min', function() {
  * ======================================== */ 
 /* Assemble and lint JS files with Browserify */
 gulp.task('browserify', ['jshint'], function() {
+	'use strict';
     var b = browserify({
         entries: './app/scripts/src/main.js'
     });
@@ -149,6 +156,7 @@ gulp.task('browserify', ['jshint'], function() {
 });
 
 gulp.task('jshint', function() {
+	'use strict';
     return gulp.src('./app/scripts/src/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter(stylish))
@@ -156,6 +164,7 @@ gulp.task('jshint', function() {
 });
 
 gulp.task('js-min', function() {
+	'use strict';
     return gulp.src('./app/scripts/out/output.js')
         .pipe(uglify())
         .pipe(gulp.dest('build/scripts'))
@@ -167,6 +176,7 @@ gulp.task('js-min', function() {
  * ======================================== */ 
 /* Start Express server instance */
 gulp.task('server', function() {
+	'use strict';
     server.run(['server/server.js']); 
     console.log('App is running on port 3000');
 });
@@ -177,6 +187,7 @@ gulp.task('server', function() {
  * ======================================== */
 /* Rename main css file for critical path inlining */
 gulp.task('copy-styles', function() {
+	'use strict';
     return gulp.src(['build/styles/main.css'])
         .pipe(rename({
             basename: 'site'
