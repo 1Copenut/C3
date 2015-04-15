@@ -1,9 +1,8 @@
 var express = require("express"),
-	app = module.exports.app = exports.app = express();
+	app = module.exports.app = exports.app = express(),
+    baseDir = __dirname + '/../';
 //	twig = require("twig");
 
-app.use( express.static( __dirname + "/../app" ) );
-// app.set( "view engine", "twig" );
-// app.set( "views", __dirname + "/../app/templates" );
+app.use( '/', express.static(baseDir + 'app') );
 
 app.listen( 3000 );
