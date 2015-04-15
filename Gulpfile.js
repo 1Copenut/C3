@@ -7,6 +7,7 @@ var gulp = require('gulp'),
     csso = require('gulp-csso'),
     del = require('del'),
     htmlbuild = require('gulp-htmlbuild'),
+    jshint = require('gulp-jshint'),
     rename = require('gulp-rename'),
     paths = require('vinyl-paths'),
     sass = require('gulp-sass'),
@@ -16,6 +17,7 @@ var gulp = require('gulp'),
     shim = require('browserify-shim'),
     source = require('vinyl-source-stream'),
     sourcemaps = require('gulp-sourcemaps'),
+    stylish = require('jshint-stylish'),
     transform = require('vinyl-transform'),
     uglify = require('gulp-uglify'),
     uncss = require('gulp-uncss'),
@@ -30,7 +32,7 @@ var gulp = require('gulp'),
 gulp.task('build', function() {
     sequence(
         'build-remove',
-        ['build-index', 'css-min']
+        ['build-index', 'css-min', 'js-min']
     );
 });
 
@@ -75,7 +77,7 @@ gulp.task('critical', ['build-index','css-min', 'copy-styles'], function() {
  * Development tasks - CSS
  * ======================================== */ 
 /* Concatenate sass files, add source maps and Autoprefix CSS */
-gulp.task('sass', function() {
+gulp.task('sass', ['sass-lint'], function() {
     var filter = $.filter(['*.css', '!*.map']);
     
     return gulp.src('app/styles/sass/*.scss')
@@ -90,14 +92,22 @@ gulp.task('sass', function() {
             browsers: ['last 2 versions']
         }))
         .pipe(filter.restore())
-        .pipe(gulp.dest('app/styles/css'));
+        .pipe(gulp.dest('app/styles/css'))
+        .pipe($.notify({
+            onLast: true,
+            message: 'Concatenating CSS'
+        }));
 });
 
 /* Style check the sass */
 gulp.task('sass-lint', function() {
     return gulp.src('app/styles/sass/*.scss')
         .pipe($.cached('sasslint'))
-        .pipe(sasslint());
+        .pipe(sasslint())
+        .pipe($.notify({
+            onLast: true,
+            message: 'Linting SCSS files'
+        }));
 });
 
 /* Minify and remove unused CSS */
@@ -108,7 +118,10 @@ gulp.task('css-min', function() {
         }))
         .pipe(csso())
         .pipe(gulp.dest('build/styles'))
-        .pipe($.notify('Minifying and removing unused CSS'));
+        .pipe($.notify({
+            onLast: true,
+            message: 'Minifying and removing unused CSS'
+        }));
 });
 
 
@@ -116,7 +129,7 @@ gulp.task('css-min', function() {
  * Development tasks - Javascript
  * ======================================== */ 
 /* Assemble and lint JS files with Browserify */
-gulp.task('browserify', function() {
+gulp.task('browserify', ['jshint'], function() {
     var b = browserify({
         entries: './app/scripts/src/main.js'
     });
@@ -135,6 +148,19 @@ gulp.task('browserify', function() {
         }));
 });
 
+gulp.task('jshint', function() {
+    return gulp.src('./app/scripts/src/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter(stylish))
+        .pipe($.notify('Linting Javascript files'));
+});
+
+gulp.task('js-min', function() {
+    return gulp.src('./app/scripts/out/output.js')
+        .pipe(uglify())
+        .pipe(gulp.dest('build/scripts'))
+        .pipe($.notify('Uglifying Javascript'));
+});
 
 /* ======================================== 
  * Server tasks
