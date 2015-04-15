@@ -2,6 +2,7 @@
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     browserify = require('browserify'),
+    buffer = require('vinyl-buffer'),
     critical = require('critical'),
     csso = require('gulp-csso'),
     del = require('del'),
@@ -21,64 +22,15 @@ var gulp = require('gulp'),
     
     $ = require('gulp-load-plugins')();
 
-/* ======================================== 
- * Server task
- * ======================================== */ 
-gulp.task('server', function() {
-    server.run(['server/server.js']); 
-    console.log('App is running on port 3000');
-});
-
-/* ======================================== 
- * Development tasks - CSS
- * ======================================== */ 
-
-/* Concatenate sass files, add source maps and Autoprefix CSS */
-gulp.task('sass', function() {
-    var filter = $.filter(['*.css', '!*.map']);
-    
-    return gulp.src('app/styles/sass/*.scss')
-        .pipe($.plumber())
-        .pipe(sourcemaps.init())
-        .pipe(sass({
-            errLogToConsole: true
-        }))
-        .pipe(sourcemaps.write('./'))
-        .pipe(filter)
-        .pipe(autoprefixer({
-            browsers: ['last 2 versions']
-        }))
-        .pipe(filter.restore())
-        .pipe(gulp.dest('app/styles/css'));
-});
-
-/* Style check the sass */
-gulp.task('sass-lint', function() {
-    return gulp.src('app/styles/sass/*.scss')
-        .pipe($.cached('sasslint'))
-        .pipe(sasslint());
-});
-
-/* ======================================== 
- * Development tasks - Javascript
- * ======================================== */ 
-gulp.task('browserify', function() {
-    return browserify('./app/scripts/main.js')
-        .bundle()
-        .pipe(source('output.js'))
-        .pipe(gulp.dest('build/scripts'))
-        .pipe($.notify('Hey, it worked!'));
-});
 
 /* ======================================== 
  * Build tasks 
  * ======================================== */ 
-
 /* Remove the build folder, minify CSS, copy index */
 gulp.task('build', function() {
     sequence(
         'build-remove',
-        ['css-min', 'build-index']
+        ['build-index', 'css-min']
     );
 });
 
@@ -105,6 +57,49 @@ gulp.task('build-index', function () {
         .pipe($.notify('Copying index.html'));
 });
 
+/* Create the critical inline css */
+gulp.task('critical', ['build-index','css-min', 'copy-styles'], function() {
+    critical.generateInline({
+        base: 'build/',
+        src: 'index.html',
+        styleTarget: 'styles/main.css',
+        htmlTarget: 'index.html',
+        width: 960,
+        height: 768,
+        minify: true
+    });
+}, function(err){ if (err) {console.log(err);}});
+
+
+/* ======================================== 
+ * Development tasks - CSS
+ * ======================================== */ 
+/* Concatenate sass files, add source maps and Autoprefix CSS */
+gulp.task('sass', function() {
+    var filter = $.filter(['*.css', '!*.map']);
+    
+    return gulp.src('app/styles/sass/*.scss')
+        .pipe($.plumber())
+        .pipe(sourcemaps.init())
+        .pipe(sass({
+            errLogToConsole: true
+        }))
+        .pipe(sourcemaps.write('./'))
+        .pipe(filter)
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions']
+        }))
+        .pipe(filter.restore())
+        .pipe(gulp.dest('app/styles/css'));
+});
+
+/* Style check the sass */
+gulp.task('sass-lint', function() {
+    return gulp.src('app/styles/sass/*.scss')
+        .pipe($.cached('sasslint'))
+        .pipe(sasslint());
+});
+
 /* Minify and remove unused CSS */
 gulp.task('css-min', function() {
     return gulp.src('app/styles/css/main.css')
@@ -116,6 +111,44 @@ gulp.task('css-min', function() {
         .pipe($.notify('Minifying and removing unused CSS'));
 });
 
+
+/* ======================================== 
+ * Development tasks - Javascript
+ * ======================================== */ 
+/* Assemble and lint JS files with Browserify */
+gulp.task('browserify', function() {
+    var b = browserify({
+        entries: './app/scripts/src/main.js'
+    });
+
+    return b.bundle()
+        .pipe(source('output.js'))
+        .pipe(buffer())
+        .pipe(sourcemaps.init({
+            loadMaps: true
+        }))
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('app/scripts/out'))
+        .pipe($.notify({
+            onLast: true,
+            message: 'Concatenating Javascript files'
+        }));
+});
+
+
+/* ======================================== 
+ * Server tasks
+ * ======================================== */ 
+/* Start Express server instance */
+gulp.task('server', function() {
+    server.run(['server/server.js']); 
+    console.log('App is running on port 3000');
+});
+
+
+/* ======================================== 
+ * Utility tasks 
+ * ======================================== */
 /* Rename main css file for critical path inlining */
 gulp.task('copy-styles', function() {
     return gulp.src(['build/styles/main.css'])
@@ -124,16 +157,3 @@ gulp.task('copy-styles', function() {
         }))
         .pipe(gulp.dest('build/styles'));
 });
-
-/* Create the critical inline css */
-gulp.task('critical', ['css-min', 'build-index', 'copy-styles'], function() {
-    critical.generateInline({
-        base: 'build/',
-        src: 'index.html',
-        styleTarget: 'styles/main.css',
-        htmlTarget: 'index.html',
-        width: 960,
-        height: 768,
-        minify: true
-    });
-}, function(err){ if (err) {console.log(err);}});

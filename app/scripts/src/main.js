@@ -1,2 +1,18 @@
-!function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var a="function"==typeof require&&require;if(!f&&a)return a(i,!0);if(u)return u(i,!0);var c=new Error("Cannot find module '"+i+"'");throw c.code="MODULE_NOT_FOUND",c}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n?n:r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}({},{},[]);
-//# sourceMappingURL=main.js.map
+var _ = require('underscore'),
+    names = ['Bruce Wayne', 'Wally West', 'John Jones', 'Kyle Rayner', 'Arthur Curry', 'Clark Kent'],
+    otherNames = ['Barry Allen', 'Hal Jordan', 'Kara Kent', 'Diana Prince', 'Ray Palmer', 'Oliver Queen'];
+
+_.each([names, otherNames], function(namGroup) {
+    findSuperman(nameGroup);
+});
+
+function findSuperman(values) {
+    _.find(values, function(name) {
+        if (name === 'Clark Kent') {
+            console.log('It\'s Superman!');
+        } else {
+            console.log('Nope, no Superman');
+        }
+    });
+};
+    
