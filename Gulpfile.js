@@ -17,6 +17,7 @@ var gulp = require('gulp'),
     /* shim = require('browserify-shim'), */
     source = require('vinyl-source-stream'),
     sourcemaps = require('gulp-sourcemaps'),
+    stream = require('event-stream'),
     stylish = require('jshint-stylish'),
     uglify = require('gulp-uglify'),
     uncss = require('gulp-uncss'),
@@ -32,7 +33,7 @@ gulp.task('build', function() {
 	'use strict';
     sequence(
         'build-remove',
-        ['build-index', 'css-min', 'js-min']
+        ['build-index', 'css-min', 'js-min', 'copy-js']
     );
 });
 
@@ -51,6 +52,10 @@ gulp.task('build-index', function () {
         .pipe(htmlbuild({
             css: htmlbuild.preprocess.css(function (block) {
                 block.end('styles/main.css');
+            }),
+
+            js: htmlbuild.preprocess.js(function(block) {
+                block.end('scripts/output.js');
             }),
 
             remove: function(block) {
@@ -193,4 +198,14 @@ gulp.task('copy-styles', function() {
             basename: 'site'
         }))
         .pipe(gulp.dest('build/styles'));
+});
+
+gulp.task('copy-js', function() {
+    'use strict';
+    return gulp.src(['app/lib/**/*.js'])
+        .pipe(gulp.dest('build/lib'))
+        .pipe($.notify({
+            onLast: true,
+            message: 'Copying /lib directory Javascript'
+        }))
 });
