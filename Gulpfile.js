@@ -3,13 +3,16 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     browserify = require('browserify'),
     buffer = require('vinyl-buffer'),
+    chai = require('chai'),
     critical = require('critical'),
     csso = require('gulp-csso'),
     del = require('del'),
     htmlbuild = require('gulp-htmlbuild'),
     jshint = require('gulp-jshint'),
-    rename = require('gulp-rename'),
+    mocha = require('mocha'),
+    mochaPhantom = require('gulp-mocha-phantomjs'),
     paths = require('vinyl-paths'),
+    rename = require('gulp-rename'),
     sass = require('gulp-sass'),
     sasslint = require('gulp-scss-lint'),
     sequence = require('run-sequence'),
@@ -141,23 +144,35 @@ gulp.task('css-min', function() {
  * Development tasks - Javascript
  * ======================================== */ 
 /* Assemble and lint JS files with Browserify */
-gulp.task('browserify', ['jshint'], function() {
+gulp.task('browserify-app', ['jshint'], function() {
 	'use strict';
     var b = browserify({
-        entries: './app/scripts/src/main.js'
+        entries: './app/scripts/src/main.js',
+        insertGlobals: true
     });
 
     return b.bundle()
         .pipe(source('output.js'))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({
-            loadMaps: true
-        }))
-        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('app/scripts/out'))
         .pipe($.notify({
             onLast: true,
-            message: 'Concatenating Javascript files'
+            message: 'Concatenating Javascript application files'
+        }));
+});
+
+gulp.task('browserify-test', ['jshint'], function() {
+	'use strict';
+    var b = browserify({
+        entries: './test/scripts/src/main.js',
+        insertGlobals: true
+    });
+
+    return b.bundle()
+        .pipe(source('output.js'))
+        .pipe(gulp.dest('test/scripts/out'))
+        .pipe($.notify({
+            onLast: true,
+            message: 'Concatenating Javascript test files'
         }));
 });
 
@@ -172,7 +187,12 @@ gulp.task('jshint', function() {
 gulp.task('js-min', function() {
 	'use strict';
     return gulp.src('./app/scripts/out/output.js')
+        .pipe(buffer())
+        .pipe(sourcemaps.init({
+            loadMaps: true
+        }))
         .pipe(uglify())
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('build/scripts'))
         .pipe($.notify('Uglifying Javascript'));
 });
@@ -187,6 +207,15 @@ gulp.task('server', function() {
     console.log('App is running on port 3000');
 });
 
+
+/* ======================================== 
+ * Test tasks
+ * ======================================== */ 
+/* Run the Mocha Phantom test */
+gulp.task('test', ['browserify-test'], function() {
+    return gulp.src('test/index.html')
+        .pipe(mochaPhantom());
+});
 
 /* ======================================== 
  * Utility tasks 
@@ -213,4 +242,6 @@ gulp.task('copy-styles', function() {
 
 gulp.task('watch', function() {
     gulp.watch('app/styles/sass/*.scss', ['sass']);
+    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'browserify-test']);
+    gulp.watch('test/scripts/src/*.js', ['browserify-test']);
 });
