@@ -21,6 +21,7 @@ var gulp = require('gulp'),
     stylish = require('jshint-stylish'),
     uglify = require('gulp-uglify'),
     uncss = require('gulp-uncss'),
+    watch = require('gulp-watch'),
     
     $ = require('gulp-load-plugins')();
 
@@ -191,6 +192,16 @@ gulp.task('server', function() {
  * Utility tasks 
  * ======================================== */
 /* Rename main css file for critical path inlining */
+gulp.task('copy-js', function() {
+    'use strict';
+    return gulp.src(['app/lib/**/*.js'])
+        .pipe(gulp.dest('build/lib'))
+        .pipe($.notify({
+            onLast: true,
+            message: 'Copying /lib directory Javascript'
+        }))
+});
+
 gulp.task('copy-styles', function() {
 	'use strict';
     return gulp.src(['build/styles/main.css'])
@@ -200,12 +211,6 @@ gulp.task('copy-styles', function() {
         .pipe(gulp.dest('build/styles'));
 });
 
-gulp.task('copy-js', function() {
-    'use strict';
-    return gulp.src(['app/lib/**/*.js'])
-        .pipe(gulp.dest('build/lib'))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Copying /lib directory Javascript'
-        }))
+gulp.task('watch', function() {
+    gulp.watch('app/styles/sass/*.scss', ['sass']);
 });
