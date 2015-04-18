@@ -214,7 +214,13 @@ gulp.task('server', function() {
 /* Run the Mocha Phantom test */
 gulp.task('test', ['browserify-test'], function() {
     return gulp.src('test/index.html')
-        .pipe(mochaPhantom());
+        .pipe(mochaPhantom({
+            reporter: 'spec'
+        }))
+        .pipe($.notify({
+            onLast: true,
+            message: "Testing JS with Mocha"
+        }));
 });
 
 /* ======================================== 
@@ -242,6 +248,6 @@ gulp.task('copy-styles', function() {
 
 gulp.task('watch', function() {
     gulp.watch('app/styles/sass/*.scss', ['sass']);
-    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'browserify-test']);
-    gulp.watch('test/scripts/src/*.js', ['browserify-test']);
+    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test']);
+    gulp.watch('test/scripts/src/*.js', ['test']);
 });
