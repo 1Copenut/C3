@@ -181,7 +181,10 @@ gulp.task('jshint', function() {
     return gulp.src('./app/scripts/src/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter(stylish))
-        .pipe($.notify('Linting Javascript files'));
+        .pipe($.notify({
+            onLast: true,
+            message: 'Linting Javascript files'
+        }));
 });
 
 gulp.task('js-min', function() {

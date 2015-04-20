@@ -1,7 +1,11 @@
-var expect = require('chai').expect;
+var expect = require('chai').should(),
+    navigationTest = require('./navigation-test');
 
-describe('test setup', function() {
+describe('Smoke test', function() {
+    'use strict';
+    var truth = true;
     it('should work', function() {
-        expect(true).to.be.true;
+        truth.should.exist;
+        truth.should.equal(true);
     });
 });

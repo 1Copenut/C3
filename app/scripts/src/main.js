@@ -1,19 +1,11 @@
-var _ = require('underscore'),
-    names = ['Bruce Wayne', 'Wally West', 'John Jones', 'Kyle Rayner', 'Arthur Curry', 'Clark Kent'],
-    otherNames = ['Barry Allen', 'Hal Jordan', 'Kara Kent', 'Diana Prince', 'Ray Palmer', 'Oliver Queen'];
+/*jshint browser:true */
+var $ = require('jquery'),
+    Navigation = require('./navigation');
 
-function findSuperman(values) {
+$(document).ready(function() {
     'use strict';
-    _.find(values, function(name) {
-        if (name === 'Clark Kent') {
-            console.log('It\'s Superman!');
-        } else {
-            console.log('Nope, no Superman');
-        }
-    });
-}
+    var navigation = new Navigation('#navigation li', '#navigation a', 'current');
 
-_.each([names, otherNames], function(nameGroup) {
-    'use strict';
-    findSuperman(nameGroup);
+    navigation.init();
 });
+
