@@ -27,7 +27,8 @@ describe('Smoke test', function() {
  */
 
 /* global window, require */
-var $ = require('jquery');
+var $ = require('jquery'),
+    Historical = require('./historical');
 
 function Navigation(list, links, currentClass) {
     'use strict';
@@ -41,8 +42,9 @@ Navigation.prototype = (function() {
     return {
         constructor: Navigation,
         
+        /* Ensure browsers understand the HTML5 History API */
         init: function() {
-            if (!window.history && window.history.pushState) {
+            if (!window.history || !window.history.pushState) {
                 return;
             } else {
                 Navigation.fetchHistoryURL();
@@ -51,27 +53,54 @@ Navigation.prototype = (function() {
             }
         },
 
+        /* Grab the clicked href to load content with AJAX */
         fetchHistoryURL: function() {
+            var $links = $(this.links);
+
+            $links.on('click', function(e) {
+                var $self = $(this),
+                    href = $self.attr('href');
+
+                e.preventDefault();
+
+                Historical.loadContent(href);
+
+                Historical.historyEvent(null, null, href);
+
+                Navigation.switchClass($self, this.currentClass);
+            });
         },
 
-        setCurrentClass: function() {
-            /* code */
+        /* Add the active class to the first nav link */
+        setCurrentClass: function(className) {
+            var $baseList = $(this.list);
+
+            $baseList.first()
+                .addClass(className);
         },
 
-        switchClass: function() {
-           /* code */
+        /* Remove the active class from nav links, and reapply to clicked link */ 
+        switchClass: function(currentLink, className) {
+            var $baseList = $(this.list),
+                current = $(currentLink).parent();
+
+            $baseList.removeClass(className);
+
+            current.addClass(className);
         },
 
+        /* Add a popstate event so the Back button functions correctly */
         windowPopState: function() {
-           /* code */
+            Historical.popEvent();
         } 
     };
 }());
 
 module.exports = Navigation;
 
+
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/src/navigation.js","/app/scripts/src")
-},{"_process":8,"buffer":4,"jquery":43}],4:[function(require,module,exports){
+},{"./historical":2,"_process":8,"buffer":4,"jquery":43}],4:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * The buffer module from node.js, for the browser.
@@ -16183,31 +16212,25 @@ describe('Navigation test suite', function() {
     before(function(done) {
         'use strict';
         Navigation = require('../../../app/scripts/src/navigation');
-        Historical = require('../../../app/scripts/src/historical');
         navigationTest = new Navigation('#navigation li', '#navigation a', 'current');
-        historicalTest = new Historical();
         done();
     });
 
     it('#constructor', function() {
         'use strict';
+        navigationTest.should.be.an.instanceof(Navigation);
+        navigationTest.should.have.property('list', '#navigation li');
+        navigationTest.should.have.property('links', '#navigation a');
+        navigationTest.should.have.property('currentClass', 'current');
+            });
+
+    it('#init', function() {
         should.exist(navigationTest.init);    
         should.exist(navigationTest.fetchHistoryURL);
         should.exist(navigationTest.setCurrentClass);
         should.exist(navigationTest.switchClass);
-        should.exist(navigationTest.windowPopState);
-    });
-
-    it('#init', function() {
-        should.exist(navigationTest.currentClass);
-    });
-
-    it('#fetchHistoryURL', function() {
-        should.exist(navigationTest.links);
-        should.exist(navigationTest.currentClass);
-        should.exist(historicalTest);
     });
 });
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/test/scripts/src/navigation-test.js","/test/scripts/src")
-},{"../../../app/scripts/src/historical":2,"../../../app/scripts/src/navigation":3,"_process":8,"buffer":4,"chai":9}]},{},[1]);
+},{"../../../app/scripts/src/navigation":3,"_process":8,"buffer":4,"chai":9}]},{},[1]);
