@@ -12,10 +12,12 @@
 
 		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-		<link rel="stylesheet" href="styles/css/main.css">
-		<link rel="stylesheet" href="bower_components/video.js/video-js.css">
-		
-		<script src="bower_components/modernizr/modernizr.js"></script>
+        <!-- htmlbuild:css -->
+        <link rel="stylesheet" href="styles/css/main.css">
+		<link rel="stylesheet" href="lib/video.js/video-js.css">
+	    <!-- endbuild -->
+
+		<script src="lib/modernizr/modernizr.js"></script>
 	</head>
 	
 	<body>
@@ -169,7 +171,8 @@
 			</footer>
 		</div>
 
-		<script src="http://localhost:35729/livereload.js"></script>
-		<script data-main="scripts/config" src="bower_components/requirejs/require.js"></script>
+        <!-- htmlbuild:js -->
+		<script src="scripts/out/output.js"></script>
+        <!-- endbuild -->
 	</body>
 </html>
