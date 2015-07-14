@@ -1,5 +1,4 @@
-var expect = require('chai').should(),
-    navigationTest = require('./navigation-test');
+var navigationTest = require('./navigation-test');
 
 describe('Smoke test', function() {
     'use strict';

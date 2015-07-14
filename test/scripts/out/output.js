@@ -1,7 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-var expect = require('chai').should(),
-    navigationTest = require('./navigation-test');
+var navigationTest = require('./navigation-test');
 
 describe('Smoke test', function() {
     'use strict';
@@ -13,7 +12,7 @@ describe('Smoke test', function() {
 });
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/test/scripts/src/main.js","/test/scripts/src")
-},{"./navigation-test":44,"_process":8,"buffer":4,"chai":9}],2:[function(require,module,exports){
+},{"./navigation-test":44,"_process":8,"buffer":4}],2:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/src/historical.js","/app/scripts/src")
@@ -16206,7 +16205,7 @@ return jQuery;
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var should = require('chai').should();
 
-describe('Navigation test suite', function() {
+describe('Navigation module', function() {
     var Navigation, navigationTest;
 
     before(function(done) {
@@ -16225,6 +16224,7 @@ describe('Navigation test suite', function() {
             });
 
     it('#init', function() {
+        'use strict';
         should.exist(navigationTest.init);    
         should.exist(navigationTest.fetchHistoryURL);
         should.exist(navigationTest.setCurrentClass);

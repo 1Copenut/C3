@@ -1,6 +1,6 @@
 var should = require('chai').should();
 
-describe('Navigation test suite', function() {
+describe('Navigation module', function() {
     var Navigation, navigationTest;
 
     before(function(done) {
@@ -19,6 +19,7 @@ describe('Navigation test suite', function() {
             });
 
     it('#init', function() {
+        'use strict';
         should.exist(navigationTest.init);    
         should.exist(navigationTest.fetchHistoryURL);
         should.exist(navigationTest.setCurrentClass);
