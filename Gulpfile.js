@@ -35,7 +35,7 @@ gulp.task('build', function() {
 	'use strict';
     sequence(
         'build-remove',
-        ['build-index', 'css-min', 'js-min', 'copy-js']
+        ['build-index', 'css-min', 'js-min', 'copy-js', 'critical']
     );
 });
 
@@ -68,6 +68,31 @@ gulp.task('build-index', function () {
         .pipe($.notify('Copying index.html'));
 });
 
+/* Copy the stylesheet so it can be minified */
+gulp.task('copy-styles', function() {
+	'use strict';
+    return gulp.src(['build/styles/main.css'])
+        .pipe(rename({
+            basename: 'site'
+        }))
+        .pipe(gulp.dest('build/styles'));
+});
+
+/* Minify and remove unused CSS */
+gulp.task('css-min', function() {
+	'use strict';
+    return gulp.src('app/styles/css/main.css')
+        .pipe(uncss({
+            html: ['app/*.html']
+        }))
+        .pipe(csso())
+        .pipe(gulp.dest('build/styles'))
+        .pipe($.notify({
+            onLast: true,
+            message: 'Minifying and removing unused CSS'
+        }));
+});
+
 /* Create the critical inline css */
 gulp.task('critical', ['build-index','css-min', 'copy-styles'], function() {
 	'use strict';
@@ -81,6 +106,31 @@ gulp.task('critical', ['build-index','css-min', 'copy-styles'], function() {
         minify: true
     });
 }, function(err){ if (err) {console.log(err);}});
+
+/* Copy the lib directory from app to build */
+gulp.task('copy-js', function() {
+    'use strict';
+    return gulp.src(['app/lib/**/*.js'])
+        .pipe(gulp.dest('build/lib'))
+        .pipe($.notify({
+            onLast: true,
+            message: 'Copying /lib directory Javascript'
+        }))
+});
+
+/* Minify and uglify the Javascript */
+gulp.task('js-min', function() {
+	'use strict';
+    return gulp.src('./app/scripts/out/output.js')
+        .pipe(buffer())
+        .pipe(sourcemaps.init({
+            loadMaps: true
+        }))
+        .pipe(uglify())
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest('build/scripts'))
+        .pipe($.notify('Uglifying Javascript'));
+});
 
 
 /* ======================================== 
@@ -122,21 +172,6 @@ gulp.task('sass-lint', function() {
         }));
 });
 
-/* Minify and remove unused CSS */
-gulp.task('css-min', function() {
-	'use strict';
-    return gulp.src('app/styles/css/main.css')
-        .pipe(uncss({
-            html: ['app/*.html']
-        }))
-        .pipe(csso())
-        .pipe(gulp.dest('build/styles'))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Minifying and removing unused CSS'
-        }));
-});
-
 
 /* ======================================== 
  * Development tasks - Javascript
@@ -158,6 +193,7 @@ gulp.task('browserify-app', ['jshint'], function() {
         }));
 });
 
+/* Assemble and lint JS test files with Browserify */
 gulp.task('browserify-test', ['jshint'], function() {
 	'use strict';
     var b = browserify({
@@ -174,6 +210,7 @@ gulp.task('browserify-test', ['jshint'], function() {
         }));
 });
 
+/* Run the JSHint on all files to ensure proper coding */
 gulp.task('jshint', function() {
 	'use strict';
     return gulp.src('./app/scripts/src/*.js')
@@ -185,18 +222,6 @@ gulp.task('jshint', function() {
         }));
 });
 
-gulp.task('js-min', function() {
-	'use strict';
-    return gulp.src('./app/scripts/out/output.js')
-        .pipe(buffer())
-        .pipe(sourcemaps.init({
-            loadMaps: true
-        }))
-        .pipe(uglify())
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('build/scripts'))
-        .pipe($.notify('Uglifying Javascript'));
-});
 
 /* ======================================== 
  * Server tasks
@@ -224,29 +249,11 @@ gulp.task('test', ['browserify-test'], function() {
         }));
 });
 
+
 /* ======================================== 
  * Utility tasks 
  * ======================================== */
-/* Rename main css file for critical path inlining */
-gulp.task('copy-js', function() {
-    'use strict';
-    return gulp.src(['app/lib/**/*.js'])
-        .pipe(gulp.dest('build/lib'))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Copying /lib directory Javascript'
-        }))
-});
-
-gulp.task('copy-styles', function() {
-	'use strict';
-    return gulp.src(['build/styles/main.css'])
-        .pipe(rename({
-            basename: 'site'
-        }))
-        .pipe(gulp.dest('build/styles'));
-});
-
+/* Watch Sass and JS files for immediate task kick-off */
 gulp.task('watch', function() {
     gulp.watch('app/styles/sass/*.scss', ['sass']);
     gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test']);
