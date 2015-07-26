@@ -243,9 +243,9 @@ gulp.task('browsersync', function() {
     });    
 
     gulp.watch('app/*.html').on('change', browsersync.reload);
-    gulp.watch('app/styles/sass/*.scss', ['sass']);
-    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test']);
-    gulp.watch('test/scripts/src/*.js', ['test']);
+    gulp.watch('app/styles/sass/*.scss', ['sass'], browsersync.reload);
+    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test'], browsersync.reload);
+    gulp.watch('test/scripts/src/*.js', ['test'], browsersync.reload);
 });
 
 /* ======================================== 
