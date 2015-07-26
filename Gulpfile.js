@@ -2,6 +2,7 @@
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
     browserify = require('browserify'),
+    browsersync = require('browser-sync').create(),
     buffer = require('vinyl-buffer'),
     critical = require('critical'),
     csso = require('gulp-csso'),
@@ -154,6 +155,7 @@ gulp.task('sass', ['sass-lint'], function() {
         }))
         .pipe(filter.restore())
         .pipe(gulp.dest('app/styles/css'))
+        .pipe(browsersync.stream({match: '**/*.css'}))
         .pipe($.notify({
             onLast: true,
             message: 'Concatenating CSS'
@@ -233,12 +235,25 @@ gulp.task('server', function() {
     console.log('App is running on port 3000');
 });
 
+/* Start the Browser Sync task to automatically reload the page */
+gulp.task('browsersync', function() {
+    'use strict';
+    browsersync.init({
+        server: './app'
+    });    
+
+    gulp.watch('app/*.html').on('change', browsersync.reload);
+    gulp.watch('app/styles/sass/*.scss', ['sass']);
+    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test']);
+    gulp.watch('test/scripts/src/*.js', ['test']);
+});
 
 /* ======================================== 
  * Test tasks
  * ======================================== */ 
 /* Run the Mocha Phantom test */
 gulp.task('test', ['browserify-test'], function() {
+    'use strict';
     return gulp.src('test/index.html')
         .pipe(mochaPhantom({
             reporter: 'spec'
@@ -249,13 +264,3 @@ gulp.task('test', ['browserify-test'], function() {
         }));
 });
 
-
-/* ======================================== 
- * Utility tasks 
- * ======================================== */
-/* Watch Sass and JS files for immediate task kick-off */
-gulp.task('watch', function() {
-    gulp.watch('app/styles/sass/*.scss', ['sass']);
-    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test']);
-    gulp.watch('test/scripts/src/*.js', ['test']);
-});
