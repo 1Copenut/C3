@@ -8,19 +8,21 @@ var gulp = require('gulp'),
     del = require('del'),
     htmlbuild = require('gulp-htmlbuild'),
     jshint = require('gulp-jshint'),
-    rename = require('gulp-rename'),
+    mocha = require('mocha'),
+    mochaPhantom = require('gulp-mocha-phantomjs'),
     paths = require('vinyl-paths'),
+    rename = require('gulp-rename'),
     sass = require('gulp-sass'),
     sasslint = require('gulp-scss-lint'),
     sequence = require('run-sequence'),
     server = require('gulp-express'),
-    /* shim = require('browserify-shim'), */
     source = require('vinyl-source-stream'),
     sourcemaps = require('gulp-sourcemaps'),
     stream = require('event-stream'),
     stylish = require('jshint-stylish'),
     uglify = require('gulp-uglify'),
     uncss = require('gulp-uncss'),
+    watch = require('gulp-watch'),
     
     $ = require('gulp-load-plugins')();
 
@@ -140,23 +142,35 @@ gulp.task('css-min', function() {
  * Development tasks - Javascript
  * ======================================== */ 
 /* Assemble and lint JS files with Browserify */
-gulp.task('browserify', ['jshint'], function() {
+gulp.task('browserify-app', ['jshint'], function() {
 	'use strict';
     var b = browserify({
-        entries: './app/scripts/src/main.js'
+        entries: './app/scripts/src/main.js',
+        insertGlobals: true
     });
 
     return b.bundle()
         .pipe(source('output.js'))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({
-            loadMaps: true
-        }))
-        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('app/scripts/out'))
         .pipe($.notify({
             onLast: true,
-            message: 'Concatenating Javascript files'
+            message: 'Concatenating Javascript application files'
+        }));
+});
+
+gulp.task('browserify-test', ['jshint'], function() {
+	'use strict';
+    var b = browserify({
+        entries: './test/scripts/src/main.js',
+        insertGlobals: true
+    });
+
+    return b.bundle()
+        .pipe(source('output.js'))
+        .pipe(gulp.dest('test/scripts/out'))
+        .pipe($.notify({
+            onLast: true,
+            message: 'Concatenating Javascript test files'
         }));
 });
 
@@ -165,13 +179,21 @@ gulp.task('jshint', function() {
     return gulp.src('./app/scripts/src/*.js')
         .pipe(jshint())
         .pipe(jshint.reporter(stylish))
-        .pipe($.notify('Linting Javascript files'));
+        .pipe($.notify({
+            onLast: true,
+            message: 'Linting Javascript files'
+        }));
 });
 
 gulp.task('js-min', function() {
 	'use strict';
     return gulp.src('./app/scripts/out/output.js')
+        .pipe(buffer())
+        .pipe(sourcemaps.init({
+            loadMaps: true
+        }))
         .pipe(uglify())
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest('build/scripts'))
         .pipe($.notify('Uglifying Javascript'));
 });
@@ -188,9 +210,34 @@ gulp.task('server', function() {
 
 
 /* ======================================== 
+ * Test tasks
+ * ======================================== */ 
+/* Run the Mocha Phantom test */
+gulp.task('test', ['browserify-test'], function() {
+    return gulp.src('test/index.html')
+        .pipe(mochaPhantom({
+            reporter: 'spec'
+        }))
+        .pipe($.notify({
+            onLast: true,
+            message: "Testing JS with Mocha"
+        }));
+});
+
+/* ======================================== 
  * Utility tasks 
  * ======================================== */
 /* Rename main css file for critical path inlining */
+gulp.task('copy-js', function() {
+    'use strict';
+    return gulp.src(['app/lib/**/*.js'])
+        .pipe(gulp.dest('build/lib'))
+        .pipe($.notify({
+            onLast: true,
+            message: 'Copying /lib directory Javascript'
+        }))
+});
+
 gulp.task('copy-styles', function() {
 	'use strict';
     return gulp.src(['build/styles/main.css'])
@@ -200,12 +247,8 @@ gulp.task('copy-styles', function() {
         .pipe(gulp.dest('build/styles'));
 });
 
-gulp.task('copy-js', function() {
-    'use strict';
-    return gulp.src(['app/lib/**/*.js'])
-        .pipe(gulp.dest('build/lib'))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Copying /lib directory Javascript'
-        }))
+gulp.task('watch', function() {
+    gulp.watch('app/styles/sass/*.scss', ['sass']);
+    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test']);
+    gulp.watch('test/scripts/src/*.js', ['test']);
 });
