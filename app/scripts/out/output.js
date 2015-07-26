@@ -13,7 +13,11 @@ $(document).ready(function() {
 
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/src/main.js","/app/scripts/src")
-},{"./navigation":2,"_process":7,"buffer":3,"jquery":8}],2:[function(require,module,exports){
+},{"./navigation":3,"_process":8,"buffer":4,"jquery":9}],2:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/src/historical.js","/app/scripts/src")
+},{"_process":8,"buffer":4}],3:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /**
  * The Navigation module handles all of the AJAX link
@@ -23,7 +27,8 @@ $(document).ready(function() {
  */
 
 /* global window, require */
-var $ = require('jquery');
+var $ = require('jquery'),
+    Historical = require('./historical');
 
 function Navigation(list, links, currentClass) {
     'use strict';
@@ -37,8 +42,9 @@ Navigation.prototype = (function() {
     return {
         constructor: Navigation,
         
+        /* Ensure browsers understand the HTML5 History API */
         init: function() {
-            if (!window.history && window.history.pushState) {
+            if (!window.history || !window.history.pushState) {
                 return;
             } else {
                 Navigation.fetchHistoryURL();
@@ -47,28 +53,54 @@ Navigation.prototype = (function() {
             }
         },
 
+        /* Grab the clicked href to load content with AJAX */
         fetchHistoryURL: function() {
-            var links = $(this.links);
+            var $links = $(this.links);
+
+            $links.on('click', function(e) {
+                var $self = $(this),
+                    href = $self.attr('href');
+
+                e.preventDefault();
+
+                Historical.loadContent(href);
+
+                Historical.historyEvent(null, null, href);
+
+                Navigation.switchClass($self, this.currentClass);
+            });
         },
 
-        setCurrentClass: function() {
-            /* code */
+        /* Add the active class to the first nav link */
+        setCurrentClass: function(className) {
+            var $baseList = $(this.list);
+
+            $baseList.first()
+                .addClass(className);
         },
 
-        switchClass: function() {
-           /* code */
+        /* Remove the active class from nav links, and reapply to clicked link */ 
+        switchClass: function(currentLink, className) {
+            var $baseList = $(this.list),
+                current = $(currentLink).parent();
+
+            $baseList.removeClass(className);
+
+            current.addClass(className);
         },
 
+        /* Add a popstate event so the Back button functions correctly */
         windowPopState: function() {
-           /* code */
+            Historical.popEvent();
         } 
     };
 }());
 
 module.exports = Navigation;
 
+
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/src/navigation.js","/app/scripts/src")
-},{"_process":7,"buffer":3,"jquery":8}],3:[function(require,module,exports){
+},{"./historical":2,"_process":8,"buffer":4,"jquery":9}],4:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * The buffer module from node.js, for the browser.
@@ -1403,7 +1435,7 @@ function decodeUtf8Char (str) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/browserify/node_modules/buffer/index.js","/node_modules/browserify/node_modules/buffer")
-},{"_process":7,"base64-js":4,"buffer":3,"ieee754":5,"is-array":6}],4:[function(require,module,exports){
+},{"_process":8,"base64-js":5,"buffer":4,"ieee754":6,"is-array":7}],5:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
@@ -1531,7 +1563,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/browserify/node_modules/buffer/node_modules/base64-js/lib/b64.js","/node_modules/browserify/node_modules/buffer/node_modules/base64-js/lib")
-},{"_process":7,"buffer":3}],5:[function(require,module,exports){
+},{"_process":8,"buffer":4}],6:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 exports.read = function(buffer, offset, isLE, mLen, nBytes) {
   var e, m,
@@ -1619,7 +1651,7 @@ exports.write = function(buffer, value, offset, isLE, mLen, nBytes) {
 };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/browserify/node_modules/buffer/node_modules/ieee754/index.js","/node_modules/browserify/node_modules/buffer/node_modules/ieee754")
-},{"_process":7,"buffer":3}],6:[function(require,module,exports){
+},{"_process":8,"buffer":4}],7:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 
 /**
@@ -1656,7 +1688,7 @@ module.exports = isArray || function (val) {
 };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/browserify/node_modules/buffer/node_modules/is-array/index.js","/node_modules/browserify/node_modules/buffer/node_modules/is-array")
-},{"_process":7,"buffer":3}],7:[function(require,module,exports){
+},{"_process":8,"buffer":4}],8:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 // shim for using process in browser
 
@@ -1718,7 +1750,7 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/browserify/node_modules/process/browser.js","/node_modules/browserify/node_modules/process")
-},{"_process":7,"buffer":3}],8:[function(require,module,exports){
+},{"_process":8,"buffer":4}],9:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /*!
  * jQuery JavaScript Library v2.1.3
@@ -10927,4 +10959,4 @@ return jQuery;
 }));
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/jquery/dist/jquery.js","/node_modules/jquery/dist")
-},{"_process":7,"buffer":3}]},{},[1]);
+},{"_process":8,"buffer":4}]},{},[1]);
