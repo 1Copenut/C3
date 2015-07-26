@@ -35,7 +35,7 @@ gulp.task('build', function() {
 	'use strict';
     sequence(
         'build-remove',
-        ['build-index', 'css-min', 'js-min', 'copy-js']
+        ['build-index', 'css-min', 'js-min', 'copy-js', 'critical']
     );
 });
 
