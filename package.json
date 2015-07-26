@@ -7,6 +7,7 @@
   },
   "devDependencies": {
     "benv": "^1.1.0",
+    "browser-sync": "^2.8.0",
     "browserify": "^9.0.8",
     "browserify-shim": "^3.8.3",
     "chai": "^2.2.0",
