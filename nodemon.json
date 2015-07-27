@@ -1,0 +1,4 @@
+{
+    "ignore": ["app/*", "build/*", "node_modules/*", "tests/*"]
+}
+    
