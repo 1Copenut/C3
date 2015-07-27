@@ -96,7 +96,7 @@ gulp.task('css-min', function() {
         }));
 });
 
-/* Create the critical inline css */
+/* Create the critical inline css in index.html */
 gulp.task('critical', ['build-index','css-min', 'copy-styles'], function() {
 	'use strict';
     critical.generateInline({
@@ -296,6 +296,7 @@ gulp.task('test', ['browserify-test'], function() {
 /* ======================================== 
  * Utility tasks
  * ======================================== */ 
+/* Print errors to the console and trigger a beep warning */
 var handleError = function(err) {
     beep(2);
     console.log(err.toString());
