@@ -1,6 +1,7 @@
 /* global require */
 var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer'),
+    beep = require('beepbeep'),
     browserify = require('browserify'),
     browsersync = require('browser-sync').create(),
     buffer = require('vinyl-buffer'),
@@ -11,6 +12,7 @@ var gulp = require('gulp'),
     jshint = require('gulp-jshint'),
     mocha = require('mocha'),
     mochaPhantom = require('gulp-mocha-phantomjs'),
+    nodemon = require('gulp-nodemon'),
     paths = require('vinyl-paths'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass'),
@@ -204,7 +206,7 @@ gulp.task('browserify-test', ['jshint'], function() {
     });
 
     return b.bundle()
-        .pipe(source('output.js'))
+        .pipe(source('output-test.js'))
         .pipe(gulp.dest('test/scripts/out'))
         .pipe($.notify({
             onLast: true,
@@ -229,24 +231,47 @@ gulp.task('jshint', function() {
  * Server tasks
  * ======================================== */ 
 /* Start Express server instance */
-gulp.task('server', function() {
+gulp.task('server', ['browsersync'], function() {
 	'use strict';
-    server.run(['server/server.js']); 
     console.log('App is running on port 3000');
 });
 
 /* Start the Browser Sync task to automatically reload the page */
-gulp.task('browsersync', function() {
+gulp.task('browsersync', ['nodemon'], function() {
     'use strict';
-    browsersync.init({
-        server: './app'
-    });    
 
-    gulp.watch('app/*.html').on('change', browsersync.reload);
+    browsersync.init(null, {
+        proxy: 'http://localhost:3000',
+        files: ['app/**/*.html'],
+        browser: 'google chrome',
+        port: 7000
+    });
+
+    gulp.watch('app/*.html', ['browsersync-reload']);
     gulp.watch('app/styles/sass/*.scss', ['sass']);
-    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test']);
-    gulp.watch('test/scripts/src/*.js', ['test']);
+    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test', 'browsersync-reload']);
+    gulp.watch('test/scripts/src/*.js', ['test', 'browsersync-reload']);
 });
+
+/* Make the Browsersync reload a Gulp task */
+gulp.task('browsersync-reload', function() {
+    browsersync.reload();
+});
+
+/* Fire up Express and Nodemon as our development server */
+gulp.task('nodemon', function(cb) {
+    var started = false;
+
+    return nodemon({ 
+        script: 'server/server.js'
+    }).on('start', function() {
+        if (!started) {
+            cb();
+            started = true;
+        }
+    });
+});
+
 
 /* ======================================== 
  * Test tasks
@@ -255,6 +280,9 @@ gulp.task('browsersync', function() {
 gulp.task('test', ['browserify-test'], function() {
     'use strict';
     return gulp.src('test/index.html')
+        .pipe($.plumber({
+            errorHandler: handleError
+        }))
         .pipe(mochaPhantom({
             reporter: 'spec'
         }))
@@ -264,3 +292,12 @@ gulp.task('test', ['browserify-test'], function() {
         }));
 });
 
+
+/* ======================================== 
+ * Utility tasks
+ * ======================================== */ 
+var handleError = function(err) {
+    beep(2);
+    console.log(err.toString());
+    this.emit('end');
+}
