@@ -1,4 +1,5 @@
-var navigationTest = require('./navigation-test');
+var navigationTest = require('./navigation-test'),
+    historicalTest = require('./historical-test');
 
 describe('Smoke test', function() {
     'use strict';

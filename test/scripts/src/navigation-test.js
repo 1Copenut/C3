@@ -16,7 +16,7 @@ describe('Navigation module', function() {
         navigationTest.should.have.property('list', '#navigation li');
         navigationTest.should.have.property('links', '#navigation a');
         navigationTest.should.have.property('currentClass', 'current');
-            });
+});
 
     it('#init', function() {
         'use strict';
