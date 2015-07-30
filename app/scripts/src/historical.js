@@ -19,8 +19,36 @@ var $ = require('jquery');
  */
 function Historical(list, links) {
     'use strict'
-        this.list = list
-        this.links = links
+        this.list = list;
+        this.links = links;
 }
+
+Historical.prototype = (function() {
+    return {
+        constructor: Historical,
+
+    /**
+     * Test for browser's understanding of the HTML5 History API,
+     * and if the browser does not understand, exit early. Otherwise
+     * set the initial history entry, and prepare to capture user's
+     * clicks in UI and Back and Forward buttons.
+     *
+     * @return {Boolean} Rturns true on passing test
+     */
+
+        init: function() {
+            Historical.historyEvent();
+        },
+
+        historyEvent: function() {
+        },
+
+        popEvent: function() {
+        },
+
+        windowPopState: function() {
+        }
+    }
+}());
 
 module.exports = Historical;
