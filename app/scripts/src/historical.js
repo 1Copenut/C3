@@ -37,7 +37,8 @@ Historical.prototype = (function() {
      */
 
         init: function() {
-            Historical.historyEvent();
+            if (!window) return false; 
+            this.historyEvent();
         },
 
         historyEvent: function() {

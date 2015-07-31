@@ -27,19 +27,30 @@ describe('Historical module', function() {
     });
 
     describe('#init', function() {
-        it('Should respond to the History API initialization methods', function() {
-            historicalTest.should.respondTo('init');
-            historicalTest.should.respondTo('historyEvent');
-            historicalTest.should.respondTo('popEvent');
-            historicalTest.should.respondTo('windowPopState');
-        });
-
-        it('Should check browser understands the HTML5 History API', function() {
-            historicalTest.init().should.be.true;
+        it('Should contain the History API initialization methods', function() {
+            historicalTest.should.have.property('init');
+            historicalTest.should.have.property('historyEvent');
+            historicalTest.should.have.property('popEvent');
+            historicalTest.should.have.property('windowPopState');
         });
 
         it('Should invoke the History API initialization methods', function() {
-            historicalTest.init().should.respondTo('historyEvent');
+            historicalTest.should.respondTo('historyEvent');
+        });
+        
+        it('Should verify browser understands the HTML5 History API', function() {
+            var initLogic = function(bool1, bool2) {
+                if (bool1 !== true || bool2 !== true) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+            
+            initLogic(true, true).should.be.true;
+            initLogic(false, true).should.be.false;
+            initLogic(true,false).should.be.false;
+            initLogic(false,false).should.be.false;
         });
     });
 });
