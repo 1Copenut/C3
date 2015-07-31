@@ -1,6 +1,7 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-var navigationTest = require('./navigation-test');
+var navigationTest = require('./navigation-test'),
+    historicalTest = require('./historical-test');
 
 describe('Smoke test', function() {
     'use strict';
@@ -12,70 +13,65 @@ describe('Smoke test', function() {
 });
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/test/scripts/src/main.js","/test/scripts/src")
-},{"./navigation-test":44,"_process":8,"buffer":4}],2:[function(require,module,exports){
+},{"./historical-test":44,"./navigation-test":45,"_process":8,"buffer":4}],2:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
-/*global define, $:true */
-define([], function () {
-	'use strict';
-	
-	var Historical = Historical || {};
-	
-	Historical = {
-		config: {
-			links: '#navigation a',
-			list: '#navigation li'
-		},
-		
-		/* Change the URL bar in modern browsers */
-		historyEvent: function (stateObj, title, url) {
-			history.pushState(stateObj, title, url);
-		},
+/**
+ *
+ * @class Historical
+ * @constructor
+ */
 
-		/* Popevent to reload previous content when the Back button is pressed */
-		popEvent: function () {
-			window.addEventListener('popstate', function(e) {
-				var targetLink = e.target.location.href,
-						shortened = targetLink.split('/'),
-						finalTarget = shortened[shortened.length-1];
-						
-				Historical.loadContent(finalTarget);
-				
-				Historical.popstateSwitchClass(finalTarget);
-			});
-		},
-		
-		/* Use the $.ajax() function to populate main content */
-		loadContent: function (targetLink) {
-			$.ajax({
-				url: 'templates/' + targetLink,
-				dataType: 'html',
-				cache: false,
-				success: function (data) {
-					$('#main').html(data);
-				}
-			});
-		},
-		
-		/* Remove the current class from all #navigation list items, and add it to the popstate href */
-		popstateSwitchClass: function(listTarget) {
-			var list = $(Historical.config.list),
-					navLinks = $(Historical.config.links);
-			
-			list.removeClass('current');
-			
-			navLinks.each(function (i) {
-				if ($(this).attr('href') === listTarget) {
-					$(this).parent().addClass('current');
-				}
-			});
-		}
-	};
-	
-	return Historical;
-});
+/* global window, require */
+var $ = require('jquery');
+
+/**
+ * Create a Historical object to capture links so their
+ * default behavior can be overriden with the HTML5
+ * pushState API. This is emulating a single-page
+ * application, with static HTML markup.
+ *
+ * @param {String} list Array of list items to become a jQuery object
+ * @param {String} links Array of links to apply Historical behavior
+ * @return {Object} Return the Historical module for instantiation
+ */
+function Historical(list, links) {
+    'use strict'
+        this.list = list;
+        this.links = links;
+}
+
+Historical.prototype = (function() {
+    return {
+        constructor: Historical,
+
+    /**
+     * Test for browser's understanding of the HTML5 History API,
+     * and if the browser does not understand, exit early. Otherwise
+     * set the initial history entry, and prepare to capture user's
+     * clicks in UI and Back and Forward buttons.
+     *
+     * @return {Boolean} Rturns true on passing test
+     */
+
+        init: function() {
+            this.historyEvent();
+        },
+
+        historyEvent: function() {
+        },
+
+        popEvent: function() {
+        },
+
+        windowPopState: function() {
+        }
+    }
+}());
+
+module.exports = Historical;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/app/scripts/src/historical.js","/app/scripts/src")
-},{"_process":8,"buffer":4}],3:[function(require,module,exports){
+},{"_process":8,"buffer":4,"jquery":43}],3:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 /**
  * The Navigation module handles all of the AJAX link
@@ -16262,6 +16258,57 @@ return jQuery;
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/node_modules/jquery/dist/jquery.js","/node_modules/jquery/dist")
 },{"_process":8,"buffer":4}],44:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
+/* global window, require, should */
+var should = require('chai').should();
+
+/**
+ *
+ * @class Historical Test
+ * @constructor
+ */
+
+describe('Historical module', function() {
+    var Historical, historicalTest;
+
+    before(function(done) {
+        'use strict';
+        Historical = require('../../../app/scripts/src/historical');
+        historicalTest = new Historical('#navigation li', '#navigation a');
+        done()
+    });
+    
+    describe('#constructor', function() {
+        it('Should create an instance of the Historical object', function() {
+            'use strict';
+            historicalTest.should.be.an.instanceof(Historical);
+            historicalTest.should.have.property('list', '#navigation li');
+            historicalTest.should.have.property('links', '#navigation a');
+        });
+    });
+
+    describe('#init', function() {
+        it('Should respond to the History API initialization methods', function() {
+            historicalTest.should.respondTo('init');
+            historicalTest.should.respondTo('historyEvent');
+            historicalTest.should.respondTo('popEvent');
+            historicalTest.should.respondTo('windowPopState');
+        });
+
+        it('Should check browser understands the HTML5 History API', function() {
+            historicalTest.init().should.be.true;
+        });
+
+        it('Should invoke the History API initialization methods', function() {
+            historicalTest.init().should.respondTo('historyEvent');
+        });
+    });
+});
+
+
+
+}).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],"/test/scripts/src/historical-test.js","/test/scripts/src")
+},{"../../../app/scripts/src/historical":2,"_process":8,"buffer":4,"chai":9}],45:[function(require,module,exports){
+(function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,__filename,__dirname){
 var should = require('chai').should();
 
 describe('Navigation module', function() {
@@ -16280,7 +16327,7 @@ describe('Navigation module', function() {
         navigationTest.should.have.property('list', '#navigation li');
         navigationTest.should.have.property('links', '#navigation a');
         navigationTest.should.have.property('currentClass', 'current');
-            });
+});
 
     it('#init', function() {
         'use strict';
