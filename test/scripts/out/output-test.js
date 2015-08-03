@@ -35,12 +35,13 @@ var $ = require('jquery');
  * @return {Object} Return the Historical module for instantiation
  */
 function Historical(list, links) {
-    'use strict'
-        this.list = list;
-        this.links = links;
+    'use strict';
+    this.list = list;
+    this.links = links;
 }
 
 Historical.prototype = (function() {
+    'use strict';
     return {
         constructor: Historical,
 
@@ -54,7 +55,9 @@ Historical.prototype = (function() {
      */
 
         init: function() {
-            if (!window) return false; 
+            if (!window) {
+                return false; 
+            }
             this.historyEvent();
         },
 
@@ -66,7 +69,7 @@ Historical.prototype = (function() {
 
         windowPopState: function() {
         }
-    }
+    };
 }());
 
 module.exports = Historical;
