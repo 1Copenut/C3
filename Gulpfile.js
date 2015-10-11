@@ -7,12 +7,9 @@ var gulp = require('gulp'),
     buffer = require('vinyl-buffer'),
     critical = require('critical'),
     del = require('del'),
-    mocha = require('mocha'),
     paths = require('vinyl-paths'),
     sequence = require('run-sequence'),
-    server = require('gulp-express'),
     source = require('vinyl-source-stream'),
-    stream = require('event-stream'),
     stylish = require('jshint-stylish'),
     
     $ = require('gulp-load-plugins')();
@@ -106,7 +103,7 @@ gulp.task('copy-js', function() {
         .pipe($.notify({
             onLast: true,
             message: 'Done copying /lib directory Javascript'
-        }))
+        }));
 });
 
 /* Minify and uglify the Javascript */
@@ -289,5 +286,5 @@ var handleError = function(err) {
     beep(2);
     console.log(err.toString());
     this.emit('end');
-}
+};
 
