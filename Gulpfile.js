@@ -1,31 +1,16 @@
 /* global require */
 var gulp = require('gulp'),
-    autoprefixer = require('gulp-autoprefixer'),
+    autoprefixer = require('autoprefixer'),
     beep = require('beepbeep'),
     browserify = require('browserify'),
     browsersync = require('browser-sync').create(),
     buffer = require('vinyl-buffer'),
     critical = require('critical'),
-    csso = require('gulp-csso'),
     del = require('del'),
-    htmlbuild = require('gulp-htmlbuild'),
-    jshint = require('gulp-jshint'),
-    mocha = require('mocha'),
-    mochaPhantom = require('gulp-mocha-phantomjs'),
-    nodemon = require('gulp-nodemon'),
     paths = require('vinyl-paths'),
-    rename = require('gulp-rename'),
-    sass = require('gulp-sass'),
-    sasslint = require('gulp-scss-lint'),
     sequence = require('run-sequence'),
-    server = require('gulp-express'),
     source = require('vinyl-source-stream'),
-    sourcemaps = require('gulp-sourcemaps'),
-    stream = require('event-stream'),
     stylish = require('jshint-stylish'),
-    uglify = require('gulp-uglify'),
-    uncss = require('gulp-uncss'),
-    watch = require('gulp-watch'),
     
     $ = require('gulp-load-plugins')();
 
@@ -54,12 +39,12 @@ gulp.task('build-remove', function() {
 gulp.task('build-index', function () {
 	'use strict';
     return gulp.src(['app/index.html'])
-        .pipe(htmlbuild({
-            css: htmlbuild.preprocess.css(function (block) {
+        .pipe($.htmlbuild({
+            css: $.htmlbuild.preprocess.css(function (block) {
                 block.end('styles/main.css');
             }),
 
-            js: htmlbuild.preprocess.js(function(block) {
+            js: $.htmlbuild.preprocess.js(function(block) {
                 block.end('scripts/output.js');
             }),
 
@@ -75,7 +60,7 @@ gulp.task('build-index', function () {
 gulp.task('copy-styles', function() {
 	'use strict';
     return gulp.src(['build/styles/main.css'])
-        .pipe(rename({
+        .pipe($.rename({
             basename: 'site'
         }))
         .pipe(gulp.dest('build/styles'));
@@ -85,14 +70,14 @@ gulp.task('copy-styles', function() {
 gulp.task('css-min', function() {
 	'use strict';
     return gulp.src('app/styles/css/main.css')
-        .pipe(uncss({
+        .pipe($.uncss({
             html: ['app/*.html']
         }))
-        .pipe(csso())
+        .pipe($.csso())
         .pipe(gulp.dest('build/styles'))
         .pipe($.notify({
             onLast: true,
-            message: 'Minifying and removing unused CSS'
+            message: 'Done removing unused CSS and minifying'
         }));
 });
 
@@ -117,8 +102,8 @@ gulp.task('copy-js', function() {
         .pipe(gulp.dest('build/lib'))
         .pipe($.notify({
             onLast: true,
-            message: 'Copying /lib directory Javascript'
-        }))
+            message: 'Done copying /lib directory Javascript'
+        }));
 });
 
 /* Minify and uglify the Javascript */
@@ -126,13 +111,13 @@ gulp.task('js-min', function() {
 	'use strict';
     return gulp.src('./app/scripts/out/output.js')
         .pipe(buffer())
-        .pipe(sourcemaps.init({
+        .pipe($.sourcemaps.init({
             loadMaps: true
         }))
-        .pipe(uglify())
-        .pipe(sourcemaps.write('./'))
+        .pipe($.uglify())
+        .pipe($.sourcemaps.write('./'))
         .pipe(gulp.dest('build/scripts'))
-        .pipe($.notify('Uglifying Javascript'));
+        .pipe($.notify('Done uglifying Javascript'));
 });
 
 
@@ -146,21 +131,21 @@ gulp.task('sass', ['sass-lint'], function() {
     
     return gulp.src('app/styles/sass/*.scss')
         .pipe($.plumber())
-        .pipe(sourcemaps.init())
-        .pipe(sass({
+        .pipe($.sourcemaps.init())
+        .pipe($.sass({
             errLogToConsole: true
         }))
-        .pipe(sourcemaps.write('./'))
+        .pipe($.sourcemaps.write('./'))
         .pipe(filter)
-        .pipe(autoprefixer({
-            browsers: ['last 2 versions']
-        }))
+        .pipe($.postcss([
+            autoprefixer({ browsers: ['last 3 versions'] })
+        ]))
         .pipe(filter.restore())
         .pipe(gulp.dest('app/styles/css'))
         .pipe(browsersync.stream({match: '**/*.css'}))
         .pipe($.notify({
             onLast: true,
-            message: 'Concatenating CSS'
+            message: 'Done concatenating CSS'
         }));
 });
 
@@ -168,11 +153,11 @@ gulp.task('sass', ['sass-lint'], function() {
 gulp.task('sass-lint', function() {
 	'use strict';
     return gulp.src('app/styles/sass/*.scss')
-        .pipe($.cached('sasslint'))
-        .pipe(sasslint())
+        .pipe($.cached('scssLint'))
+        .pipe($.scssLint())
         .pipe($.notify({
             onLast: true,
-            message: 'Linting SCSS files'
+            message: 'Done linting SCSS files'
         }));
 });
 
@@ -218,11 +203,11 @@ gulp.task('browserify-test', ['jshint'], function() {
 gulp.task('jshint', function() {
 	'use strict';
     return gulp.src('./app/scripts/src/*.js')
-        .pipe(jshint())
-        .pipe(jshint.reporter(stylish))
+        .pipe($.jshint())
+        .pipe($.jshint.reporter(stylish))
         .pipe($.notify({
             onLast: true,
-            message: 'Linting Javascript files'
+            message: 'Done linting Javascript files'
         }));
 });
 
@@ -262,7 +247,7 @@ gulp.task('browsersync-reload', function() {
 gulp.task('nodemon', function(cb) {
     var started = false;
 
-    return nodemon({ 
+    return $.nodemon({ 
         script: 'server/server.js'
     }).on('start', function() {
         if (!started) {
@@ -283,12 +268,12 @@ gulp.task('test', ['browserify-test'], function() {
         .pipe($.plumber({
             errorHandler: handleError
         }))
-        .pipe(mochaPhantom({
+        .pipe($.mochaPhantomjs({
             reporter: 'spec'
         }))
         .pipe($.notify({
             onLast: true,
-            message: "Testing JS with Mocha"
+            message: "Done testing JS with Mocha"
         }));
 });
 
@@ -301,4 +286,5 @@ var handleError = function(err) {
     beep(2);
     console.log(err.toString());
     this.emit('end');
-}
+};
+
