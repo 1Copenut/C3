@@ -16,6 +16,20 @@ var gulp = require('gulp'),
 
 
 /* ======================================== 
+ * Proper module sub-tasks 
+ * ======================================== */ 
+gulp.task('browsersync', require('./tasks/browsersync')(gulp, browsersync));
+gulp.task('browsersyncreload', require('./tasks/browsersyncreload')(gulp, browsersync));
+gulp.task('nodemon', require('./tasks/nodemon')(gulp, $));
+
+gulp.task('default', ['browsersync', 'nodemon'], function() {
+    gulp.watch('app/styles/sass/*.scss', ['sass']);
+    gulp.watch('app/**/*.html', ['browsersync-reload']);
+    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test', 'browsersync-reload']);
+    gulp.watch('test/scripts/src/*.js', ['test', 'browsersync-reload']);
+});
+
+/* ======================================== 
  * Build tasks 
  * ======================================== */ 
 /* Remove the build folder, minify CSS, copy index */
@@ -213,52 +227,6 @@ gulp.task('jshint', function() {
 
 
 /* ======================================== 
- * Server tasks
- * ======================================== */ 
-/* Start Express server instance */
-gulp.task('server', ['browsersync'], function() {
-	'use strict';
-    console.log('App is running on port 3000');
-});
-
-/* Start the Browser Sync task to automatically reload the page */
-gulp.task('browsersync', ['nodemon'], function() {
-    'use strict';
-
-    browsersync.init(null, {
-        proxy: 'http://localhost:3000',
-        files: ['app/**/*.html'],
-        browser: 'google chrome',
-        port: 7000
-    });
-
-    gulp.watch('app/*.html', ['browsersync-reload']);
-    gulp.watch('app/styles/sass/*.scss', ['sass']);
-    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test', 'browsersync-reload']);
-    gulp.watch('test/scripts/src/*.js', ['test', 'browsersync-reload']);
-});
-
-/* Make the Browsersync reload a Gulp task */
-gulp.task('browsersync-reload', function() {
-    browsersync.reload();
-});
-
-/* Fire up Express and Nodemon as our development server */
-gulp.task('nodemon', function(cb) {
-    var started = false;
-
-    return $.nodemon({ 
-        script: 'server/server.js'
-    }).on('start', function() {
-        if (!started) {
-            cb();
-            started = true;
-        }
-    });
-});
-
-
-/* ======================================== 
  * Test tasks
  * ======================================== */ 
 /* Run the Mocha Phantom test */
@@ -287,4 +255,3 @@ var handleError = function(err) {
     console.log(err.toString());
     this.emit('end');
 };
-
