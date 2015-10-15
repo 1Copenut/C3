@@ -14,19 +14,25 @@ var gulp = require('gulp'),
     
     $ = require('gulp-load-plugins')();
 
+/* ======================================== 
+ * Sass module sub-tasks 
+ * ======================================== */ 
+gulp.task('sasslint', require('./tasks/sasslint')(gulp, $));
+gulp.task('sassbuild', require('./tasks/sassbuild')(gulp, autoprefixer, browsersync, $));
+gulp.task('sasscombine', require('./tasks/sasscombine')(gulp, sequence));
 
 /* ======================================== 
- * Proper module sub-tasks 
+ * Server module sub-tasks 
  * ======================================== */ 
 gulp.task('browsersync', require('./tasks/browsersync')(gulp, browsersync));
 gulp.task('browsersyncreload', require('./tasks/browsersyncreload')(gulp, browsersync));
 gulp.task('nodemon', require('./tasks/nodemon')(gulp, $));
 
 gulp.task('default', ['browsersync', 'nodemon'], function() {
-    gulp.watch('app/styles/sass/*.scss', ['sass']);
-    gulp.watch('app/**/*.html', ['browsersync-reload']);
-    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test', 'browsersync-reload']);
-    gulp.watch('test/scripts/src/*.js', ['test', 'browsersync-reload']);
+    gulp.watch('app/styles/sass/**/*.scss', ['sasscombine']);
+    gulp.watch('app/**/*.html', ['browsersyncreload']);
+    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test', 'browsersyncreload']);
+    gulp.watch('test/scripts/src/*.js', ['test', 'browsersyncreload']);
 });
 
 /* ======================================== 
@@ -132,47 +138,6 @@ gulp.task('js-min', function() {
         .pipe($.sourcemaps.write('./'))
         .pipe(gulp.dest('build/scripts'))
         .pipe($.notify('Done uglifying Javascript'));
-});
-
-
-/* ======================================== 
- * Development tasks - CSS
- * ======================================== */ 
-/* Concatenate sass files, add source maps and Autoprefix CSS */
-gulp.task('sass', ['sass-lint'], function() {
-	'use strict';
-    var filter = $.filter(['*.css', '!*.map']);
-    
-    return gulp.src('app/styles/sass/*.scss')
-        .pipe($.plumber())
-        .pipe($.sourcemaps.init())
-        .pipe($.sass({
-            errLogToConsole: true
-        }))
-        .pipe($.sourcemaps.write('./'))
-        .pipe(filter)
-        .pipe($.postcss([
-            autoprefixer({ browsers: ['last 3 versions'] })
-        ]))
-        .pipe(filter.restore())
-        .pipe(gulp.dest('app/styles/css'))
-        .pipe(browsersync.stream({match: '**/*.css'}))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Done concatenating CSS'
-        }));
-});
-
-/* Style check the sass */
-gulp.task('sass-lint', function() {
-	'use strict';
-    return gulp.src('app/styles/sass/*.scss')
-        .pipe($.cached('scssLint'))
-        .pipe($.scssLint())
-        .pipe($.notify({
-            onLast: true,
-            message: 'Done linting SCSS files'
-        }));
 });
 
 
