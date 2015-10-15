@@ -28,6 +28,10 @@ gulp.task('sasscombine', require('./tasks/sasscombine')(gulp, sequence));
  * ======================================== */ 
 gulp.task('eslint', require('./tasks/eslint')(gulp, $));
 gulp.task('jsbuild', require('./tasks/jsbuild')(gulp, babelify, browserify, source, $));
+gulp.task('jstestbuild', require('./tasks/jstestbuild')(gulp, browserify, source, $));
+gulp.task('jstest', require('./tasks/jstest')(gulp, beep, $));
+gulp.task('jscombine', require('./tasks/jscombine')(gulp, sequence));
+gulp.task('jstestcombine', require('./tasks/jstestcombine')(gulp, sequence));
 
 
 /* ======================================== 
@@ -48,8 +52,8 @@ gulp.task('nodemon', require('./tasks/nodemon')(gulp, $));
 gulp.task('default', ['browsersync', 'nodemon'], function() {
     gulp.watch('app/styles/sass/**/*.scss', ['sasscombine']);
     gulp.watch('app/**/*.html', ['browsersyncreload']);
-    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test', 'browsersyncreload']);
-    gulp.watch('test/scripts/src/*.js', ['test', 'browsersyncreload']);
+    gulp.watch('app/scripts/src/*.js', ['jscombine']);
+    gulp.watch('test/scripts/src/*.js', ['jstestcombine']);
 });
 
 
@@ -158,71 +162,3 @@ gulp.task('js-min', function() {
         .pipe($.notify('Done uglifying Javascript'));
 });
 
-
-/* ======================================== 
- * Development tasks - Javascript
- * ======================================== */ 
-/* Assemble and lint JS files with Browserify */
-gulp.task('browserify-app', ['jshint'], function() {
-	'use strict';
-    var b = browserify({
-        entries: './app/scripts/src/main.js',
-        insertGlobals: true
-    });
-
-    return b.bundle()
-        .pipe(source('output.js'))
-        .pipe(gulp.dest('app/scripts/out'))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Concatenating Javascript application files'
-        }));
-});
-
-/* Assemble and lint JS test files with Browserify */
-gulp.task('browserify-test', ['jshint'], function() {
-	'use strict';
-    var b = browserify({
-        entries: './test/scripts/src/main.js',
-        insertGlobals: true
-    });
-
-    return b.bundle()
-        .pipe(source('output-test.js'))
-        .pipe(gulp.dest('test/scripts/out'))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Concatenating Javascript test files'
-        }));
-});
-
-
-/* ======================================== 
- * Test tasks
- * ======================================== */ 
-/* Run the Mocha Phantom test */
-gulp.task('test', ['browserify-test'], function() {
-    'use strict';
-    return gulp.src('test/index.html')
-        .pipe($.plumber({
-            errorHandler: handleError
-        }))
-        .pipe($.mochaPhantomjs({
-            reporter: 'spec'
-        }))
-        .pipe($.notify({
-            onLast: true,
-            message: "Done testing JS with Mocha"
-        }));
-});
-
-
-/* ======================================== 
- * Utility tasks
- * ======================================== */ 
-/* Print errors to the console and trigger a beep warning */
-var handleError = function(err) {
-    beep(2);
-    console.log(err.toString());
-    this.emit('end');
-};
