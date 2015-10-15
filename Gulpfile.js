@@ -21,6 +21,13 @@ gulp.task('sasslint', require('./tasks/sasslint')(gulp, $));
 gulp.task('sassbuild', require('./tasks/sassbuild')(gulp, autoprefixer, browsersync, $));
 gulp.task('sasscombine', require('./tasks/sasscombine')(gulp, sequence));
 
+
+/* ======================================== 
+ * Javascript module sub-tasks 
+ * ======================================== */ 
+gulp.task('eslint', require('./tasks/eslint')(gulp, $));
+
+
 /* ======================================== 
  * Server module sub-tasks 
  * ======================================== */ 
@@ -28,12 +35,21 @@ gulp.task('browsersync', require('./tasks/browsersync')(gulp, browsersync));
 gulp.task('browsersyncreload', require('./tasks/browsersyncreload')(gulp, browsersync));
 gulp.task('nodemon', require('./tasks/nodemon')(gulp, $));
 
+
+/* ======================================== 
+ * Default task
+ *
+ * Default task starts the server, listens
+ * for changed files, and syncs multiple
+ * windows' scroll position.
+ * ======================================== */ 
 gulp.task('default', ['browsersync', 'nodemon'], function() {
     gulp.watch('app/styles/sass/**/*.scss', ['sasscombine']);
     gulp.watch('app/**/*.html', ['browsersyncreload']);
     gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test', 'browsersyncreload']);
     gulp.watch('test/scripts/src/*.js', ['test', 'browsersyncreload']);
 });
+
 
 /* ======================================== 
  * Build tasks 
@@ -175,18 +191,6 @@ gulp.task('browserify-test', ['jshint'], function() {
         .pipe($.notify({
             onLast: true,
             message: 'Concatenating Javascript test files'
-        }));
-});
-
-/* Run the JSHint on all files to ensure proper coding */
-gulp.task('jshint', function() {
-	'use strict';
-    return gulp.src('./app/scripts/src/*.js')
-        .pipe($.jshint())
-        .pipe($.jshint.reporter(stylish))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Done linting Javascript files'
         }));
 });
 
