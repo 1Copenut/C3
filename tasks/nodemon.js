@@ -1,3 +1,4 @@
+/* global module */
 module.exports = function(gulp, $) {
     return function(cb) {
         'use strict';
@@ -11,6 +12,6 @@ module.exports = function(gulp, $) {
                 started = true;
             }
         });
-    }
+    };
 };
 

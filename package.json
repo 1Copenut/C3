@@ -7,6 +7,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.0.2",
+    "babelify": "^6.3.0",
     "beepbeep": "^1.2.0",
     "benv": "^1.1.0",
     "browser-sync": "^2.8.0",

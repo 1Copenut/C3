@@ -1,3 +1,4 @@
+/* global module */
 module.exports = function(gulp, $) {
     return function() {
         'use strict';
@@ -8,5 +9,6 @@ module.exports = function(gulp, $) {
                 onLast: true,
                 message: 'Done linting ES6 Javascript files'
             }));
-    }
+    };
 };
+

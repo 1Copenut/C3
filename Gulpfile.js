@@ -2,6 +2,7 @@
 var gulp = require('gulp'),
     autoprefixer = require('autoprefixer'),
     beep = require('beepbeep'),
+    babelify = require('babelify'),
     browserify = require('browserify'),
     browsersync = require('browser-sync').create(),
     buffer = require('vinyl-buffer'),
@@ -26,6 +27,7 @@ gulp.task('sasscombine', require('./tasks/sasscombine')(gulp, sequence));
  * Javascript module sub-tasks 
  * ======================================== */ 
 gulp.task('eslint', require('./tasks/eslint')(gulp, $));
+gulp.task('jsbuild', require('./tasks/jsbuild')(gulp, babelify, browserify, source, $));
 
 
 /* ======================================== 

@@ -1,3 +1,4 @@
+/* global module */
 module.exports = function(gulp, browsersync) {
     return function() {
         'use strict';
@@ -7,6 +8,6 @@ module.exports = function(gulp, browsersync) {
             browser: 'google chrome',
             port: 7000
         });
-    }
+    };
 };
 

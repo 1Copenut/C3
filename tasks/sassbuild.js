@@ -1,3 +1,4 @@
+/* global module */
 module.exports = function(gulp, autoprefixer, browsersync, $) {
     return function() {
         'use strict';
@@ -21,5 +22,6 @@ module.exports = function(gulp, autoprefixer, browsersync, $) {
                 onLast: true,
                 message: 'Done concatenating CSS'
             }));
-    }
+    };
 };
+
