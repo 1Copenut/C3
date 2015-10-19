@@ -2,6 +2,7 @@
 module.exports = function(gulp, autoprefixer, $) {
     return function() {
         'use strict';
+
         var filter = $.filter(['*.css', '!*.map']);
         var stream =  gulp.src('app/styles/sass/*.scss')
             .pipe($.plumber())

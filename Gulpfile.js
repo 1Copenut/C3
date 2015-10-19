@@ -40,42 +40,22 @@ gulp.task('utilHandleErrors', require('./tasks/utilities/utilHandleErrors')(gulp
 /* ======================================== 
  * Sass module sub-tasks 
  * ======================================== */ 
-gulp.task('sass', function() {
-    'use strict'; 
-    sequence(
-        'sassLint',
-        'sassBuild'
-    );
-});
+gulp.task('sass', require('./tasks/sass/sass-default')(gulp, sequence));
 
 gulp.task('sassLint', require('./tasks/sass/sassLint')(gulp, $));
 gulp.task('sassBuild', require('./tasks/sass/sassBuild')(gulp, autoprefixer, $));
 
+
 /* ======================================== 
  * Javascript module sub-tasks 
  * ======================================== */ 
-gulp.task('js', function() {
-    'use strict';
-    sequence(
-        'esLint',
-        'jsBuild',
-        'jsTestBuild',
-        'jsTest'
-    );
-});
-
-gulp.task('js-test', function() {
-    sequence(
-        'esLint',
-        'jsTestBuild',
-        'jsTest'
-    );
-});
+gulp.task('js', require('./tasks/javascript/js-default')(gulp, sequence));
+gulp.task('jsTest', require('./tasks/javascript/jsTest-default')(gulp, sequence));
 
 gulp.task('esLint', require('./tasks/javascript/esLint')(gulp, $));
 gulp.task('jsBuild', require('./tasks/javascript/jsBuild')(gulp, babelify, browserify, source, $));
 gulp.task('jsTestBuild', require('./tasks/javascript/jsTestBuild')(gulp, browserify, source, $));
-gulp.task('jsTest', require('./tasks/javascript/jsTest')(gulp, beep, $));
+gulp.task('jsTestRun', require('./tasks/javascript/jsTest')(gulp, beep, $));
 
 
 /* ======================================== 
