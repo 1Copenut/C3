@@ -2,11 +2,15 @@
 module.exports = function(gulp, $) {
     return function() {
         'use strict';
-        gulp.src(['app/lib/**/*'])
+
+        var stream = gulp.src(['app/lib/**/*'])
             .pipe(gulp.dest('dist/lib'))
             .pipe($.notify({
-                message: 'Copying Javascript libs...'
+                onLast: true,
+                message: 'Done copying JS libs'
             }));
+
+        return stream;
     };
 };
 

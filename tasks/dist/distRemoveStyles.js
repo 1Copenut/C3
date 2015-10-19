@@ -2,7 +2,8 @@
 module.exports = function(gulp, $) {
     return function() {
         'use strict';
-        gulp.src('app/styles/css/main.css')
+
+        var stream = gulp.src('app/styles/css/main.css')
             .pipe($.uncss({
                 html: ['app/*.html']
             }))
@@ -12,6 +13,8 @@ module.exports = function(gulp, $) {
                 onLast: true,
                 message: 'Done removing unused CSS and minifying'
             }));
+
+        return stream;
     };
 };
 

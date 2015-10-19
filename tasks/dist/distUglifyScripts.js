@@ -2,7 +2,8 @@
 module.exports = function(gulp, buffer, $) {
     return function() {
         'use strict';
-        gulp.src('app/scripts/out/output.js')
+
+        var stream = gulp.src('app/scripts/out/output.js')
             .pipe(buffer())
             .pipe($.sourcemaps.init())
             .pipe($.uglify())
@@ -12,6 +13,8 @@ module.exports = function(gulp, buffer, $) {
                 onLast: true,
                 message: 'Done uglifying Javascript'
             }));
+
+        return stream;
     };
 };
 

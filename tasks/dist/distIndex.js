@@ -2,7 +2,8 @@
 module.exports = function(gulp, $) {
     return function() {
         'use strict';
-        gulp.src(['app/index.html'])
+
+        var stream = gulp.src(['app/**.html'])
             .pipe($.htmlbuild({
                 css: $.htmlbuild.preprocess.css(function (block) {
                     block.end('styles/main.css');
@@ -17,7 +18,13 @@ module.exports = function(gulp, $) {
                 }
             }))
             .pipe(gulp.dest('dist'))
-            .pipe($.notify('Copying index.html'));
+            .pipe($.notify({
+                onLast: true,
+                message: 'Done copying HTML files'
+            }));
+
+        return stream;
     };
 };
+
 
