@@ -11,7 +11,10 @@ var gulp = require('gulp'),
     paths = require('vinyl-paths'),
     sequence = require('run-sequence'),
     source = require('vinyl-source-stream'),
-    stylish = require('jshint-stylish'),
+
+    /* Sass tasks */
+    sassLint = require('./tasks/sass/sassLint'),
+    sassBuild = require('./tasks/sass/sassBuild'),
     
     $ = require('gulp-load-plugins')();
 
@@ -19,7 +22,7 @@ var gulp = require('gulp'),
  * Default task
  * ======================================== */ 
 gulp.task('default', ['browsersync', 'nodemon'], function() {
-    gulp.watch('app/styles/sass/**/*.scss', ['sassCombine']);
+    gulp.watch('app/styles/sass/**/*.scss', ['sass']);
     gulp.watch('app/**/*.html', ['browsersyncReload']);
     gulp.watch('app/scripts/src/*.js', ['jsCombine']);
     gulp.watch('test/scripts/src/*.js', ['jsTestCombine']);
@@ -41,10 +44,16 @@ gulp.task('utilHandleErrors', require('./tasks/utilities/utilHandleErrors')(gulp
 /* ======================================== 
  * Sass module sub-tasks 
  * ======================================== */ 
-gulp.task('sassLint', require('./tasks/sass/sassLint')(gulp, $));
-gulp.task('sassBuild', require('./tasks/sass/sassBuild')(gulp, autoprefixer, browsersync, $));
-gulp.task('sassCombine', require('./tasks/sass/sassCombine')(gulp, sequence));
+gulp.task('sass', function() {
+    'use strict'; 
+    sequence(
+        'sassLint',
+        'sassBuild'
+    );
+});
 
+gulp.task('sassLint', sassLint);
+gulp.task('sassBuild', sassBuild);
 
 /* ======================================== 
  * Javascript module sub-tasks 
