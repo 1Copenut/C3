@@ -64,6 +64,14 @@ gulp.task('js', function() {
     );
 });
 
+gulp.task('js-test', function() {
+    sequence(
+        'esLint',
+        'jsTestBuild',
+        'jsTest'
+    );
+});
+
 gulp.task('esLint', require('./tasks/javascript/esLint')(gulp, $));
 gulp.task('jsBuild', require('./tasks/javascript/jsBuild')(gulp, babelify, browserify, source, $));
 gulp.task('jsTestBuild', require('./tasks/javascript/jsTestBuild')(gulp, browserify, source, $));
