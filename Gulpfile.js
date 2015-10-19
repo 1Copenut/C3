@@ -16,46 +16,47 @@ var gulp = require('gulp'),
     $ = require('gulp-load-plugins')();
 
 /* ======================================== 
+ * Default task
+ * ======================================== */ 
+gulp.task('default', ['browsersync', 'nodemon'], function() {
+    gulp.watch('app/styles/sass/**/*.scss', ['sassCombine']);
+    gulp.watch('app/**/*.html', ['browsersyncReload']);
+    gulp.watch('app/scripts/src/*.js', ['jsCombine']);
+    gulp.watch('test/scripts/src/*.js', ['jsTestCombine']);
+});
+
+
+/* ======================================== 
  * Sass module sub-tasks 
  * ======================================== */ 
-gulp.task('sasslint', require('./tasks/sasslint')(gulp, $));
-gulp.task('sassbuild', require('./tasks/sassbuild')(gulp, autoprefixer, browsersync, $));
-gulp.task('sasscombine', require('./tasks/sasscombine')(gulp, sequence));
+gulp.task('sassLint', require('./tasks/sass/sassLint')(gulp, $));
+gulp.task('sassBuild', require('./tasks/sass/sassBuild')(gulp, autoprefixer, browsersync, $));
+gulp.task('sassCombine', require('./tasks/sass/sassCombine')(gulp, sequence));
 
 
 /* ======================================== 
  * Javascript module sub-tasks 
  * ======================================== */ 
-gulp.task('eslint', require('./tasks/eslint')(gulp, $));
-gulp.task('jsbuild', require('./tasks/jsbuild')(gulp, babelify, browserify, source, $));
-gulp.task('jstestbuild', require('./tasks/jstestbuild')(gulp, browserify, source, $));
-gulp.task('jstest', require('./tasks/jstest')(gulp, beep, $));
-gulp.task('jscombine', require('./tasks/jscombine')(gulp, sequence));
-gulp.task('jstestcombine', require('./tasks/jstestcombine')(gulp, sequence));
+gulp.task('esLint', require('./tasks/javascript/esLint')(gulp, $));
+gulp.task('jsBuild', require('./tasks/javascript/jsBuild')(gulp, babelify, browserify, source, $));
+gulp.task('jsTestBuild', require('./tasks/javascript/jsTestBuild')(gulp, browserify, source, $));
+gulp.task('jsTest', require('./tasks/javascript/jsTest')(gulp, beep, $));
+gulp.task('jsCombine', require('./tasks/javascript/jsCombine')(gulp, sequence));
+gulp.task('jsTestCombine', require('./tasks/javascript/jsTestCombine')(gulp, sequence));
 
 
 /* ======================================== 
  * Server module sub-tasks 
  * ======================================== */ 
-gulp.task('browsersync', require('./tasks/browsersync')(gulp, browsersync));
-gulp.task('browsersyncreload', require('./tasks/browsersyncreload')(gulp, browsersync));
-gulp.task('nodemon', require('./tasks/nodemon')(gulp, $));
+gulp.task('browsersync', require('./tasks/server/browsersync')(gulp, browsersync));
+gulp.task('browsersyncreload', require('./tasks/server/browsersyncReload')(gulp, browsersync));
+gulp.task('nodemon', require('./tasks/server/nodemon')(gulp, $));
 
 
 /* ======================================== 
- * Default task
- *
- * Default task starts the server, listens
- * for changed files, and syncs multiple
- * windows' scroll position.
+ * Build module sub-tasks 
  * ======================================== */ 
-gulp.task('default', ['browsersync', 'nodemon'], function() {
-    gulp.watch('app/styles/sass/**/*.scss', ['sasscombine']);
-    gulp.watch('app/**/*.html', ['browsersyncreload']);
-    gulp.watch('app/scripts/src/*.js', ['jscombine']);
-    gulp.watch('test/scripts/src/*.js', ['jstestcombine']);
-});
-
+gulp.task('destRemove', require('./tasks/dest/destRemove.js')(gulp, del, paths, $));
 
 /* ======================================== 
  * Build tasks 
@@ -67,14 +68,6 @@ gulp.task('build', function() {
         'build-remove',
         ['build-index', 'css-min', 'js-min', 'copy-js', 'critical']
     );
-});
-
-/* Remove the build folder each time we rebuild */
-gulp.task('build-remove', function() {
-	'use strict';
-    return gulp.src('build/')
-        .pipe($.notify('Removing the build directory'))
-        .pipe(paths(del));
 });
 
 /* Create the index.html file in /build */

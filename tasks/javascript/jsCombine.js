@@ -2,7 +2,7 @@
 module.exports = function(gulp, sequence) {
     return function() {
         'use strict';
-        sequence('jstestbuild', 'jstest', 'browsersyncreload');
+        sequence('esLint', 'jsBuild', 'jsTestBuild', 'jsTest', 'browsersyncReload');
     };
 };
 
