@@ -38,7 +38,6 @@ gulp.task('build', require('./tasks/dist/dist-default.js')(gulp, sequence));
 gulp.task('distRemove', require('./tasks/dist/distRemove.js')(gulp, del, paths, $));
 gulp.task('distIndex', require('./tasks/dist/distIndex.js')(gulp, $));
 gulp.task('distRemoveStyles', require('./tasks/dist/distRemoveStyles')(gulp, $));
-gulp.task('distRenameStyles', require('./tasks/dist/distRenameStyles')(gulp, $));
 gulp.task('distCritical', require('./tasks/dist/distCritical')(gulp, critical, $));
 gulp.task('distCopyScripts', require('./tasks/dist/distCopyScripts')(gulp, $));
 gulp.task('distUglifyScripts', require('./tasks/dist/distUglifyScripts')(gulp, buffer, $));
