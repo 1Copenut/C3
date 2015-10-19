@@ -4,7 +4,8 @@ var handleError = require('../utilities/utilHandleErrors');
 module.exports = function(gulp, beep, $) {
     return function() {
         'use strict';
-        gulp.src('test/index.html')
+
+        var stream = gulp.src('test/index.html')
             .pipe($.plumber({
                 errorHandler: handleError
             }))
@@ -15,5 +16,7 @@ module.exports = function(gulp, beep, $) {
                 onLast: true,
                 message: "Done testing JS with Mocha"
             }));
+            
+        return stream;
     };
 };

@@ -11,10 +11,6 @@ var gulp = require('gulp'),
     paths = require('vinyl-paths'),
     sequence = require('run-sequence'),
     source = require('vinyl-source-stream'),
-
-    /* Sass tasks */
-    sassLint = require('./tasks/sass/sassLint'),
-    sassBuild = require('./tasks/sass/sassBuild'),
     
     $ = require('gulp-load-plugins')();
 
@@ -52,18 +48,26 @@ gulp.task('sass', function() {
     );
 });
 
-gulp.task('sassLint', sassLint);
-gulp.task('sassBuild', sassBuild);
+gulp.task('sassLint', require('./tasks/sass/sassLint')(gulp, $));
+gulp.task('sassBuild', require('./tasks/sass/sassBuild')(gulp, autoprefixer, $));
 
 /* ======================================== 
  * Javascript module sub-tasks 
  * ======================================== */ 
+gulp.task('js', function() {
+    'use strict';
+    sequence(
+        'esLint',
+        'jsBuild',
+        'jsTestBuild',
+        'jsTest'
+    );
+});
+
 gulp.task('esLint', require('./tasks/javascript/esLint')(gulp, $));
 gulp.task('jsBuild', require('./tasks/javascript/jsBuild')(gulp, babelify, browserify, source, $));
 gulp.task('jsTestBuild', require('./tasks/javascript/jsTestBuild')(gulp, browserify, source, $));
 gulp.task('jsTest', require('./tasks/javascript/jsTest')(gulp, beep, $));
-gulp.task('jsCombine', require('./tasks/javascript/jsCombine')(gulp, sequence));
-gulp.task('jsTestCombine', require('./tasks/javascript/jsTestCombine')(gulp, sequence));
 
 
 /* ======================================== 

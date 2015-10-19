@@ -1,15 +1,16 @@
-/* global module, require */
-var gulp = require('gulp'),
-    $ = require('gulp-load-plugins')();
+/* global module */
+module.exports = function(gulp, $) {
+    return function() {
+        'use strict';
+        var stream = gulp.src('app/styles/sass/*.scss')
+            .pipe($.cached('scssLint'))
+            .pipe($.scssLint())
+            .pipe($.notify({
+                onLast: true,
+                message: 'Done linting SCSS files'
+            }));
 
-module.exports = function() {
-    'use strict';
-    return gulp.src('app/styles/sass/*.scss')
-        .pipe($.cached('scssLint'))
-        .pipe($.scssLint())
-        .pipe($.notify({
-            onLast: true,
-            message: 'Done linting SCSS files'
-        }));
+        return stream;
+    };
 };
 
