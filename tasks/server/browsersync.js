@@ -1,13 +1,16 @@
 /* global module */
-module.exports = function(gulp, browsersync) {
+module.exports = function(gulp, browsersync, reload) {
     return function() {
         'use strict';
-        browsersync.init(null, {
+        
+        var stream = browsersync.init(null, {
             proxy: 'http://localhost:3000',
             files: ['app/**/*.html'],
             browser: 'google chrome',
             port: 7000
         });
+
+        return stream;
     };
 };
 

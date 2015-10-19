@@ -9,6 +9,7 @@ var gulp = require('gulp'),
     critical = require('critical'),
     del = require('del'),
     paths = require('vinyl-paths'),
+    reload = browsersync.reload,
     sequence = require('run-sequence'),
     source = require('vinyl-source-stream'),
     
@@ -17,33 +18,20 @@ var gulp = require('gulp'),
 /* ======================================== 
  * Default task
  * ======================================== */ 
-gulp.task('default', ['browsersync', 'nodemon'], function() {
+gulp.task('default', ['nodemon', 'browsersync'], function() {
     gulp.watch('app/styles/sass/**/*.scss', ['sass']);
-    gulp.watch('app/**/*.html', ['browsersyncReload']);
-    gulp.watch('app/scripts/src/*.js', ['jsCombine']);
-    gulp.watch('test/scripts/src/*.js', ['jsTestCombine']);
+    gulp.watch('app/**/*.html', ['reload']);
+    gulp.watch('app/scripts/src/*.js', ['js']);
+    gulp.watch('test/scripts/src/*.js', ['jsTest']);
 });
-
-
-/* ======================================== 
- * Build dist 
- * ======================================== */ 
-
-
-
-/* ======================================== 
- * Utility module sub-tasks 
- * ======================================== */ 
-gulp.task('utilHandleErrors', require('./tasks/utilities/utilHandleErrors')(gulp, beep, $));
 
 
 /* ======================================== 
  * Sass module sub-tasks 
  * ======================================== */ 
-gulp.task('sass', require('./tasks/sass/sass-default')(gulp, sequence));
-
-gulp.task('sassLint', require('./tasks/sass/sassLint')(gulp, $));
-gulp.task('sassBuild', require('./tasks/sass/sassBuild')(gulp, autoprefixer, $));
+gulp.task('sass', require('./tasks/sass/sass-default')(gulp, sequence, $));
+    gulp.task('sassLint', require('./tasks/sass/sassLint')(gulp, $));
+    gulp.task('sassBuild', require('./tasks/sass/sassBuild')(gulp, autoprefixer, browsersync, reload, $));
 
 
 /* ======================================== 
@@ -51,19 +39,17 @@ gulp.task('sassBuild', require('./tasks/sass/sassBuild')(gulp, autoprefixer, $))
  * ======================================== */ 
 gulp.task('js', require('./tasks/javascript/js-default')(gulp, sequence));
 gulp.task('jsTest', require('./tasks/javascript/jsTest-default')(gulp, sequence));
-
-gulp.task('esLint', require('./tasks/javascript/esLint')(gulp, $));
-gulp.task('jsBuild', require('./tasks/javascript/jsBuild')(gulp, babelify, browserify, source, $));
-gulp.task('jsTestBuild', require('./tasks/javascript/jsTestBuild')(gulp, browserify, source, $));
-gulp.task('jsTestRun', require('./tasks/javascript/jsTest')(gulp, beep, $));
+    gulp.task('esLint', require('./tasks/javascript/esLint')(gulp, $));
+    gulp.task('jsBuild', require('./tasks/javascript/jsBuild')(gulp, babelify, browserify, source, $));
+    gulp.task('jsTestBuild', require('./tasks/javascript/jsTestBuild')(gulp, browserify, source, $));
+    gulp.task('jsTestRun', require('./tasks/javascript/jsTest')(gulp, beep, $));
 
 
 /* ======================================== 
  * Server module sub-tasks 
  * ======================================== */ 
-gulp.task('browsersync', require('./tasks/server/browsersync')(gulp, browsersync));
-gulp.task('browsersyncReload', require('./tasks/server/browsersyncReload')(gulp, browsersync));
 gulp.task('nodemon', require('./tasks/server/nodemon')(gulp, $));
+gulp.task('browsersync', require('./tasks/server/browsersync')(gulp, browsersync, reload));
 
 
 /* ======================================== 
@@ -76,4 +62,10 @@ gulp.task('distRenameStyles', require('./tasks/dist/distRenameStyles')(gulp, $))
 gulp.task('distCritical', require('./tasks/dist/distCritical')(gulp, critical, $));
 gulp.task('distCopyScripts', require('./tasks/dist/distCopyScripts')(gulp, $));
 gulp.task('distUglifyScripts', require('./tasks/dist/distUglifyScripts')(gulp, buffer, $));
+
+
+/* ======================================== 
+ * Utility module sub-tasks 
+ * ======================================== */ 
+gulp.task('utilHandleErrors', require('./tasks/utilities/utilHandleErrors')(gulp, beep, $));
 

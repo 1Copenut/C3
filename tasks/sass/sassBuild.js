@@ -1,10 +1,10 @@
 /* global module */
-module.exports = function(gulp, autoprefixer, $) {
+module.exports = function(gulp, autoprefixer, browsersync, reload, $) {
     return function() {
         'use strict';
 
         var filter = $.filter(['*.css', '!*.map']);
-        var stream =  gulp.src('app/styles/sass/*.scss')
+        var stream = gulp.src('app/styles/sass/*.scss')
             .pipe($.plumber())
             .pipe($.sourcemaps.init())
             .pipe($.sass({
@@ -17,6 +17,7 @@ module.exports = function(gulp, autoprefixer, $) {
             ]))
             .pipe(filter.restore())
             .pipe(gulp.dest('app/styles/css'))
+            .pipe(reload({stream: true}))
             .pipe($.notify({
                 onLast: true,
                 message: 'Done concatenating CSS'

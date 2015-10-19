@@ -1,5 +1,5 @@
 /* global module */
-module.exports = function(gulp, sequence) {
+module.exports = function(gulp, sequence, $) {
     return function() {
         'use strict';
 
