@@ -27,6 +27,18 @@ gulp.task('default', ['browsersync', 'nodemon'], function() {
 
 
 /* ======================================== 
+ * Build dist 
+ * ======================================== */ 
+
+
+
+/* ======================================== 
+ * Utility module sub-tasks 
+ * ======================================== */ 
+gulp.task('utilHandleErrors', require('./tasks/utilities/utilHandleErrors')(gulp, beep, $));
+
+
+/* ======================================== 
  * Sass module sub-tasks 
  * ======================================== */ 
 gulp.task('sassLint', require('./tasks/sass/sassLint')(gulp, $));
@@ -49,109 +61,18 @@ gulp.task('jsTestCombine', require('./tasks/javascript/jsTestCombine')(gulp, seq
  * Server module sub-tasks 
  * ======================================== */ 
 gulp.task('browsersync', require('./tasks/server/browsersync')(gulp, browsersync));
-gulp.task('browsersyncreload', require('./tasks/server/browsersyncReload')(gulp, browsersync));
+gulp.task('browsersyncReload', require('./tasks/server/browsersyncReload')(gulp, browsersync));
 gulp.task('nodemon', require('./tasks/server/nodemon')(gulp, $));
 
 
 /* ======================================== 
  * Build module sub-tasks 
  * ======================================== */ 
-gulp.task('destRemove', require('./tasks/dest/destRemove.js')(gulp, del, paths, $));
-
-/* ======================================== 
- * Build tasks 
- * ======================================== */ 
-/* Remove the build folder, minify CSS, copy index */
-gulp.task('build', function() {
-	'use strict';
-    sequence(
-        'build-remove',
-        ['build-index', 'css-min', 'js-min', 'copy-js', 'critical']
-    );
-});
-
-/* Create the index.html file in /build */
-gulp.task('build-index', function () {
-	'use strict';
-    return gulp.src(['app/index.html'])
-        .pipe($.htmlbuild({
-            css: $.htmlbuild.preprocess.css(function (block) {
-                block.end('styles/main.css');
-            }),
-
-            js: $.htmlbuild.preprocess.js(function(block) {
-                block.end('scripts/output.js');
-            }),
-
-            remove: function(block) {
-                block.end();
-            }
-        }))
-        .pipe(gulp.dest('build'))
-        .pipe($.notify('Copying index.html'));
-});
-
-/* Copy the stylesheet so it can be minified */
-gulp.task('copy-styles', function() {
-	'use strict';
-    return gulp.src(['build/styles/main.css'])
-        .pipe($.rename({
-            basename: 'site'
-        }))
-        .pipe(gulp.dest('build/styles'));
-});
-
-/* Minify and remove unused CSS */
-gulp.task('css-min', function() {
-	'use strict';
-    return gulp.src('app/styles/css/main.css')
-        .pipe($.uncss({
-            html: ['app/*.html']
-        }))
-        .pipe($.csso())
-        .pipe(gulp.dest('build/styles'))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Done removing unused CSS and minifying'
-        }));
-});
-
-/* Create the critical inline css in index.html */
-gulp.task('critical', ['build-index','css-min', 'copy-styles'], function() {
-	'use strict';
-    critical.generateInline({
-        base: 'build/',
-        src: 'index.html',
-        styleTarget: 'styles/main.css',
-        htmlTarget: 'index.html',
-        width: 960,
-        height: 768,
-        minify: true
-    });
-}, function(err){ if (err) {console.log(err);}});
-
-/* Copy the lib directory from app to build */
-gulp.task('copy-js', function() {
-    'use strict';
-    return gulp.src(['app/lib/**/*.js'])
-        .pipe(gulp.dest('build/lib'))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Done copying /lib directory Javascript'
-        }));
-});
-
-/* Minify and uglify the Javascript */
-gulp.task('js-min', function() {
-	'use strict';
-    return gulp.src('./app/scripts/out/output.js')
-        .pipe(buffer())
-        .pipe($.sourcemaps.init({
-            loadMaps: true
-        }))
-        .pipe($.uglify())
-        .pipe($.sourcemaps.write('./'))
-        .pipe(gulp.dest('build/scripts'))
-        .pipe($.notify('Done uglifying Javascript'));
-});
+gulp.task('distRemove', require('./tasks/dist/distRemove.js')(gulp, del, paths, $));
+gulp.task('distIndex', require('./tasks/dist/distIndex.js')(gulp, $));
+gulp.task('distRemoveStyles', require('./tasks/dist/distRemoveStyles')(gulp, $));
+gulp.task('distRenameStyles', require('./tasks/dist/distRenameStyles')(gulp, $));
+gulp.task('distCritical', require('./tasks/dist/distCritical')(gulp, critical, $));
+gulp.task('distCopyScripts', require('./tasks/dist/distCopyScripts')(gulp, $));
+gulp.task('distUglifyScripts', require('./tasks/dist/distUglifyScripts')(gulp, buffer, $));
 
