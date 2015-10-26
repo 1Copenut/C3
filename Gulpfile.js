@@ -1,304 +1,76 @@
 /* global require */
 var gulp = require('gulp'),
-    autoprefixer = require('gulp-autoprefixer'),
+    autoprefixer = require('autoprefixer'),
     beep = require('beepbeep'),
+    babelify = require('babelify'),
     browserify = require('browserify'),
     browsersync = require('browser-sync').create(),
     buffer = require('vinyl-buffer'),
-    critical = require('critical'),
-    csso = require('gulp-csso'),
+    critical = require('critical').stream,
     del = require('del'),
-    htmlbuild = require('gulp-htmlbuild'),
-    jshint = require('gulp-jshint'),
-    mocha = require('mocha'),
-    mochaPhantom = require('gulp-mocha-phantomjs'),
-    nodemon = require('gulp-nodemon'),
     paths = require('vinyl-paths'),
-    rename = require('gulp-rename'),
-    sass = require('gulp-sass'),
-    sasslint = require('gulp-scss-lint'),
+    reload = browsersync.reload,
     sequence = require('run-sequence'),
-    server = require('gulp-express'),
     source = require('vinyl-source-stream'),
-    sourcemaps = require('gulp-sourcemaps'),
-    stream = require('event-stream'),
-    stylish = require('jshint-stylish'),
-    uglify = require('gulp-uglify'),
-    uncss = require('gulp-uncss'),
-    watch = require('gulp-watch'),
     
     $ = require('gulp-load-plugins')();
 
-
 /* ======================================== 
- * Build tasks 
+ * Default task
  * ======================================== */ 
-/* Remove the build folder, minify CSS, copy index */
-gulp.task('build', function() {
-	'use strict';
-    sequence(
-        'build-remove',
-        ['build-index', 'css-min', 'js-min', 'copy-js', 'critical']
-    );
-});
-
-/* Remove the build folder each time we rebuild */
-gulp.task('build-remove', function() {
-	'use strict';
-    return gulp.src('build/')
-        .pipe($.notify('Removing the build directory'))
-        .pipe(paths(del));
-});
-
-/* Create the index.html file in /build */
-gulp.task('build-index', function () {
-	'use strict';
-    return gulp.src(['app/index.html'])
-        .pipe(htmlbuild({
-            css: htmlbuild.preprocess.css(function (block) {
-                block.end('styles/main.css');
-            }),
-
-            js: htmlbuild.preprocess.js(function(block) {
-                block.end('scripts/output.js');
-            }),
-
-            remove: function(block) {
-                block.end();
-            }
-        }))
-        .pipe(gulp.dest('build'))
-        .pipe($.notify('Copying index.html'));
-});
-
-/* Copy the stylesheet so it can be minified */
-gulp.task('copy-styles', function() {
-	'use strict';
-    return gulp.src(['build/styles/main.css'])
-        .pipe(rename({
-            basename: 'site'
-        }))
-        .pipe(gulp.dest('build/styles'));
-});
-
-/* Minify and remove unused CSS */
-gulp.task('css-min', function() {
-	'use strict';
-    return gulp.src('app/styles/css/main.css')
-        .pipe(uncss({
-            html: ['app/*.html']
-        }))
-        .pipe(csso())
-        .pipe(gulp.dest('build/styles'))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Minifying and removing unused CSS'
-        }));
-});
-
-/* Create the critical inline css in index.html */
-gulp.task('critical', ['build-index','css-min', 'copy-styles'], function() {
-	'use strict';
-    critical.generateInline({
-        base: 'build/',
-        src: 'index.html',
-        styleTarget: 'styles/main.css',
-        htmlTarget: 'index.html',
-        width: 960,
-        height: 768,
-        minify: true
-    });
-}, function(err){ if (err) {console.log(err);}});
-
-/* Copy the lib directory from app to build */
-gulp.task('copy-js', function() {
-    'use strict';
-    return gulp.src(['app/lib/**/*.js'])
-        .pipe(gulp.dest('build/lib'))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Copying /lib directory Javascript'
-        }))
-});
-
-/* Minify and uglify the Javascript */
-gulp.task('js-min', function() {
-	'use strict';
-    return gulp.src('./app/scripts/out/output.js')
-        .pipe(buffer())
-        .pipe(sourcemaps.init({
-            loadMaps: true
-        }))
-        .pipe(uglify())
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('build/scripts'))
-        .pipe($.notify('Uglifying Javascript'));
+gulp.task('default', ['nodemon', 'browsersync'], function() {
+    gulp.watch('app/styles/sass/**/*.scss', ['sass']);
+    gulp.watch('app/**/*.html', ['reload']);
+    gulp.watch('app/scripts/src/*.js', ['js']);
+    gulp.watch('test/scripts/src/*.js', ['jsTest']);
 });
 
 
 /* ======================================== 
- * Development tasks - CSS
+ * Build task
  * ======================================== */ 
-/* Concatenate sass files, add source maps and Autoprefix CSS */
-gulp.task('sass', ['sass-lint'], function() {
-	'use strict';
-    var filter = $.filter(['*.css', '!*.map']);
-    
-    return gulp.src('app/styles/sass/*.scss')
-        .pipe($.plumber())
-        .pipe(sourcemaps.init())
-        .pipe(sass({
-            errLogToConsole: true
-        }))
-        .pipe(sourcemaps.write('./'))
-        .pipe(filter)
-        .pipe(autoprefixer({
-            browsers: ['last 2 versions']
-        }))
-        .pipe(filter.restore())
-        .pipe(gulp.dest('app/styles/css'))
-        .pipe(browsersync.stream({match: '**/*.css'}))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Concatenating CSS'
-        }));
-});
-
-/* Style check the sass */
-gulp.task('sass-lint', function() {
-	'use strict';
-    return gulp.src('app/styles/sass/*.scss')
-        .pipe($.cached('sasslint'))
-        .pipe(sasslint())
-        .pipe($.notify({
-            onLast: true,
-            message: 'Linting SCSS files'
-        }));
-});
+gulp.task('build', require('./tasks/dist/dist-default.js')(gulp, sequence));
 
 
 /* ======================================== 
- * Development tasks - Javascript
+ * Build sub-modules 
  * ======================================== */ 
-/* Assemble and lint JS files with Browserify */
-gulp.task('browserify-app', ['jshint'], function() {
-	'use strict';
-    var b = browserify({
-        entries: './app/scripts/src/main.js',
-        insertGlobals: true
-    });
-
-    return b.bundle()
-        .pipe(source('output.js'))
-        .pipe(gulp.dest('app/scripts/out'))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Concatenating Javascript application files'
-        }));
-});
-
-/* Assemble and lint JS test files with Browserify */
-gulp.task('browserify-test', ['jshint'], function() {
-	'use strict';
-    var b = browserify({
-        entries: './test/scripts/src/main.js',
-        insertGlobals: true
-    });
-
-    return b.bundle()
-        .pipe(source('output-test.js'))
-        .pipe(gulp.dest('test/scripts/out'))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Concatenating Javascript test files'
-        }));
-});
-
-/* Run the JSHint on all files to ensure proper coding */
-gulp.task('jshint', function() {
-	'use strict';
-    return gulp.src('./app/scripts/src/*.js')
-        .pipe(jshint())
-        .pipe(jshint.reporter(stylish))
-        .pipe($.notify({
-            onLast: true,
-            message: 'Linting Javascript files'
-        }));
-});
+gulp.task('distRemove', require('./tasks/dist/distRemove.js')(gulp, del, paths, $));
+gulp.task('distIndex', require('./tasks/dist/distIndex.js')(gulp, $));
+gulp.task('distRemoveStyles', require('./tasks/dist/distRemoveStyles')(gulp, $));
+gulp.task('distCritical', require('./tasks/dist/distCritical')(gulp, critical, $));
+gulp.task('distCopyScripts', require('./tasks/dist/distCopyScripts')(gulp, $));
+gulp.task('distUglifyScripts', require('./tasks/dist/distUglifyScripts')(gulp, buffer, $));
 
 
 /* ======================================== 
- * Server tasks
+ * Javascript sub-modules 
  * ======================================== */ 
-/* Start Express server instance */
-gulp.task('server', ['browsersync'], function() {
-	'use strict';
-    console.log('App is running on port 3000');
-});
-
-/* Start the Browser Sync task to automatically reload the page */
-gulp.task('browsersync', ['nodemon'], function() {
-    'use strict';
-
-    browsersync.init(null, {
-        proxy: 'http://localhost:3000',
-        files: ['app/**/*.html'],
-        browser: 'google chrome',
-        port: 7000
-    });
-
-    gulp.watch('app/*.html', ['browsersync-reload']);
-    gulp.watch('app/styles/sass/*.scss', ['sass']);
-    gulp.watch('app/scripts/src/*.js', ['browserify-app', 'test', 'browsersync-reload']);
-    gulp.watch('test/scripts/src/*.js', ['test', 'browsersync-reload']);
-});
-
-/* Make the Browsersync reload a Gulp task */
-gulp.task('browsersync-reload', function() {
-    browsersync.reload();
-});
-
-/* Fire up Express and Nodemon as our development server */
-gulp.task('nodemon', function(cb) {
-    var started = false;
-
-    return nodemon({ 
-        script: 'server/server.js'
-    }).on('start', function() {
-        if (!started) {
-            cb();
-            started = true;
-        }
-    });
-});
+gulp.task('js', require('./tasks/javascript/js-default')(gulp, sequence));
+gulp.task('jsTest', require('./tasks/javascript/jsTest-default')(gulp, sequence));
+gulp.task('esLint', require('./tasks/javascript/esLint')(gulp, $));
+gulp.task('jsBuild', require('./tasks/javascript/jsBuild')(gulp, babelify, browserify, source, $));
+gulp.task('jsTestBuild', require('./tasks/javascript/jsTestBuild')(gulp, browserify, source, $));
+gulp.task('jsTestRun', require('./tasks/javascript/jsTest')(gulp, beep, $));
 
 
 /* ======================================== 
- * Test tasks
+ * Sass sub-modules 
  * ======================================== */ 
-/* Run the Mocha Phantom test */
-gulp.task('test', ['browserify-test'], function() {
-    'use strict';
-    return gulp.src('test/index.html')
-        .pipe($.plumber({
-            errorHandler: handleError
-        }))
-        .pipe(mochaPhantom({
-            reporter: 'spec'
-        }))
-        .pipe($.notify({
-            onLast: true,
-            message: "Testing JS with Mocha"
-        }));
-});
+gulp.task('sass', require('./tasks/sass/sass-default')(gulp, sequence, $));
+gulp.task('sassLint', require('./tasks/sass/sassLint')(gulp, $));
+gulp.task('sassBuild', require('./tasks/sass/sassBuild')(gulp, autoprefixer, browsersync, reload, $));
 
 
 /* ======================================== 
- * Utility tasks
+ * Server sub-modules 
  * ======================================== */ 
-/* Print errors to the console and trigger a beep warning */
-var handleError = function(err) {
-    beep(2);
-    console.log(err.toString());
-    this.emit('end');
-}
+gulp.task('nodemon', require('./tasks/server/nodemon')(gulp, $));
+gulp.task('browsersync', require('./tasks/server/browsersync')(gulp, browsersync, reload));
+
+
+/* ======================================== 
+ * Utility sub-modules 
+ * ======================================== */ 
+gulp.task('utilHandleErrors', require('./tasks/utilities/utilHandleErrors')(gulp, beep, $));
+

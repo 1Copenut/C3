@@ -1,0 +1,36 @@
+{
+    "rules": {
+        "strict": [
+            2,
+            "function"
+        ],
+        "indent": [
+            2,
+            "tab"
+        ],
+        "newline-after-var": [
+            1,
+            "always"
+        ],
+        "quotes": [
+            2,
+            "single"
+        ],
+        "linebreak-style": [
+            2,
+            "unix"
+        ],
+        "semi": [
+            2,
+            "always"
+        ],
+        "new-cap": [
+            2
+        ]
+    },
+    "env": {
+        "es6": true,
+        "browser": true
+    },
+    "extends": "eslint:recommended"
+}
