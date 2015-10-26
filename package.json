@@ -1,6 +1,6 @@
 {
   "name": "Gulp-workflow",
-  "version": "0.0.1",
+  "version": "1.1.0",
   "dependencies": {
     "jquery": "^2.1.3",
     "modernizr": "^3.0.0-alpha.3"
