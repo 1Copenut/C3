@@ -2,6 +2,7 @@
 /build
 /dist
 /dist/**/*
+/test/scripts/out/*
 /test/screenshots/*
 /test/results/*
 
