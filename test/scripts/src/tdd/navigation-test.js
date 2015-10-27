@@ -5,7 +5,7 @@ describe('Navigation module', function() {
 
     before(function(done) {
         'use strict';
-        Navigation = require('../../../app/scripts/src/navigation');
+        Navigation = require('../../../../app/scripts/src/navigation');
         navigationTest = new Navigation('#navigation li', '#navigation a', 'current');
         done();
     });
