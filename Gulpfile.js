@@ -50,7 +50,7 @@ gulp.task('js', require('./tasks/javascript/js-default')(gulp, sequence));
 gulp.task('jsTest', require('./tasks/javascript/jsTest-default')(gulp, sequence));
 gulp.task('esLint', require('./tasks/javascript/esLint')(gulp, $));
 gulp.task('jsBuild', require('./tasks/javascript/jsBuild')(gulp, babelify, browserify, source, $));
-gulp.task('jsTestBuild', require('./tasks/javascript/jsTestBuild')(gulp, browserify, source, $));
+gulp.task('jsTestBuild', require('./tasks/javascript/jsTestBuild')(gulp, babelify, browserify, source, $));
 gulp.task('jsTestRun', require('./tasks/javascript/jsTest')(gulp, beep, $));
 
 
