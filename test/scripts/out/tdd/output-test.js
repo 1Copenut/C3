@@ -16129,7 +16129,7 @@ describe('Historical module', function() {
 
     before(function(done) {
         'use strict';
-        Historical = require('../../../app/scripts/src/historical');
+        Historical = require('../../../../app/scripts/src/historical');
         historicalTest = new Historical('#navigation li', '#navigation a');
         done()
     });
@@ -16174,7 +16174,7 @@ describe('Historical module', function() {
 
 
 
-},{"../../../app/scripts/src/historical":2,"chai":8}],44:[function(require,module,exports){
+},{"../../../../app/scripts/src/historical":2,"chai":8}],44:[function(require,module,exports){
 var should = require('chai').should();
 
 describe('Navigation module', function() {
@@ -16182,7 +16182,7 @@ describe('Navigation module', function() {
 
     before(function(done) {
         'use strict';
-        Navigation = require('../../../app/scripts/src/navigation');
+        Navigation = require('../../../../app/scripts/src/navigation');
         navigationTest = new Navigation('#navigation li', '#navigation a', 'current');
         done();
     });
@@ -16204,4 +16204,4 @@ describe('Navigation module', function() {
     });
 });
 
-},{"../../../app/scripts/src/navigation":3,"chai":8}]},{},[1]);
+},{"../../../../app/scripts/src/navigation":3,"chai":8}]},{},[1]);

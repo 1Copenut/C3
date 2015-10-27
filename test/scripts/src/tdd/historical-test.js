@@ -12,7 +12,7 @@ describe('Historical module', function() {
 
     before(function(done) {
         'use strict';
-        Historical = require('../../../app/scripts/src/historical');
+        Historical = require('../../../../app/scripts/src/historical');
         historicalTest = new Historical('#navigation li', '#navigation a');
         done()
     });

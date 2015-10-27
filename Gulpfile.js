@@ -70,6 +70,11 @@ gulp.task('browsersync', require('./tasks/server/browsersync')(gulp, browsersync
 
 
 /* ======================================== 
+ * Test sub-modules 
+ * ======================================== */ 
+gulp.task('cssRegression', require('./tasks/tests/cssRegress')(gulp, $));
+
+/* ======================================== 
  * Utility sub-modules 
  * ======================================== */ 
 gulp.task('utilHandleErrors', require('./tasks/utilities/utilHandleErrors')(gulp, beep, $));
