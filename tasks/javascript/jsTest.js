@@ -14,7 +14,7 @@ module.exports = function(gulp, beep, $) {
             }))
             .pipe($.notify({
                 onLast: true,
-                message: "Done testing JS with Mocha"
+                message: "Done testing JS with Mocha ES6 modules"
             }));
             
         return stream;

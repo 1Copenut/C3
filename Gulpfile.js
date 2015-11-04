@@ -20,7 +20,7 @@ var gulp = require('gulp'),
  * ======================================== */ 
 gulp.task('default', ['nodemon', 'browsersync'], function() {
     gulp.watch('app/styles/sass/**/*.scss', ['sass']);
-    gulp.watch('app/**/*.html', ['reload']);
+    gulp.watch('app/**/*.html', ['utilReloadBrowser']);
     gulp.watch('app/scripts/src/*.js', ['js']);
     gulp.watch('test/scripts/src/*.js', ['jsTest']);
 });
@@ -50,7 +50,7 @@ gulp.task('js', require('./tasks/javascript/js-default')(gulp, sequence));
 gulp.task('jsTest', require('./tasks/javascript/jsTest-default')(gulp, sequence));
 gulp.task('esLint', require('./tasks/javascript/esLint')(gulp, $));
 gulp.task('jsBuild', require('./tasks/javascript/jsBuild')(gulp, babelify, browserify, source, $));
-gulp.task('jsTestBuild', require('./tasks/javascript/jsTestBuild')(gulp, browserify, source, $));
+gulp.task('jsTestBuild', require('./tasks/javascript/jsTestBuild')(gulp, babelify, browserify, source, $));
 gulp.task('jsTestRun', require('./tasks/javascript/jsTest')(gulp, beep, $));
 
 
@@ -70,7 +70,12 @@ gulp.task('browsersync', require('./tasks/server/browsersync')(gulp, browsersync
 
 
 /* ======================================== 
+ * Test sub-modules 
+ * ======================================== */ 
+gulp.task('cssRegression', require('./tasks/tests/cssRegress')(gulp, $));
+
+/* ======================================== 
  * Utility sub-modules 
  * ======================================== */ 
 gulp.task('utilHandleErrors', require('./tasks/utilities/utilHandleErrors')(gulp, beep, $));
-
+gulp.task('utilReloadBrowser', require('./tasks/utilities/utilReloadBrowser')(gulp, reload));
