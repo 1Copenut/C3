@@ -5,8 +5,9 @@ module.exports = function(gulp, $) {
 
         var stream = gulp.src('./test/scripts/src/regress/main.js')
             .pipe($.phantomcss({
-                screenshots: './test/screenshots',
-                results: './test/results'
+                screenshots: './test/screenshots/pass',
+                failures: './test/screenshots/failures',
+                results: './test/screenshots/results'
             }))
             .pipe($.notify({
                 onLast: true,

@@ -20,7 +20,7 @@ var gulp = require('gulp'),
  * ======================================== */ 
 gulp.task('default', ['nodemon', 'browsersync'], function() {
     gulp.watch('app/styles/sass/**/*.scss', ['sass']);
-    gulp.watch('app/**/*.html', ['reload']);
+    gulp.watch('app/**/*.html', ['utilReloadBrowser']);
     gulp.watch('app/scripts/src/*.js', ['js']);
     gulp.watch('test/scripts/src/*.js', ['jsTest']);
 });
@@ -78,4 +78,4 @@ gulp.task('cssRegression', require('./tasks/tests/cssRegress')(gulp, $));
  * Utility sub-modules 
  * ======================================== */ 
 gulp.task('utilHandleErrors', require('./tasks/utilities/utilHandleErrors')(gulp, beep, $));
-
+gulp.task('utilReloadBrowser', require('./tasks/utilities/utilReloadBrowser')(gulp, reload));
