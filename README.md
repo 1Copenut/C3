@@ -23,4 +23,4 @@ Saving any **.scss** files will kick off the sass task to lint, concat into a ma
 Admittedly, this is a sketchy index.html file and test suite--this started out as a personal site rebuild, and turned into something else entirely. I'll be updating tasks and the test suite with more front-end dev specific items, so stay tuned.
 
 ## Feedback
-I welcome constructive criticism and improvements. In keeping with a personal theory, I&rquo;m not provinding a contact link. Where there&rsquo;s a will, there&rsquo;s a way. 
+I welcome constructive criticism and improvements. In keeping with a personal theory, I&rsquo;m not provinding a contact link. Where there&rsquo;s a will, there&rsquo;s a way. 
