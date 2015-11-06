@@ -46,12 +46,8 @@ gulp.task('distUglifyScripts', require('./tasks/dist/distUglifyScripts')(gulp, b
 /* ======================================== 
  * Javascript sub-modules 
  * ======================================== */ 
-gulp.task('js', require('./tasks/javascript/js-default')(gulp, sequence));
-gulp.task('jsTest', require('./tasks/javascript/jsTest-default')(gulp, sequence));
-gulp.task('esLint', require('./tasks/javascript/esLint')(gulp, $));
-gulp.task('jsBuild', require('./tasks/javascript/jsBuild')(gulp, babelify, browserify, source, $));
-gulp.task('jsTestBuild', require('./tasks/javascript/jsTestBuild')(gulp, babelify, browserify, source, $));
-gulp.task('jsTestRun', require('./tasks/javascript/jsTest')(gulp, beep, $));
+gulp.task('js', require('./tasks/javascript/js-all')(gulp, sequence));
+gulp.task('js:build', require('./tasks/javascript/js-build')(gulp, babelify, browserify, source, $));
 
 
 /* ======================================== 
@@ -72,7 +68,11 @@ gulp.task('browsersync', require('./tasks/server/browsersync')(gulp, browsersync
 /* ======================================== 
  * Test sub-modules 
  * ======================================== */ 
-gulp.task('cssRegression', require('./tasks/tests/cssRegress')(gulp, $));
+gulp.task('jsTest', require('./tasks/tests/jsTest-all')(gulp, sequence));
+gulp.task('jsTest:build', require('./tasks/tests/jsTest-build')(gulp, babelify, browserify, source, $));
+gulp.task('jsTest:lint', require('./tasks/tests/jsTest-lint')(gulp, $));
+gulp.task('jsTest:unit', require('./tasks/tests/jsTest-unit')(gulp, beep, $));
+gulp.task('jsTest:regression', require('./tasks/tests/jsTest-regression')(gulp, $));
 
 /* ======================================== 
  * Utility sub-modules 
