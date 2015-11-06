@@ -9,7 +9,7 @@ module.exports = function(gulp, babelify, browserify, source, $) {
             .pipe(gulp.dest('test/scripts/out/tdd'))
             .pipe($.notify({
                 onLast: true,
-                message: 'Concatenating Javascript test files'
+                message: 'Concatenating ES6 Javascript test files'
             }));
 
         return stream;
