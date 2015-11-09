@@ -11,7 +11,7 @@ module.exports = function(gulp, $) {
             }))
             .pipe($.notify({
                 onLast: true,
-                message: 'Done analyzing CSS for visual regression'
+                message: 'Done analyzing CSS for visual regression. Run gulp build for not found errors.'
             }));
 
         return stream;
