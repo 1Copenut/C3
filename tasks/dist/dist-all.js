@@ -4,18 +4,12 @@ module.exports = function(gulp, sequence) {
         'use strict';
 
         var stream = sequence(
-            'distRemove',
-            'distIndex',
-            'distRemoveStyles',
-            'distCopyScripts',
-            'distUglifyScripts',
             'dist:remove',
             'dist:index',
             'dist:removeStyles',
-            'dist:critical',
             'dist:copyScripts',
             'dist:uglifyScripts',
-            'distCritical'
+            'dist:critical'
         );
 
         return stream;
