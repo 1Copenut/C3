@@ -9,6 +9,12 @@ module.exports = function(gulp, sequence) {
             'distRemoveStyles',
             'distCopyScripts',
             'distUglifyScripts',
+            'dist:remove',
+            'dist:index',
+            'dist:removeStyles',
+            'dist:critical',
+            'dist:copyScripts',
+            'dist:uglifyScripts',
             'distCritical'
         );
 
