@@ -18,6 +18,6 @@ casper.test.begin('C3 contact form is loaded and ready to test', 2, function sui
     /* Exit the test */
 	casper.run(function() {
         this.test.done();
-		this.test.renderResults(true);
+        this.test.renderResults(true);
     });
 });
