@@ -7,7 +7,7 @@ var express = require("express"),
 app.use( '/', express.static(baseDir + 'app') );
 
 /* Build route */
-app.use( '/build', express.static(baseDir + 'build') );
+app.use( '/build', express.static(baseDir + 'dist') );
 
 /* Test route */
 app.use( '/test', express.static(baseDir + 'test') );

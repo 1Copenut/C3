@@ -7,9 +7,9 @@ module.exports = function(gulp, sequence) {
             'distRemove',
             'distIndex',
             'distRemoveStyles',
-            'distCritical',
             'distCopyScripts',
-            'distUglifyScripts'
+            'distUglifyScripts',
+            'distCritical'
         );
 
         return stream;
