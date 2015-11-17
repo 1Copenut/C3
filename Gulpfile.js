@@ -13,6 +13,7 @@ var gulp = require('gulp'),
     sequence = require('run-sequence'),
     source = require('vinyl-source-stream'),
     
+    Karma = require('karma').Server,
     $ = require('gulp-load-plugins')();
 
 /* ======================================== 
@@ -71,7 +72,7 @@ gulp.task('server:browsersync', require('./tasks/server/browsersync')(gulp, brow
 gulp.task('jsTest', require('./tasks/tests/jsTest-all')(gulp, sequence));
 gulp.task('jsTest:build', require('./tasks/tests/jsTest-build')(gulp, babelify, browserify, source, $));
 gulp.task('jsTest:lint', require('./tasks/tests/jsTest-lint')(gulp, $));
-gulp.task('jsTest:unit', require('./tasks/tests/jsTest-unit')(gulp, $));
+gulp.task('jsTest:unit', require('./tasks/tests/jsTest-unit')(gulp, Karma, $));
 gulp.task('jsTest:regression', require('./tasks/tests/jsTest-regression')(gulp, $));
 
 

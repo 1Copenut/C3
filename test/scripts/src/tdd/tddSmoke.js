@@ -46,8 +46,7 @@ describe('Navigation block with fixtures', function() {
             var navNodes = this.$fixture.find('.load-content li'),
                 navLength = navNodes.length;
 
-            navLength.should.equal(3);
+            navLength.should.equal(2);
         });
     });
 });
-
