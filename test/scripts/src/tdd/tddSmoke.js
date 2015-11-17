@@ -19,19 +19,19 @@ var navMenu = {
 describe('Navigation block with fixtures', function() {
     var Historical, historicalTest;
 
-    before(function() {
+    beforeEach(function() {
+       'use strict';
+
+       this.$fixture
+           .empty()
+           .prepend($('#fixtures'));
+
+       navMenu.render(this.$fixture);
+   });
+
+   before(function() {
         'use strict';
         this.$fixture = $('<nav id="navigation" role="navigation"></nav>');
-    });
-
-    beforeEach(function() {
-        'use strict';
-
-        this.$fixture
-            .empty()
-            .prepend($('#fixtures'));
-
-        navMenu.render(this.$fixture);
     });
 
     afterEach(function() {
@@ -50,5 +50,4 @@ describe('Navigation block with fixtures', function() {
         });
     });
 });
-
 

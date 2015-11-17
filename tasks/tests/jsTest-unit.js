@@ -1,7 +1,7 @@
 /* global require */
 var handleError = require('../utilities/utilHandleErrors');
 
-module.exports = function(gulp, beep, $) {
+module.exports = function(gulp, $) {
     return function() {
         'use strict';
 
