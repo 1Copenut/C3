@@ -3,7 +3,7 @@ module.exports = function(gulp, $) {
     return function() {
         'use strict';
 
-        var stream = gulp.src('./test/scripts/src/regress/main.js')
+        var stream = gulp.src('./test/scripts/src/visualRegression/main.js')
             .pipe($.phantomcss({
                 screenshots: './test/screenshots/pass',
                 failures: './test/screenshots/failures',
@@ -11,7 +11,7 @@ module.exports = function(gulp, $) {
             }))
             .pipe($.notify({
                 onLast: true,
-                message: 'Done analyzing CSS for visual regression'
+                message: 'Done analyzing CSS for visual regression. Run gulp build for not found errors.'
             }));
 
         return stream;

@@ -6,6 +6,7 @@
 /test/scripts/out/*
 /test/screenshots/*
 /test/results/*
+/test/fixtures/*
 
 .DS_Store
 

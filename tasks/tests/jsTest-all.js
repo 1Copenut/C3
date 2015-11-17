@@ -4,10 +4,9 @@ module.exports = function(gulp, sequence) {
         'use strict';
 
         var stream = sequence(
-            'esLint',
-            'jsBuild',
-            'jsTestBuild',
-            'jsTestRun'
+            'jsTest:build',
+            'jsTest:lint',
+            'jsTest:unit'
         );
 
         return stream;
