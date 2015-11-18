@@ -1,6 +1,6 @@
 /* global require */
 var fs = require('fs'),
-    path = require('path'),
+    path = require('path');
 
 module.exports = function(gulp, Karma, $) {
     return function(done) {
