@@ -10,12 +10,11 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha', 'browserify'],
+    frameworks: ['browserify', 'mocha'],
 
 
     // list of files / patterns to load in the browser
     files: [
-      'app/scripts/src/*.js',
       'test/scripts/src/tdd/*.js'
     ],
 
@@ -33,7 +32,8 @@ module.exports = function(config) {
 
 
     browserify: {
-        debug: true
+        debug: true,
+        transform: []
     },
 
 
@@ -57,7 +57,7 @@ module.exports = function(config) {
 
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: false,
+    autoWatch: true,
 
 
     // start these browsers
