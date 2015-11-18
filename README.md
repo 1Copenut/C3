@@ -11,7 +11,7 @@ $ npm install
 ```
 
 ### Start App Server and Watch Files 
-After all the NPM modules are installed, you&rsquo;ll see the standard prompt. At that time, run:
+After the NPM modules are installed, you&rsquo;ll see the standard prompt. At that time, run:
 
 ```javascript
 $ gulp
