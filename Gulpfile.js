@@ -19,8 +19,10 @@ var gulp = require('gulp'),
  * Default task
  * ======================================== */ 
 gulp.task('default', ['server:nodemon', 'server:browsersync'], function() {
-    gulp.watch('app/styles/sass/**/*.scss', ['sass']);
     gulp.watch('app/**/*.html', ['util:reloadBrowser']);
+    gulp.watch('app/pages/*.nunjucks', ['nunjucks']);
+    gulp.watch('app/templates/**/*.nunjucks', ['nunjucks']);
+    gulp.watch('app/styles/sass/**/*.scss', ['sass']);
     gulp.watch('app/scripts/src/*.js', ['js']);
     gulp.watch('test/scripts/src/tdd/*.js', ['jsTest']);
 });
@@ -64,6 +66,11 @@ gulp.task('sassBuild', require('./tasks/sass/sassBuild')(gulp, autoprefixer, bro
 gulp.task('server:nodemon', require('./tasks/server/nodemon')(gulp, $));
 gulp.task('server:browsersync', require('./tasks/server/browsersync')(gulp, browsersync, reload));
 
+
+/* ======================================== 
+ * Template sub-modules 
+ * ======================================== */ 
+gulp.task('nunjucks', require('./tasks/templates/tmplBuild')(gulp, $));
 
 /* ======================================== 
  * Test sub-modules 
