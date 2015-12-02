@@ -1,12 +1,12 @@
 /node_modules
-/build
+/app/scripts/out/*
 /dist
 /dist/**/*
-/app/scripts/out/*
 /test/scripts/out/*
 /test/screenshots/*
 /test/results/*
 /test/fixtures/*
+/coverage/*
 
 .DS_Store
 
