@@ -13,8 +13,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'test/scripts/src/unit/*.js',
-      'test/fixtures/**/*'
+        'test/index.html',
+        'test/scripts/src/unit/*.js',
+        'test/fixtures/**/*'
     ],
 
     // list of files to exclude
