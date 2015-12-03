@@ -26,7 +26,7 @@ I&rsquo;m using Karma for a UI unit test runner. There are a lot of tutorials an
 
 I am using [Mocha](https://mochajs.org/), [Chai](http://chaijs.com/), and [Browserify](http://browserify.org/) to manage TDD unit tests. These libraries were installed in the initial **npm install**. 
 
-Further abstractions were made for Karma fixtures, and loading them into an index.html file for parsing. I [used this article by Bradley Braithwaite](http://www.bradoncode.com/blog/2015/02/27/karma-tutorial/) for proper creation of fixtures and eventually a config file to load tests in PhantomJS during normal development, and multiple browsers with coverage reporting as a separate command.
+Further abstractions were made for Karma fixtures, and loading them into an index.html file for parsing. I [used this article by Bradley Braithwaite](http://www.bradoncode.com/blog/2015/02/27/karma-tutorial/) for proper creation of fixtures. Eventually this branch will include a config file to load tests in PhantomJS during normal development, and multiple browsers with coverage reporting as a separate command.
 
 ### Install the Karma CLI &amp; Start The Server 
 ```javascript
