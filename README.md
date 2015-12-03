@@ -28,16 +28,18 @@ I am using [Mocha](https://mochajs.org/), [Chai](http://chaijs.com/), and [Brows
 
 Further abstractions were made for Karma fixtures, and loading them into an index.html file for parsing. I [used this article by Bradley Braithwaite](http://www.bradoncode.com/blog/2015/02/27/karma-tutorial/) for proper creation of fixtures. Eventually this branch will include a config file to load tests in PhantomJS during normal development, and multiple browsers with coverage reporting as a separate command.
 
-### Install the Karma CLI &amp; Start The Server 
+### Install the Karma CLI 
 ```javascript
 $ (sudo) npm install -g karma-cli
 ```
 
-Run the following command each time you want to listen and run the TDD test suite:
+### Start the Karma Server 
 
 ```javascript
 $ karma start karma.conf.js
 ``` 
+
+Karma will announce itself on the Terminal and open a new Chrome window. Karma listens for any changes to the test/scripts/src/unit/ and app/scripts/src/ folders, and reloads automatically when matching files are saved.
 
 This is a sketchy index.html file and test suite--C3 started out a personal site rebuild, and turned into something else entirely. I&rsquo;ll be updating tasks and the test suite with more front-end dev items, so stay tuned.
 
