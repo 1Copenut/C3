@@ -1,12 +1,8 @@
 /* global require, should */
 'use strict';
-
 var should = require('chai').should(),
+    util = require('../utilities/utilTest.js'),
     $ = require('jquery');
-
-function render(el, fixture) {
-    $(el).empty().prepend(fixture);
-};
 
 describe('Navigation block with fixtures', function() {
     before(function() {
@@ -14,9 +10,8 @@ describe('Navigation block with fixtures', function() {
     });
 
     beforeEach(function() {
-        'use strict';
         this.result = fixture.load('tmpl__navigation.html');
-        render('#fixtures', this.result);
+        util.render('#fixtures', this.result);
     });
 
     afterEach(function() {
@@ -28,7 +23,9 @@ describe('Navigation block with fixtures', function() {
             var navNodes = $(this.result).find('.load-content li'),
                 navLength = navNodes.length;
 
+            console.log(navNodes);
             navLength.should.equal(3);
         });
     });
 });
+

@@ -15,6 +15,7 @@ module.exports = function(config) {
     files: [
         'test/index.html',
         'test/scripts/src/unit/*.js',
+        'test/scripts/src/utilities/*.js',
         'test/fixtures/**/*'
     ],
 
@@ -32,6 +33,7 @@ module.exports = function(config) {
     preprocessors: {
         'app/scripts/src/*.js': [ 'coverage' ],
         'test/scripts/src/unit/*.js': [ 'browserify' ],
+        'test/scripts/src/utilities/*.js': [ 'browserify' ],
         '**/*.html': ['html2js'],
         '**/*.json': ['json_fixtures']
     },
