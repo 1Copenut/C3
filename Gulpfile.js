@@ -13,6 +13,7 @@ var gulp = require('gulp'),
     sequence = require('run-sequence'),
     source = require('vinyl-source-stream'),
     
+    Karma = require('karma').Server,
     $ = require('gulp-load-plugins')();
 
 /* ======================================== 
@@ -24,7 +25,7 @@ gulp.task('default', ['server:nodemon', 'server:browsersync'], function() {
     gulp.watch('app/templates/**/*.nunjucks', ['nunjucks']);
     gulp.watch('app/styles/sass/**/*.scss', ['sass']);
     gulp.watch('app/scripts/src/*.js', ['js']);
-    gulp.watch('test/scripts/src/tdd/*.js', ['jsTest']);
+    gulp.watch('test/scripts/src/tdd/*.js', ['jsTest:unit']);
 });
 
 
@@ -75,10 +76,8 @@ gulp.task('nunjucks', require('./tasks/templates/tmplBuild')(gulp, $));
 /* ======================================== 
  * Test sub-modules 
  * ======================================== */ 
-gulp.task('jsTest', require('./tasks/tests/jsTest-all')(gulp, sequence));
-gulp.task('jsTest:build', require('./tasks/tests/jsTest-build')(gulp, babelify, browserify, source, $));
 gulp.task('jsTest:lint', require('./tasks/tests/jsTest-lint')(gulp, $));
-gulp.task('jsTest:unit', require('./tasks/tests/jsTest-unit')(gulp, $));
+gulp.task('jsTest:unit', require('./tasks/tests/jsTest-unit')(gulp, Karma, $));
 gulp.task('jsTest:regression', require('./tasks/tests/jsTest-regression')(gulp, $));
 
 

@@ -5,7 +5,8 @@ module.exports = function(gulp, sequence) {
 
         var stream = sequence(
             'js:build',
-            'jsTest'
+            'jsTest:lint',
+            'jsTest:unit'
         );
 
         return stream;

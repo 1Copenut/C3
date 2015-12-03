@@ -1,2 +1,0 @@
-var tddSmoke = require('./tddSmoke');
-
