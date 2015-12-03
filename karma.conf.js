@@ -31,8 +31,8 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-        'app/scripts/src/*.js': [ 'coverage' ],
-        'test/scripts/src/unit/*.js': [ 'browserify' ],
+        'app/scripts/src/*.js': [ 'browserify', 'babel', 'coverage' ],
+        'test/scripts/src/unit/*.js': [ 'browserify', 'babel' ],
         'test/scripts/src/utilities/*.js': [ 'browserify' ],
         '**/*.html': ['html2js'],
         '**/*.json': ['json_fixtures']
@@ -41,6 +41,13 @@ module.exports = function(config) {
     browserify: {
         debug: true,
         transform: []
+    },
+
+    babelPreprocessor: {
+        options: {
+            presets: ['es2015'],
+            sourceMap: 'inline'
+        },
     },
 
     // test results reporter to use
