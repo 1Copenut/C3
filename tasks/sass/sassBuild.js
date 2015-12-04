@@ -3,7 +3,7 @@ module.exports = function(gulp, autoprefixer, browsersync, reload, $) {
     return function() {
         'use strict';
 
-        var filter = $.filter(['*.css', '!*.map']);
+        var filter = $.filter(['*.css', '!*.map'], { restore: true });
         var stream = gulp.src('app/styles/sass/*.scss')
             .pipe($.plumber())
             .pipe($.sourcemaps.init())
@@ -15,7 +15,7 @@ module.exports = function(gulp, autoprefixer, browsersync, reload, $) {
             .pipe($.postcss([
                 autoprefixer({ browsers: ['last 3 versions'] })
             ]))
-            .pipe(filter.restore())
+            .pipe(filter.restore)
             .pipe(gulp.dest('app/styles/css'))
             .pipe(reload({stream: true}))
             .pipe($.notify({

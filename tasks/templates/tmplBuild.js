@@ -7,7 +7,11 @@ module.exports = function(gulp, $) {
 
         var stream = gulp.src('app/pages/**/*.+(html|nunjucks)')
             .pipe($.nunjucksRender())
-            .pipe(gulp.dest('app'));
+            .pipe(gulp.dest('app'))
+            .pipe($.notify({
+                onLast: true,
+                message: 'Done rendering HTML from templates'
+            }));
             
         return stream;
     };

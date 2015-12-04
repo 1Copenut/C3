@@ -36,7 +36,7 @@ gulp.task('build', require('./tasks/dist/dist-all.js')(gulp, sequence));
  * Build sub-modules 
  * ======================================== */ 
 gulp.task('dist:remove', require('./tasks/dist/distRemove.js')(gulp, del, paths, $));
-gulp.task('dist:index', require('./tasks/dist/distIndex.js')(gulp, $));
+gulp.task('dist:index', ['nunjucks'], require('./tasks/dist/distIndex.js')(gulp, $));
 gulp.task('dist:removeStyles', require('./tasks/dist/distRemoveStyles')(gulp, $));
 gulp.task('dist:critical', require('./tasks/dist/distCritical')(gulp, critical, $));
 gulp.task('dist:copyScripts', require('./tasks/dist/distCopyScripts')(gulp, $));
