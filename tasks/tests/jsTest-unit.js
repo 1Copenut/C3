@@ -1,23 +1,16 @@
 /* global require */
-var handleError = require('../utilities/utilHandleErrors');
+var fs = require('fs'),
+    path = require('path');
 
-module.exports = function(gulp, $) {
-    return function() {
+module.exports = function(gulp, Karma, $) {
+    return function(done) {
         'use strict';
 
-        var stream = gulp.src('test/index.html')
-            .pipe($.plumber({
-                errorHandler: handleError
-            }))
-            .pipe($.mochaPhantomjs({
-                reporter: 'spec'
-            }))
-            .pipe($.notify({
-                onLast: true,
-                message: "Done testing JS with Mocha ES6 modules"
-            }));
-            
-        return stream;
+        var configFile = fs.readFile(path.normalize(__dirname + '/../../karma.conf.js'));
+
+        return new Karma({
+            configFile: configFile
+        }, done).start();
     };
 };
 
