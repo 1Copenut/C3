@@ -1,5 +1,6 @@
-// Karma configuration
-// Generated on Tue Nov 17 2015 16:24:14 GMT-0600 (CST)
+'use strict';
+
+var appConfig = require('./config');
 
 module.exports = function(config) {
   config.set({
@@ -30,30 +31,12 @@ module.exports = function(config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-        'app/scripts/src/*.js': [ 'browserify', 'babel', 'coverage' ],
-        'test/scripts/src/unit/*.js': [ 'browserify', 'babel' ],
-        'test/scripts/src/utilities/*.js': [ 'browserify' ],
-        '**/*.html': ['html2js'],
-        '**/*.json': ['json_fixtures']
-    },
-
-    browserify: {
-        debug: true,
-        transform: []
-    },
-
-    babelPreprocessor: {
-        options: {
-            presets: ['es2015'],
-            sourceMap: 'inline'
-        },
-    },
+    preprocessors: appConfig.karma.preprocessors, 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress', 'coverage'],
+    reporters: appConfig.karma.reporters, 
 
     // web server port
     port: 9876,
@@ -66,18 +49,18 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true,
+    autoWatch: appConfig.karma.autoWatch, 
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Chrome'],
+    browsers: appConfig.karma.browsers, 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: appConfig.karma.singleRun, 
 
     // Concurrency level
-    // how many browser should be started simultanous
+    // how many browsers should be started simultanous
     concurrency: Infinity
   })
 }
