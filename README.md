@@ -22,14 +22,14 @@ Yep, just **gulp**. The server will start automatically, and the terminal will m
 Saving any **.scss** files will kick off the sass task to lint, concat into a main.css file, and reload your browser window. Same for **.js** files in app/scripts/src: Build, lint, and reload the browser.
 
 ## Nunjucks Templates
-I opted to split app HTML files into smaller templates, and Nunjucks was the best fit. The gulp nunjucks task has been added to the default task to create three basic HTML files (index, about, contact) on first run. Further changes to .nunjucks files in the /app/templates directory will automatically rebuild the HTML files, and Browsersync will reload the browser window(s).
+I opted to split app HTML files into smaller templates, and Nunjucks was the best fit. The gulp nunjucks task has been added to the default task to create three basic HTML files (index, about, contact) on first run. Further changes to **.nunjucks** files in the /app/templates directory will automatically rebuild the HTML files, and Browsersync will reload the browser window(s).
 
 ## Karma Test Runner
 I&rsquo;m using Karma for a UI unit test runner. There are a lot of tutorials and offerings for server-side (Node) unit testing, but not as many for client-side UI code. I gleaned a lot from [this article by Zsolt Nagy](http://www.zsoltnagy.eu/asynchronous-tests-and-fixtures-with-mocha-and-chaijs/) but wasn't satisifed with the co-mingling of fixtures and unit tests.
 
-I am using [Mocha](https://mochajs.org/), [Chai](http://chaijs.com/), and [Browserify](http://browserify.org/) to manage TDD unit tests. These libraries were installed in the initial **npm install**. 
+I opted for [Mocha](https://mochajs.org/), [Chai](http://chaijs.com/), and [Browserify](http://browserify.org/) to manage TDD unit tests. These libraries were installed in the initial **npm install**. Tests can be written in ES6 if you prefer; the Karma-Babel preprocessor is included in the package.json file. 
 
-Further abstractions were made for Karma fixtures, and loading them into an index.html file for parsing. I [used this article by Bradley Braithwaite](http://www.bradoncode.com/blog/2015/02/27/karma-tutorial/) for proper creation of fixtures. Eventually this branch will include a config file to load tests in PhantomJS during normal development, and multiple browsers with coverage reporting as a separate command.
+HTML and JSON fixtures are now supported, and can be loaded into the basic /test/index.html file for parsing. I [used this article by Bradley Braithwaite](http://www.bradoncode.com/blog/2015/02/27/karma-tutorial/) to plumb fixtures and separate test runners by objective: PhantomJS and auto-run for ongoing testing, Chrome with Istanbul code coverage for end-of-feature tests. Both commands are documented below. 
 
 ### Install the Karma CLI 
 ```javascript

@@ -17,7 +17,7 @@ var gulp = require('gulp'),
 /* ======================================== 
  * Default task
  * ======================================== */ 
-gulp.task('default', ['nunjucks', 'server:nodemon', 'server:browsersync'], function() {
+gulp.task('default', ['server:nodemon', 'server:browsersync'], function() {
     gulp.watch('app/**/*.html', ['util:reloadBrowser']);
     gulp.watch('app/pages/*.nunjucks', ['nunjucks']);
     gulp.watch('app/templates/**/*.nunjucks', ['nunjucks']);
@@ -61,7 +61,7 @@ gulp.task('sassBuild', require('./tasks/sass/sassBuild')(gulp, autoprefixer, bro
 /* ======================================== 
  * Server sub-modules 
  * ======================================== */ 
-gulp.task('server:nodemon', require('./tasks/server/nodemon')(gulp, $));
+gulp.task('server:nodemon', ['nunjucks'], require('./tasks/server/nodemon')(gulp, $));
 gulp.task('server:browsersync', require('./tasks/server/browsersync')(gulp, browsersync, reload));
 
 
