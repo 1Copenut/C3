@@ -7,7 +7,8 @@ module.exports = function(gulp, $) {
             .pipe($.phantomcss({
                 screenshots: './test/screenshots/pass',
                 failures: './test/screenshots/failures',
-                results: './test/screenshots/results'
+                results: './test/screenshots/results',
+                breakOnError: false
             }))
             .pipe($.notify({
                 onLast: true,

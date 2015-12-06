@@ -21,11 +21,13 @@
 </head>
 
 <body>
-    {% block content %}
-    {% endblock %}
-    <script src="lib/video-js/video.js"></script>
-    <!-- htmlbuild:js -->
-    <script src="scripts/out/output.js"></script>
-    <!-- endbuild -->
+    <div id="wrapper">
+        {% block content %}
+        {% endblock %}
+        <script src="lib/video-js/video.js"></script>
+        <!-- htmlbuild:js -->
+        <script src="scripts/out/output.js"></script>
+        <!-- endbuild -->
+    </div>
 </body>
 </html>

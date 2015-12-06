@@ -54,5 +54,3 @@ Historical.prototype = (function() {
         }
     };
 }());
-
-module.exports = Historical;
