@@ -1,6 +1,5 @@
+// Karma configuration
 'use strict';
-
-var appConfig = require('./config');
 
 module.exports = function(config) {
   config.set({
@@ -17,8 +16,7 @@ module.exports = function(config) {
         'app/scripts/src/*.js',
         'test/index.html',
         'test/scripts/src/unit/*.js',
-        'test/scripts/src/utilities/*.js',
-        'test/fixtures/**/*'
+        'test/fixtures/**/*.html'
     ],
 
     // list of files to exclude
@@ -32,12 +30,24 @@ module.exports = function(config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: appConfig.karma.preprocessors, 
+    preprocessors: {
+      'app/scripts/src/*.js': ['browserify'],
+      'test/scripts/src/unit/*.spec.js': ['browserify'],
+      'test/fixtures/**/*.html': ['html2js'],
+      'test/fixtures/**/*.json': ['json_fixtures']
+    },
+
+    browserify: {
+      debug: true,
+      transform: [
+        ['babelify', { presets: 'es2015' }]
+      ]
+    }, 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: appConfig.karma.reporters, 
+    reporters: ['mocha'], 
 
     // web server port
     port: 9876,
@@ -50,15 +60,15 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: appConfig.karma.autoWatch, 
+    autoWatch: true, 
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: appConfig.karma.browsers, 
+    browsers: ['PhantomJS', 'Chrome'], 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: appConfig.karma.singleRun, 
+    singleRun: false, 
 
     // Concurrency level
     // how many browsers should be started simultanous

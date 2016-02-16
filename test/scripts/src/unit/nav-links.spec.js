@@ -1,5 +1,5 @@
 import * as chai from 'chai';
-import util from '../utilities/utilTest.js';
+import { render } from '../utilities/utils-unit.js';
 import $ from 'jquery';
 
 let should = chai.should();
@@ -13,7 +13,7 @@ describe('Navigation block with fixtures', function() {
 
   beforeEach(function() {
       this.result = fixture.load('tmpl__navigation.html');
-      util.render('#fixtures', this.result);
+      render('#fixtures', this.result);
   });
 
   afterEach(function() {
