@@ -5,16 +5,18 @@ module.exports = {
         browsers: ['Chrome'],
 
         preprocessors: {
-            'app/scripts/src/*.js': [ 'browserify', 'babel', 'coverage' ],
-            'test/scripts/src/unit/*.js': [ 'browserify', 'babel' ],
-            'test/scripts/src/utilities/*.js': [ 'browserify' ],
+            'app/scripts/src/*.js': [ 'babel', 'browserify', 'coverage' ],
+            'test/scripts/src/unit/*.js': [ 'babel', 'browserify' ],
+            'test/scripts/src/utilities/*.js': [ 'babel', 'browserify' ],
             '**/*.html': ['html2js'],
             '**/*.json': ['json_fixtures']
         },
 
         browserify: {
             debug: true,
-            transform: []
+            transform: [
+              'babelify'
+            ]
         },
 
         babelPreprocessor: {

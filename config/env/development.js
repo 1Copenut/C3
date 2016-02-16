@@ -5,8 +5,8 @@ module.exports = {
         browsers: ['PhantomJS'],
 
         preprocessors: {
-            'app/scripts/src/*.js': [ 'browserify', 'babel' ],
-            'test/scripts/src/unit/*.js': [ 'browserify', 'babel' ],
+            'app/scripts/src/*.js': [ 'browserify' ],
+            'test/scripts/src/unit/*.js': [ 'browserify' ],
             'test/scripts/src/utilities/*.js': [ 'browserify' ],
             '**/*.html': ['html2js'],
             '**/*.json': ['json_fixtures']
