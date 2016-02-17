@@ -84,7 +84,7 @@
     ]
   },
   "scripts": {
-    "test": "karma start karma.conf.js --single-run --browsers PhantomJS",
-    "full-test": "NODE_ENV=test karma start karma.conf.js"
+    "test": "karma start karma.conf.js",
+    "full-test": "NODE_ENV=test karma start karma.conf.js --single-run --browsers Chrome"
   }
 }

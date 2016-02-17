@@ -1,6 +1,8 @@
 // Karma configuration
 'use strict';
 
+var appConfig = require('./config');
+
 module.exports = function(config) {
   config.set({
 
@@ -48,7 +50,7 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['mocha'], 
+    reporters: appConfig.karma.reporters,
 
     // web server port
     port: 9876,
@@ -61,15 +63,15 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: true, 
+    autoWatch: appConfig.karma.autoWatch,
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS', 'Chrome'], 
+    browsers: appConfig.karma.browsers,
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false, 
+    singleRun: appConfig.karma.singleRun,
 
     // Concurrency level
     // how many browsers should be started simultanous
