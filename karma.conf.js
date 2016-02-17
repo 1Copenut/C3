@@ -1,3 +1,4 @@
+// Karma configuration
 'use strict';
 
 var appConfig = require('./config');
@@ -16,9 +17,9 @@ module.exports = function(config) {
     files: [
         'app/scripts/src/*.js',
         'test/index.html',
-        'test/scripts/src/unit/*.js',
-        'test/scripts/src/utilities/*.js',
-        'test/fixtures/**/*'
+        'test/scripts/unit/*.js',
+        'test/fixtures/**/*.html',
+        'node_modules/axe-core/axe.min.js'
     ],
 
     // list of files to exclude
@@ -32,12 +33,24 @@ module.exports = function(config) {
 
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: appConfig.karma.preprocessors, 
+    preprocessors: {
+      'app/scripts/src/*.js': ['browserify'],
+      'test/scripts/unit/*.spec.js': ['browserify'],
+      'test/fixtures/**/*.html': ['html2js'],
+      'test/fixtures/**/*.json': ['json_fixtures']
+    },
+
+    browserify: {
+      debug: true,
+      transform: [
+        ['babelify', { presets: 'es2015' }]
+      ]
+    }, 
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: appConfig.karma.reporters, 
+    reporters: appConfig.karma.reporters,
 
     // web server port
     port: 9876,
@@ -50,15 +63,15 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
 
     // enable / disable watching file and executing tests whenever any file changes
-    autoWatch: appConfig.karma.autoWatch, 
+    autoWatch: appConfig.karma.autoWatch,
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: appConfig.karma.browsers, 
+    browsers: appConfig.karma.browsers,
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: appConfig.karma.singleRun, 
+    singleRun: appConfig.karma.singleRun,
 
     // Concurrency level
     // how many browsers should be started simultanous
