@@ -21,22 +21,28 @@ describe('Navigation--Tabs and Panels', function() {
     fixture.cleanup();
   });
 
-  it('Tablist object should have a length of 3', function() {
+  it('Tablist jQuery object should have a length of 3', function(done) {
     let tablist = $(this.result).find('.tablist li');
 
     tablist.length.should.equal(3);
+    done();
   });
 
-  it('Tabpanel object should have a length of 3', function() {
+  it('Tabpanel jQuery object should have a length of 3', function(done) {
     let tabpanels = $(this.result).find('.panel');
 
     tabpanels.length.should.equal(3);
+    done();
   });
 
-  it('Should have zero accessibility errors', function() {
-    let tabNav = $('div.tab-container');
+  it('Tab container should have 0 accessibility errors', function(done) {
+    let tabNav = document.querySelector('div.tabs__container');
 
-    axe.a11yCheck(tabNav, null, function(results) {
+    axe.a11yCheck(tabNav, function(results) {
+      if (results.violations.length > 0) {
+        console.log(results.violations);
+      }
+
       results.violations.length.should.equal(0);
       done();
     });

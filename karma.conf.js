@@ -15,7 +15,7 @@ module.exports = function(config) {
     files: [
         'app/scripts/src/*.js',
         'test/index.html',
-        'test/scripts/src/unit/*.js',
+        'test/scripts/unit/*.js',
         'test/fixtures/**/*.html',
         'node_modules/axe-core/axe.min.js'
     ],
@@ -33,7 +33,7 @@ module.exports = function(config) {
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
       'app/scripts/src/*.js': ['browserify'],
-      'test/scripts/src/unit/*.spec.js': ['browserify'],
+      'test/scripts/unit/*.spec.js': ['browserify'],
       'test/fixtures/**/*.html': ['html2js'],
       'test/fixtures/**/*.json': ['json_fixtures']
     },

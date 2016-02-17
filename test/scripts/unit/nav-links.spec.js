@@ -21,11 +21,25 @@ describe('Navigation--Unordered List Links', function() {
     fixture.cleanup();
   });
 
-  it('Should have a length of 3', function() {
+  it('Navigation list jQuery object should have a length of 3', function(done) {
     let navNodes = $(this.result).find('.load-content li');
     let navLength = navNodes.length;
 
     navLength.should.equal(3);
+    done();
+  });
+
+  it('Navigation list should have 0 accessibility errors', function(done) {
+    let navList = document.getElementById('wrapper');
+
+    axe.a11yCheck(navList, function(results) {
+      if (results.violations.length > 0) {
+        console.log(results.violations);
+      }
+
+      results.violations.length.should.equal(0);
+      done();  
+    });
   });
 });
 

@@ -6,7 +6,7 @@
    http://oaa-accessibility.org/example/34/
  --> 
 
- <div role="application" class="tab-container">
+ <div role="application" class="tabs__container">
    <h2>User-selected preferences</h2>
 
    <form action="#" method="get" accept-charset="utf-8">
@@ -15,7 +15,8 @@
        <ul class="tablist" role="tablist">
          <li id="tab1" class="tab selected" aria-controls="panel1" aria-selected="true" role="tab" tabindex="0">Colors</li>
          <li id="tab2" class="tab" aria-controls="panel2" aria-selected="false" role="tab" tabindex="-1">Sizes</li>
-         <li id="tab3" class="tab" aria-controls="panel3" aria-selected="false" role="tab" tabindex="-1">Shipping</li>
+         <!-- Third <li> missing the role="tab" -->
+         <li id="tab3" class="tab" aria-controls="panel3" aria-selected="false" tabindex="-1">Shipping</li>
        </ul>
 
        <!-- Tab Panel #1 -->
