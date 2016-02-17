@@ -16,7 +16,8 @@ module.exports = function(config) {
         'app/scripts/src/*.js',
         'test/index.html',
         'test/scripts/src/unit/*.js',
-        'test/fixtures/**/*.html'
+        'test/fixtures/**/*.html',
+        'node_modules/axe-core/axe.min.js'
     ],
 
     // list of files to exclude
