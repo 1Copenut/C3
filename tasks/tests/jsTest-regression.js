@@ -3,7 +3,7 @@ module.exports = function(gulp, $) {
     return function() {
         'use strict';
 
-        var stream = gulp.src('./test/scripts/src/visualRegression/main.js')
+        var stream = gulp.src('./test/scripts/visualRegression/main.js')
             .pipe($.phantomcss({
                 screenshots: './test/screenshots/pass',
                 failures: './test/screenshots/failures',
