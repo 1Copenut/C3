@@ -1,3 +1,10 @@
+/**
+ * This is the main entry point for C3 builds
+ *
+ * @module main
+ * @main main
+ */
+
 import $ from 'jquery';
 
 $(document).ready(function() {

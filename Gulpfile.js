@@ -48,6 +48,7 @@ gulp.task('dist:uglifyScripts', require('./tasks/dist/distUglifyScripts')(gulp, 
  * ======================================== */ 
 gulp.task('js', require('./tasks/javascript/js-all')(gulp, sequence));
 gulp.task('js:build', require('./tasks/javascript/js-build')(gulp, babelify, browserify, source, $));
+gulp.task('js:doc', require('./tasks/javascript/js-doc')(gulp, $));
 
 
 /* ======================================== 
