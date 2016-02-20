@@ -46,6 +46,7 @@
     "gulp-uncss": "^1.0.1",
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.2.4",
+    "gulp-yuidoc": "^0.1.2",
     "is-path-cwd": "^1.0.0",
     "jade": "^1.9.2",
     "karma": "^0.13.15",

@@ -1,4 +1,5 @@
 # Directories
+/doc
 /node_modules
 /app/scripts/out/*
 /app/**/*.html
