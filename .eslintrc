@@ -6,7 +6,7 @@
         ],
         "indent": [
             2,
-            "tab"
+            2 
         ],
         "newline-after-var": [
             1,
@@ -26,11 +26,15 @@
         ],
         "new-cap": [
             2
-        ]
+        ],
+        "no-console": 0,
     },
     "env": {
         "es6": true,
         "browser": true
+    },
+    "ecmaFeatures": {
+        "modules": true
     },
     "extends": "eslint:recommended"
 }

@@ -22,7 +22,7 @@ gulp.task('default', ['server:nodemon', 'server:browsersync'], function() {
     gulp.watch('app/pages/*.nunjucks', ['nunjucks']);
     gulp.watch('app/templates/**/*.nunjucks', ['nunjucks']);
     gulp.watch('app/styles/sass/**/*.scss', ['sass']);
-    gulp.watch('app/scripts/src/*.js', ['js']);
+    gulp.watch('app/scripts/src/**/*.js', ['js']);
 });
 
 
