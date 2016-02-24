@@ -63,6 +63,7 @@
     "nodemon": "^1.4.0",
     "path": "^0.12.7",
     "phantomjs": "^1.9.19",
+    "pre-commit": "^1.1.2",
     "run-sequence": "^1.0.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-paths": "^2.0.0",
@@ -87,5 +88,8 @@
   "scripts": {
     "test": "karma start karma.conf.js",
     "full-test": "NODE_ENV=test karma start karma.conf.js --single-run --browsers Chrome"
-  }
+  },
+  "pre-commit": [ 
+    "full-test"
+  ] 
 }
