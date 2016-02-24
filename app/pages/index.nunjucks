@@ -1,0 +1,8 @@
+<!-- index.nunjucks -->
+{% extends 'layout.nunjucks' %}
+
+{% block content %}
+    {% include 'partials/_header.nunjucks' %}
+    {% import 'macros/_navigation.nunjucks' as nav %}
+    {{ nav.active('home') }}
+{% endblock %}
