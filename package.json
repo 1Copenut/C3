@@ -87,9 +87,11 @@
   },
   "scripts": {
     "test": "karma start karma.conf.js",
+    "js-lint": "gulp jsTest:lint",
     "full-test": "NODE_ENV=test karma start karma.conf.js --single-run --browsers Chrome"
   },
   "pre-commit": [ 
+    "js-lint",
     "full-test"
   ] 
 }
