@@ -1,16 +1,17 @@
 /**
- * This is a component class for a fully accessible tabpanel.
+ * This is a component module for a fully accessible tabpanel.
  *
  * Accessibility requirements:
  * Section 508
  * WCAG 2.0 Level AA 
  *
  * @module components/tab-panel 
+ * @requires utilities/key-codes
  * @main main
  */
 
-import KeyCodes from './components/key-codes';
+import KeyCodes from '../utilities/key-codes';
 
 var keycode = new KeyCodes();
 
-console.log(keycode);
+export default keycode;
