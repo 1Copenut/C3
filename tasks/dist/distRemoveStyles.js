@@ -7,7 +7,7 @@ module.exports = function(gulp, $) {
             .pipe($.uncss({
                 html: ['app/*.html']
             }))
-            .pipe($.cssnano())
+            .pipe($.csso())
             .pipe(gulp.dest('dist/styles'))
             .pipe($.notify({
                 onLast: true,

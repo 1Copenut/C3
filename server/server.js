@@ -6,8 +6,8 @@ var express = require("express"),
 /* Base route */
 app.use( '/', express.static(baseDir + 'app') );
 
-/* Dist (build) route */
-app.use( '/dist', express.static(baseDir + 'dist') );
+/* Build route */
+app.use( '/build', express.static(baseDir + 'build') );
 
 /* Test route */
 app.use( '/test', express.static(baseDir + 'test') );

@@ -1,21 +1,14 @@
-# Directories
-/doc
 /node_modules
-/app/scripts/out/*
-/app/**/*.html
-/app/scripts/out/*
+/build
 /dist
 /dist/**/*
-/test/scripts/out/*
-/test/screenshots/*
-/test/results/*
-/coverage/*
 
-# File types
 .DS_Store
+
 *.swp
+
 *.log
 *.sass-cache
+
 *.map
 *.css
-
