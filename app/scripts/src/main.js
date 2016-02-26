@@ -1,14 +1,11 @@
-/**
- * This is the main entry point for C3 builds
- *
- * @module main
- * @main main
- */
-
-import $ from 'jquery';
+/*jshint browser:true */
+var $ = require('jquery'),
+    Navigation = require('./navigation');
 
 $(document).ready(function() {
-  'use strict';
-  console.log('Smoke test. App main.js is loading ES6 modules correctly.');
+    'use strict';
+    var navigation = new Navigation('#navigation li', '#navigation a', 'current');
+
+    navigation.init();
 });
 
