@@ -10,8 +10,15 @@
  * @main main
  */
 
-import KeyCodes from '../utilities/key-codes';
+// import KeyCodes from '../utilities/key-codes';
 
-var keycode = new KeyCodes();
+// var keycode = new KeyCodes();
 
-export default keycode;
+class TabPanel {
+  constructor(id, accordian) {
+    this.id = id;
+    this.accordian = accordian;
+  }
+}
+
+export default TabPanel;
