@@ -1,7 +1,7 @@
 'use strict';
 
 import * as chai from 'chai';
-import { render } from '../utilities/utils-unit.js';
+import { render } from '../utilities/loadFixture.js';
 import $ from 'jquery';
 
 const should = chai.should();
@@ -13,7 +13,7 @@ describe('Navigation--Unordered List Links', function() {
   });
 
   beforeEach(function() {
-    this.result = fixture.load('tmpl__navigation.html');
+    this.result = fixture.load('tmpl__navigation--links.html');
     render('#fixtures', this.result);
   });
 

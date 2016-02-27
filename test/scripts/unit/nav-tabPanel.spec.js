@@ -1,9 +1,9 @@
 'use strict';
 
 import * as chai from 'chai';
-import { render } from '../utilities/utils-unit.js';
+import { render } from '../utilities/loadFixture.js';
 import $ from 'jquery';
-import TabPanel from '../../../app/scripts/src/components/tab-panel';
+import TabPanel from '../../../app/scripts/src/components/nav-tabPanel';
 
 const should = chai.should();
 
@@ -14,7 +14,7 @@ describe('Navigation--Accessible Tab Panel', function() {
   });
 
   beforeEach(function() {
-    this.result = fixture.load('tmpl__navigation--tabs.html');
+    this.result = fixture.load('tmpl__navigation--tabPanel.html');
     render('#fixtures', this.result);
   });
 

@@ -6,7 +6,7 @@
  */
 
 import $ from 'jquery';
-import KeyCode from './utilities/key-codes';
+import KeyCode from './utilities/keyCodes';
 
 $(document).ready(function() {
   let keycode = new KeyCode();

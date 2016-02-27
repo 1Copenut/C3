@@ -49,7 +49,7 @@ gulp.task('dist:uglifyScripts', require('./tasks/dist/distUglifyScripts')(gulp, 
 gulp.task('js', require('./tasks/javascript/js-all')(gulp, sequence));
 gulp.task('js:build', require('./tasks/javascript/js-build')(gulp, babelify, browserify, source, $));
 gulp.task('js:doc', require('./tasks/javascript/js-doc')(gulp, $));
-
+gulp.task('js:lint', require('./tasks/javascript/js-lint')(gulp, $));
 
 /* ======================================== 
  * Sass sub-modules 
@@ -75,7 +75,7 @@ gulp.task('nunjucks', require('./tasks/templates/tmplBuild')(gulp, $));
 /* ======================================== 
  * Test sub-modules 
  * ======================================== */ 
-gulp.task('jsTest:lint', require('./tasks/tests/jsTest-lint')(gulp, $));
+gulp.task('jsTest:unit', require('./tasks/tests/jsTest-unit')(gulp, $));
 gulp.task('jsTest:regression', require('./tasks/tests/jsTest-regression')(gulp, $));
 
 

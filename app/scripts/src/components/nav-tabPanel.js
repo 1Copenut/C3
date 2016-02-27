@@ -5,12 +5,12 @@
  * Section 508
  * WCAG 2.0 Level AA 
  *
- * @module components/tab-panel 
- * @requires utilities/key-codes
+ * @module components/nav-tabPanel 
+ * @requires utilities/keyCodes
  * @main main
  */
 
-// import KeyCodes from '../utilities/key-codes';
+// import KeyCodes from '../utilities/keyCodes';
 
 // var keycode = new KeyCodes();
 
