@@ -52,16 +52,26 @@ describe('Navigation--Accessible Tab Panel', function() {
   
   describe('#DOM Interaction', function() {
     it('Tab list jQuery object should have a length of 3', function(done) {
-      let tablist = $(this.result).find('.tablist li');
+      let tabList = $(this.result).find('.tablist li');
 
-      tablist.should.have.length(3);
+      tabList.should.have.length(3);
       done();
     });
 
     it('Tab panel jQuery object should have a length of 3', function(done) {
-      let tabpanels = $(this.result).find('.panel');
+      let tabPanels = $(this.result).find('.panel');
 
-      tabpanels.should.have.length(3);
+      tabPanels.should.have.length(3);
+      done();
+    });
+
+    it('First tab panel should have class "selected"', function(done) {
+      let tabPanel = new TabPanel('tabpanel1', false);
+      let $tabs = tabPanel.$tabs;
+
+      console.log($tabs[0]);
+      $tabs[0].getAttribute('class').should.equal('tab selected');
+
       done();
     });
   });

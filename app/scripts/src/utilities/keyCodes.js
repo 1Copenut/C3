@@ -1,8 +1,12 @@
 /**
  * This is a utility class for keyboard navigation 
  *
- * @class key-codes 
  * @main main
+ */
+
+/**
+ * @class KeyCodes
+ * @constructor
  */
 class KeyCodes {
   constructor() {
