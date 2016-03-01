@@ -22,7 +22,25 @@ describe('Navigation--Accessible Tab Panel', function() {
     fixture.cleanup();
   });
 
-  describe('#Constructor', function() {
+  describe('#Fixture Defaults', function() {
+    it('Tab list jQuery object should have a length of 3', function(done) {
+      let $tabList = $(this.result).find('.tablist li');
+
+      $tabList.should.have.length(3);
+
+      done();
+    });
+
+    it('Tab panel jQuery object should have a length of 3', function(done) {
+      let $tabPanels = $(this.result).find('.panel');
+
+      $tabPanels.should.have.length(3);
+
+      done();
+    });
+  });
+
+  describe('#Constructor()', function() {
     it('Tab panel should be an object', function(done) {
       let tabPanel = new TabPanel();
 
@@ -32,7 +50,7 @@ describe('Navigation--Accessible Tab Panel', function() {
     });
 
     it('Tab panel should have 2 properties, ID and accordian', function(done) {
-      let tabPanel = new TabPanel('test-id', true);
+      let tabPanel = new TabPanel('test-id', false);
 
       tabPanel.should.have.property('id');
       tabPanel.should.have.property('accordian');
@@ -49,44 +67,31 @@ describe('Navigation--Accessible Tab Panel', function() {
       done();
     });
   });
-  
-  describe('#DOM Interaction', function() {
-    it('Tab list jQuery object should have a length of 3', function(done) {
-      let $tabList = $(this.result).find('.tablist li');
 
-      $tabList.should.have.length(3);
+  describe('#Init()', function() {
+    let tabPanel;
 
-      done();
-    });
-
-    it('Tab panel jQuery object should have a length of 3', function(done) {
-      let $tabPanels = $(this.result).find('.panel');
-
-      $tabPanels.should.have.length(3);
-
-      done();
+    beforeEach(function() {
+      tabPanel = new TabPanel('tabpanel1', false);
+      tabPanel.init();
     });
 
     it('Tab panels should have attribute aria-hidden', function(done) {
-      let tabPanel = new TabPanel('tabpanel1', false);
-      let $tabPanels = $(this.result).find('.panel');
+        let $tabPanels = $(this.result).find('.panel');
 
-      $tabPanels.each(function(i) {
-        var $this = $(this);
+        $tabPanels.each(function(i) {
+          var $this = $(this);
+          $this.attr('aria-hidden').should.exist;
+        });
 
-        $this.attr('aria-hidden').should.exist;
+        done();
       });
 
-      done();
-    });
-
     it('All panels should be hidden except first one', function(done) {
-      let tabPanel = new TabPanel('tabpanel1', false);
       let $tabPanels = $(this.result).find('.panel').not('#panel1');
 
       $tabPanels.each(function(i) {
         var $this = $(this);
-
         $this.is(':hidden').should.equal(true);
       });
 
@@ -94,19 +99,25 @@ describe('Navigation--Accessible Tab Panel', function() {
     });
 
     it('First tab should have class "selected"', function(done) {
-      let tabPanel = new TabPanel('tabpanel1', false);
       let $tabs = tabPanel.$tabs;
 
       $tabs[0].getAttribute('class').should.equal('tab selected');
 
       done();
     });
-
+    
     it('First tab panel should be visible', function(done) {
-      let tabPanel = new TabPanel('tabpanel1', false);
       let $firstPanel = $(this.result).find('#panel1');
 
       $firstPanel.is(':visible').should.equal(true);
+
+      done();
+    });
+
+    it('First tab panel aria-hidden should be "false"', function(done) {
+      let $firstPanel = $(this.result).find('#panel1');
+
+      $firstPanel.attr('aria-hidden').should.equal('false');
 
       done();
     });
@@ -116,6 +127,7 @@ describe('Navigation--Accessible Tab Panel', function() {
     it('Tab panel should have 0 accessibility errors', function(done) {
       let tabPanel = new TabPanel('tabpanel1', false);
       let tabNav = document.querySelector('div.tabs__container');
+      tabPanel.init();
 
       axe.a11yCheck(tabNav, function(results) {
         if (results.violations.length > 0) {

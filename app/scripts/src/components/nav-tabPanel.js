@@ -62,7 +62,7 @@ class TabPanel {
     // this.bindHandlers();
 
     // Initialize the tab panel
-    this.init();
+    // this.init();
   }
 
   /**
@@ -78,24 +78,68 @@ class TabPanel {
      */
     let $tab;
 
-    /* Add ARIA attributes to the panels */
+    // Add ARIA attributes to the panels 
     this.$panels.attr('aria-hidden', 'true');
 
-    /* Hide all tab panels */
+    // Hide all tab panels
     this.$panels.hide();
     
-    /* Get the selected tab */
-    $tab = this.$tabs.filter('.selected');
-
-    if($tab === undefined) {
+    if($tab == undefined) {
       $tab = this.$tabs.first();
       $tab.addClass('selected');
     }
 
-    /* Show the first panel, and swap aria-hidden */
+    // Get the selected tab 
+    $tab = this.$tabs.filter('.selected');
+
+
+    // Show the first panel, and swap aria-hidden
     this.$panel.find('#' + $tab.attr('aria-controls'))
       .show()
       .attr('aria-hidden', 'false');
+  }
+
+  /**
+   * @method switchTabs 
+   * @param $curTab {String} The current, selected tab
+   * @param $newTab {String} The tab to show
+   *
+   * @param id {String} id of the div containing tabPanel
+   * Give focus to a new tabPanel or accordian header. If a
+   * tabPanel, switchTabs hides the current panel and shows
+   * the selected one. 
+   */
+  switchTabs($curTab, $newTab) {
+    // Remove highlight from current tab
+    // TODO: Add class focus to this function when needed
+    $curTab.removeClass('selected');
+
+    // Remove tab from teh tab order and update aria-selected
+    $curTab.attr('tabindex', '-1')
+      .attr('aria-selected', 'false');
+
+    // Highlight the new tab and update aria-selected
+    $newTab.addClass('selected')
+      .attr('aria-selected', 'true');
+
+    // If this is a tab panel, swap displayed tabs
+    if (this.accordian === false) {
+      // Hide the current tab panel and set aria-hidden to true
+      this.$panel.find('#' + $curTab.attr('aria-controls'))
+        .hide()
+        .attr('aria-hidden', 'true');
+
+      // Show the new tab panel and set aria-hidden to false
+      this.$panel.find('#' + $newTab.attr('aria-controls'))
+        .show()
+        .attr('aria-hidden', 'false');
+    }
+
+    // Make new tab navigable
+    $newTab.attr('tabindex', '0');
+
+    // Give the new tab focus
+    $newTab.focus();
   }
 }
 
