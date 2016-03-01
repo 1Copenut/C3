@@ -1,8 +1,8 @@
 'use strict';
 
-import * as chai from 'chai';
-import { render } from '../utilities/loadFixture.js';
+import chai from 'chai';
 import $ from 'jquery';
+import { render } from '../utilities/loadFixture.js';
 
 const should = chai.should();
 

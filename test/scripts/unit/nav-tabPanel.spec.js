@@ -1,8 +1,8 @@
 'use strict';
 
-import * as chai from 'chai';
-import { render } from '../utilities/loadFixture.js';
 import $ from 'jquery';
+import chai from 'chai';
+import { render } from '../utilities/loadFixture.js';
 import TabPanel from '../../../app/scripts/src/components/nav-tabPanel';
 
 const should = chai.should();
@@ -52,25 +52,61 @@ describe('Navigation--Accessible Tab Panel', function() {
   
   describe('#DOM Interaction', function() {
     it('Tab list jQuery object should have a length of 3', function(done) {
-      let tabList = $(this.result).find('.tablist li');
+      let $tabList = $(this.result).find('.tablist li');
 
-      tabList.should.have.length(3);
+      $tabList.should.have.length(3);
+
       done();
     });
 
     it('Tab panel jQuery object should have a length of 3', function(done) {
-      let tabPanels = $(this.result).find('.panel');
+      let $tabPanels = $(this.result).find('.panel');
 
-      tabPanels.should.have.length(3);
+      $tabPanels.should.have.length(3);
+
       done();
     });
 
-    it('First tab panel should have class "selected"', function(done) {
+    it('Tab panels should have attribute aria-hidden', function(done) {
+      let tabPanel = new TabPanel('tabpanel1', false);
+      let $tabPanels = $(this.result).find('.panel');
+
+      $tabPanels.each(function(i) {
+        var $this = $(this);
+
+        $this.attr('aria-hidden').should.exist;
+      });
+
+      done();
+    });
+
+    it('All panels should be hidden except first one', function(done) {
+      let tabPanel = new TabPanel('tabpanel1', false);
+      let $tabPanels = $(this.result).find('.panel').not('#panel1');
+
+      $tabPanels.each(function(i) {
+        var $this = $(this);
+
+        $this.is(':hidden').should.equal(true);
+      });
+
+      done();
+    });
+
+    it('First tab should have class "selected"', function(done) {
       let tabPanel = new TabPanel('tabpanel1', false);
       let $tabs = tabPanel.$tabs;
 
-      console.log($tabs[0]);
       $tabs[0].getAttribute('class').should.equal('tab selected');
+
+      done();
+    });
+
+    it('First tab panel should be visible', function(done) {
+      let tabPanel = new TabPanel('tabpanel1', false);
+      let $firstPanel = $(this.result).find('#panel1');
+
+      $firstPanel.is(':visible').should.equal(true);
 
       done();
     });
@@ -78,6 +114,7 @@ describe('Navigation--Accessible Tab Panel', function() {
 
   describe('#Accessibility', function() {
     it('Tab panel should have 0 accessibility errors', function(done) {
+      let tabPanel = new TabPanel('tabpanel1', false);
       let tabNav = document.querySelector('div.tabs__container');
 
       axe.a11yCheck(tabNav, function(results) {
@@ -86,6 +123,7 @@ describe('Navigation--Accessible Tab Panel', function() {
         }
 
         results.violations.length.should.equal(0);
+
         done();
       });
     }); 

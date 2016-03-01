@@ -78,6 +78,12 @@ class TabPanel {
      */
     let $tab;
 
+    /* Add ARIA attributes to the panels */
+    this.$panels.attr('aria-hidden', 'true');
+
+    /* Hide all tab panels */
+    this.$panels.hide();
+    
     /* Get the selected tab */
     $tab = this.$tabs.filter('.selected');
 
@@ -85,6 +91,11 @@ class TabPanel {
       $tab = this.$tabs.first();
       $tab.addClass('selected');
     }
+
+    /* Show the first panel, and swap aria-hidden */
+    this.$panel.find('#' + $tab.attr('aria-controls'))
+      .show()
+      .attr('aria-hidden', 'false');
   }
 }
 
