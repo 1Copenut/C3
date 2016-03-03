@@ -41,17 +41,20 @@ describe('Navigation--Accessible Tab Panel', function() {
   });
 
   describe('#Constructor()', function() {
-    it('Tab panel should be an object', function(done) {
-      let tabPanel = new TabPanel();
+    let tabPanel;
 
+    beforeEach(function() {
+      tabPanel = new TabPanel('tabpanel1', false);
+      tabPanel.init();
+    });
+
+    it('Tab panel should be an object', function(done) {
       tabPanel.should.be.an('object');
 
       done();
     });
 
     it('Tab panel should have 2 properties, ID and accordian', function(done) {
-      let tabPanel = new TabPanel('test-id', false);
-
       tabPanel.should.have.property('id');
       tabPanel.should.have.property('accordian');
 
@@ -59,8 +62,6 @@ describe('Navigation--Accessible Tab Panel', function() {
     });
 
     it('Tab panel properties should be correct type', function(done) {
-      let tabPanel = new TabPanel('test-id', false);
-
       tabPanel.id.should.be.a('string');
       tabPanel.accordian.should.be.a('boolean');
 
@@ -99,9 +100,9 @@ describe('Navigation--Accessible Tab Panel', function() {
     });
 
     it('First tab should have class "selected"', function(done) {
-      let $tabs = tabPanel.$tabs;
+      let tabs = tabPanel.$tabs;
 
-      $tabs[0].getAttribute('class').should.equal('tab selected');
+      tabs[0].getAttribute('class').should.equal('tab selected');
 
       done();
     });
@@ -118,6 +119,59 @@ describe('Navigation--Accessible Tab Panel', function() {
       let $firstPanel = $(this.result).find('#panel1');
 
       $firstPanel.attr('aria-hidden').should.equal('false');
+
+      done();
+    });
+  });
+
+  describe('#SwitchTabs()', function() {
+    let tabPanel;
+    let $curTab;
+    let $newTab;
+    let $curPanel;
+    let $newPanel;
+
+    beforeEach(function() {
+      tabPanel = new TabPanel('tabpanel1', false);
+      $curTab = $(this.result).find('#tab1');
+      $newTab = $(this.result).find('#tab2');
+      $curPanel = $(this.result).find('#panel1');
+      $newPanel = $(this.result).find('#panel2');
+
+      tabPanel.switchTabs($curTab, $newTab);
+    });
+
+    it('Selected class should be updated dynamically', function(done) {
+      $curTab[0].getAttribute('class').should.equal('tab');
+      $newTab[0].getAttribute('class').should.equal('tab selected');
+
+      done();
+    });
+
+    it('Tabs\' aria-selected should be updated dynamically', function(done) {
+      $curTab[0].getAttribute('aria-selected').should.equal('false');
+      $newTab[0].getAttribute('aria-selected').should.equal('true');
+      
+      done();
+    });
+
+    it('Panels\' aria-hidden should be updated dynamically', function(done) {
+      $curPanel[0].getAttribute('aria-hidden').should.equal('true');
+      $newPanel[0].getAttribute('aria-hidden').should.equal('false');
+      
+      done();
+    });
+
+    it('Shown panel should be updated dynamically', function(done) {
+      $curPanel.is(':hidden').should.equal(true);
+      $newPanel.is(':visible').should.equal(true);
+
+      done();
+    });
+
+    it('Tabindex should be updated dynamically', function(done) {
+      $curTab[0].getAttribute('tabindex').should.equal('-1');
+      $newTab[0].getAttribute('tabindex').should.equal('0');
 
       done();
     });
