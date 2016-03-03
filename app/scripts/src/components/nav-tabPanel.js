@@ -16,7 +16,7 @@
  * 2. panels are divs with class 'panel'
  */
 
-import KeyCodes from '../utilities/keyCodes';
+import KeyCode from '../utilities/keyCodes';
 import $ from 'jquery';
 
 /**
@@ -56,7 +56,7 @@ class TabPanel {
      * @property keys
      * @type Object
      */
-    this.keys = new KeyCodes();
+    this.keys = new KeyCode();
 
     // Bind event handlers
     // this.bindHandlers();
@@ -101,10 +101,9 @@ class TabPanel {
 
   /**
    * @method switchTabs 
-   * @param $curTab {String} The current, selected tab
-   * @param $newTab {String} The tab to show
+   * @param $curTab {String} jQuery object for current, selected tab
+   * @param $newTab {String} jQuery object for the tab to show
    *
-   * @param id {String} id of the div containing tabPanel
    * Give focus to a new tabPanel or accordian header. If a
    * tabPanel, switchTabs hides the current panel and shows
    * the selected one. 
@@ -140,6 +139,119 @@ class TabPanel {
 
     // Give the new tab focus
     $newTab.focus();
+  }
+  
+  // TODO: Add method togglePanel for accordian 
+
+  /**
+   * @method bindHandlers 
+   *
+   * bindHandlers is a member function to bind event
+   * handlers for the tabs
+   */
+  bindHandlers() {
+    /**
+     * @property thisObj 
+     * @type Object
+     *
+     * Store this pointer for reference 
+     */
+    let thisObj = this;
+
+    /*
+     * Bind handlers for the tabs
+     *
+     * The bindHandlers method gathers four separate handlers:
+     * keydown()
+     * keypress()
+     * click()
+     * focus()
+     * blur()
+     */
+
+    // Bind a tab keydown handler
+    this.$tabs.keydown(function(e) {
+      return thisObj.handleTabKeyDown($(this), e);
+    });
+
+    // Bind a tab keypress handler
+    this.$tabs.keydown(function(e) {
+      return thisObj.handleTabKeyPress($(this), e);
+    });
+
+    // Bind a tab click handler
+    this.$tabs.keydown(function(e) {
+      return thisObj.handleTabClick($(this), e);
+    });
+
+    // Bind a tab focus handler
+    this.$tabs.keydown(function(e) {
+      return thisObj.handleTabFocus($(this), e);
+    });
+
+    // Bind a tab blur handler
+    this.$tabs.keydown(function(e) {
+      return thisObj.handleTabBlur($(this), e);
+    });
+  }
+
+  /**
+   * @method handleTabKeyDown 
+   * @param $tab {Object} jQuery object for tab being processed
+   * @param e {Object} Associated event object
+   *
+   * Process keydown events for a tab
+   */
+  handleTabKeyDown($tab, e) {
+    if (e.altKey) {
+      // Do nothing
+      return true;
+    }
+
+    switch (e.keyCode) {
+      case this.keys.enter:
+      case this.keys.space: {
+        // Only process this if it is an accordian widget
+        if (this.accordian === true) {
+          // Display or collapse the panel
+          this.togglePanel($tab);
+
+          e.stopPropagation();
+          return false;
+        }
+
+        return true;
+      }
+
+      case this.keys.left:
+      case this.keys.up: {
+        // let thisObj = this;
+        // let $prevTab; // Holds jQuery object of tab from previous pass
+        let $newTab; // Holds jQuery object of new tab
+
+        if (e.ctrlKey) {
+          // Ctrl + arrow moves focus from panel content to teh open
+          // tab/accordian header
+        } else {
+          let curNdx = this.$tabs.index($tab);
+
+          if (curNdx === 0) {
+            // Tab is the first one
+            // Set newTab to last tab
+            $newTab = this.$tabs.last();
+          } else {
+            // Set newTab to previous
+            $newTab = this.$tabs.eq(curNdx - 1);
+          }
+
+          // Switch to the new tab
+          this.switchTabs($tab, $newTab);
+        }
+
+        e.stopPropagation();
+        return false;
+      }
+    }
   }
 }
 

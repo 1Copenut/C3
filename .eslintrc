@@ -1,40 +1,41 @@
 {
-    "rules": {
-        "strict": [
-            2,
-            "function"
-        ],
-        "indent": [
-            2,
-            2 
-        ],
-        "newline-after-var": [
-            1,
-            "always"
-        ],
-        "quotes": [
-            2,
-            "single"
-        ],
-        "linebreak-style": [
-            2,
-            "unix"
-        ],
-        "semi": [
-            2,
-            "always"
-        ],
-        "new-cap": [
-            2
-        ],
-        "no-console": 0,
-    },
+  "rules": {
+    "strict": [
+      2,
+      "function"
+    ],
+    "indent": [
+      2,
+      2,
+      {"SwitchCase": 1} 
+    ],
+    "newline-after-var": [
+      1,
+    "always"
+    ],
+    "quotes": [
+      2,
+    "single"
+    ],
+    "linebreak-style": [
+      2,
+    "unix"
+    ],
+    "semi": [
+      2,
+    "always"
+    ],
+    "new-cap": [
+      2
+    ],
+    "no-console": 0,
+  },
     "env": {
-        "es6": true,
-        "browser": true
+      "es6": true,
+      "browser": true
     },
     "ecmaFeatures": {
-        "modules": true
+      "modules": true
     },
     "extends": "eslint:recommended"
 }
