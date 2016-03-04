@@ -251,6 +251,45 @@ class TabPanel {
         e.stopPropagation();
         return false;
       }
+
+      case this.keys.right:
+      case this.keys.down: {
+        // let thisObj = this;
+        // let foundTab = false; // Set to true when current tab found
+        let $newTab; // The new tab to switch to
+        let curNdx = this.$tabs.index($tab);
+
+        if (curNdx === this.$tabs.length - 1) {
+          // Tab is the last one
+          // Set newTab to first tab
+          $newTab = this.$tabs.first();
+        } else {
+          // Set new tab to next tab
+          $newTab = this.$tabs.eq(curNdx + 1);
+        }
+
+        // Switch to the new tab
+        this.switchTabs($tab, $newTab);
+
+        e.stopPropagation();
+        return false;
+      }
+
+      case this.keys.home: {
+        // Switch to the first tab
+        this.switchTabs($tab, this.$tabs.first());
+
+        e.stopPropagation();
+        return false;
+      }
+
+      case this.keys.end: {
+        // Switch to the last tab
+        this.switchTabs($tab, this.$tabs.last());
+
+        e.stopPropagation();
+        return false;
+      }
     }
   }
 }

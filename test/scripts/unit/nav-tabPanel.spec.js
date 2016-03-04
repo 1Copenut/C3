@@ -177,6 +177,31 @@ describe('Navigation--Accessible Tab Panel', function() {
     });
   });
 
+  describe('#TabKeyDown()', function() {
+    let tabPanel;
+    let $curTab;
+    let $lastTab;
+
+    beforeEach(function() {
+      tabPanel = new TabPanel('tabpanel1', false);
+      $curTab = $(this.result).find('#tab1');
+      $lastTab = $(this.result).find('#tab3');
+
+      tabPanel.init();
+      tabPanel.bindHandlers();
+    });
+
+    it('Last tab should be selected on left arrow keydown', function(done) {
+      let e = $.Event('keypress');
+      e.which = 37; // Left arrow key
+      $curTab.trigger(e);
+
+      console.log(e);
+
+      done();
+    });
+  });
+
   describe('#Accessibility', function() {
     it('Tab panel should have 0 accessibility errors', function(done) {
       let tabPanel = new TabPanel('tabpanel1', false);
