@@ -225,8 +225,8 @@ class TabPanel {
 
       case this.keys.left:
       case this.keys.up: {
-        // let thisObj = this;
-        // let $prevTab; // Holds jQuery object of tab from previous pass
+        let thisObj = this;
+        let $prevTab; // Holds jQuery object of tab from previous pass
         let $newTab; // Holds jQuery object of new tab
 
         if (e.ctrlKey) {
@@ -246,6 +246,8 @@ class TabPanel {
 
           // Switch to the new tab
           this.switchTabs($tab, $newTab);
+
+          console.log('Simulated keydown event fired!');
         }
 
         e.stopPropagation();
@@ -254,8 +256,8 @@ class TabPanel {
 
       case this.keys.right:
       case this.keys.down: {
-        // let thisObj = this;
-        // let foundTab = false; // Set to true when current tab found
+        let thisObj = this;
+        let foundTab = false; // Set to true when current tab found
         let $newTab; // The new tab to switch to
         let curNdx = this.$tabs.index($tab);
 

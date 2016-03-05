@@ -3,6 +3,7 @@
 import $ from 'jquery';
 import chai from 'chai';
 import { render } from '../utilities/loadFixture.js';
+import '../lib/jquery.simulate.js';
 import TabPanel from '../../../app/scripts/src/components/nav-tabPanel';
 
 const should = chai.should();
@@ -188,15 +189,15 @@ describe('Navigation--Accessible Tab Panel', function() {
       $lastTab = $(this.result).find('#tab3');
 
       tabPanel.init();
-      tabPanel.bindHandlers();
+      // tabPanel.bindHandlers();
     });
 
     it('Last tab should be selected on left arrow keydown', function(done) {
-      let e = $.Event('keypress');
-      e.which = 37; // Left arrow key
-      $curTab.trigger(e);
+      let $trigger = $(document.getElementById('tab1'));
 
-      console.log(e);
+      tabPanel.handleTabKeyDown($curTab, $trigger.simulate('keypress', { keyCode: 37 }));
+
+      console.log($lastTab);
 
       done();
     });
