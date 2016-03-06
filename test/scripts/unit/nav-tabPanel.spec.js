@@ -181,23 +181,97 @@ describe('Navigation--Accessible Tab Panel', function() {
   describe('#TabKeyDown()', function() {
     let tabPanel;
     let $curTab;
+    let $secondTab;
     let $lastTab;
 
     beforeEach(function() {
       tabPanel = new TabPanel('tabpanel1', false);
       $curTab = $(this.result).find('#tab1');
+      $secondTab = $(this.result).find('#tab2');
       $lastTab = $(this.result).find('#tab3');
 
       tabPanel.init();
-      // tabPanel.bindHandlers();
     });
 
+    it('First tab should be selected on home keydown', function(done) {
+      tabPanel.handleTabKeyDown($curTab, $curTab.simulate('keydown', { keyCode: 39 }));
+      tabPanel.handleTabKeyDown($curTab, $curTab.simulate('keydown', { keyCode: 36 }));
+
+      $curTab[0].getAttribute('class').should.equal('tab selected focus');
+      $curTab[0].getAttribute('tabindex').should.equal('0');
+      $curTab[0].getAttribute('aria-selected').should.equal('true');
+
+      done();
+    });
+
+    it('Second tab should be selected on right arrow keydown', function(done) {
+      tabPanel.handleTabKeyDown($curTab, $curTab.simulate('keydown', { keyCode: 39 }));
+
+      $secondTab[0].getAttribute('class').should.equal('tab selected focus');
+      $secondTab[0].getAttribute('tabindex').should.equal('0');
+      $secondTab[0].getAttribute('aria-selected').should.equal('true');
+
+      done();
+    });
+
+    it('Second tab should be selected on down arrow keydown', function(done) {
+      tabPanel.handleTabKeyDown($curTab, $curTab.simulate('keydown', { keyCode: 40 }));
+
+      $secondTab[0].getAttribute('class').should.equal('tab selected focus');
+      $secondTab[0].getAttribute('tabindex').should.equal('0');
+      $secondTab[0].getAttribute('aria-selected').should.equal('true');
+
+      done();
+    });
+    
     it('Last tab should be selected on left arrow keydown', function(done) {
-      let $trigger = $(document.getElementById('tab1'));
+      tabPanel.handleTabKeyDown($curTab, $curTab.simulate('keydown', { keyCode: 37 }));
 
-      tabPanel.handleTabKeyDown($curTab, $trigger.simulate('keypress', { keyCode: 37 }));
+      $lastTab[0].getAttribute('class').should.equal('tab selected focus');
+      $lastTab[0].getAttribute('tabindex').should.equal('0');
+      $lastTab[0].getAttribute('aria-selected').should.equal('true');
 
-      console.log($lastTab);
+      done();
+    });
+
+    it('Last tab should be selected on up arrow keydown', function(done) {
+      tabPanel.handleTabKeyDown($curTab, $curTab.simulate('keydown', { keyCode: 38 }));
+
+      $lastTab[0].getAttribute('class').should.equal('tab selected focus');
+      $lastTab[0].getAttribute('tabindex').should.equal('0');
+      $lastTab[0].getAttribute('aria-selected').should.equal('true');
+
+      done();
+    });
+    
+    it('Last tab should be selected on end keydown', function(done) {
+      tabPanel.handleTabKeyDown($curTab, $curTab.simulate('keydown', { keyCode: 35 }));
+
+      $lastTab[0].getAttribute('class').should.equal('tab selected focus');
+      $lastTab[0].getAttribute('tabindex').should.equal('0');
+      $lastTab[0].getAttribute('aria-selected').should.equal('true');
+
+      done();
+    });
+  });
+
+  describe('#TabKeyPress()', function() {
+    let tabPanel;
+    let $curTab;
+
+    beforeEach(function() {
+      tabPanel = new TabPanel('tabpanel1', false);
+      $curTab = $(this.result).find('#tab1');
+
+      tabPanel.init();
+    });
+
+    it('First tab should remain selected on keypress', function(done) {
+      tabPanel.handleTabKeyPress($curTab, $curTab.simulate('keypress', { keyCode: 13 }));
+
+      $curTab[0].getAttribute('class').should.equal('tab selected');
+      $curTab[0].getAttribute('tabindex').should.equal('0');
+      $curTab[0].getAttribute('aria-selected').should.equal('true');
 
       done();
     });

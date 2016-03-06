@@ -57,12 +57,6 @@ class TabPanel {
      * @type Object
      */
     this.keys = new KeyCode();
-
-    // Bind event handlers
-    // this.bindHandlers();
-
-    // Initialize the tab panel
-    // this.init();
   }
 
   /**
@@ -97,6 +91,9 @@ class TabPanel {
     this.$panel.find('#' + $tab.attr('aria-controls'))
       .show()
       .attr('aria-hidden', 'false');
+    
+    // Bind listeners for keyboard and mouse events
+    this.bindHandlers();
   }
 
   /**
@@ -175,22 +172,22 @@ class TabPanel {
     });
 
     // Bind a tab keypress handler
-    this.$tabs.keydown(function(e) {
+    this.$tabs.keypress(function(e) {
       return thisObj.handleTabKeyPress($(this), e);
     });
 
     // Bind a tab click handler
-    this.$tabs.keydown(function(e) {
+    this.$tabs.click(function(e) {
       return thisObj.handleTabClick($(this), e);
     });
 
     // Bind a tab focus handler
-    this.$tabs.keydown(function(e) {
+    this.$tabs.focus(function(e) {
       return thisObj.handleTabFocus($(this), e);
     });
 
     // Bind a tab blur handler
-    this.$tabs.keydown(function(e) {
+    this.$tabs.blur(function(e) {
       return thisObj.handleTabBlur($(this), e);
     });
   }
@@ -225,8 +222,8 @@ class TabPanel {
 
       case this.keys.left:
       case this.keys.up: {
-        let thisObj = this;
-        let $prevTab; // Holds jQuery object of tab from previous pass
+        // let thisObj = this;
+        // let $prevTab; // Holds jQuery object of tab from previous pass
         let $newTab; // Holds jQuery object of new tab
 
         if (e.ctrlKey) {
@@ -246,8 +243,6 @@ class TabPanel {
 
           // Switch to the new tab
           this.switchTabs($tab, $newTab);
-
-          console.log('Simulated keydown event fired!');
         }
 
         e.stopPropagation();
@@ -256,8 +251,8 @@ class TabPanel {
 
       case this.keys.right:
       case this.keys.down: {
-        let thisObj = this;
-        let foundTab = false; // Set to true when current tab found
+        // let thisObj = this;
+        // let foundTab = false; // Set to true when current tab found
         let $newTab; // The new tab to switch to
         let curNdx = this.$tabs.index($tab);
 
@@ -293,6 +288,110 @@ class TabPanel {
         return false;
       }
     }
+  }
+
+  /**
+   * @method handleTabKeyPress 
+   * @param $tab {Object} jQuery object for tab being processed
+   * @param e {Object} Associated event object
+   * @return {Boolean} Returns true if propagating, false if consuming event
+   *
+   * Process keypress events for a tab
+   */
+  handleTabKeyPress($tab, e) {
+    if (e.altKey) {
+      // Do nothing
+      return true;
+    }
+
+    switch (e.keyCode) {
+      case this.keys.enter:
+      case this.keys.space:
+      case this.keys.left:
+      case this.keys.up:
+      case this.keys.right:
+      case this.keys.down:
+      case this.keys.home:
+      case this.keys.end: {
+        e.stopPropagation();
+        return false;
+      }
+
+      case this.keys.pageup:
+      case this.keys.pagedown: {
+        // The tab kepress handler must consume pageup andpagedown
+        // keypresses to prevent Firefox from switching tabs on
+        // ctrl+pageup and ctrl+pagedown
+        if (!e.ctrlKey) {
+          return true;
+        }
+
+        e.stopPropagation();
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * @method handleTabClick 
+   * @param $tab {Object} jQuery object for tab being processed
+   * @return {Boolean} returns true
+   *
+   * Process click events for a tab
+   */
+  handleTabClick($tab) {
+    // Remove the highlighting from all tabs
+    this.$tabs.removeClass('selected');
+
+    // Remove all tabs from the tab order and reset aria-selected attribute
+    this.$tabs.attr('tabindex', '-1').attr('aria-selected', 'false');
+
+    // Hide all tab panels
+    this.$panels.hide();
+
+    // Highlight the clicked tab and update aria-selected attribute
+    $tab.addClass('selected').attr('aria-selected', 'true');
+
+    // Show the clicked tab panel
+    this.$panel.find('#' + $tab.attr('aria-controls')).show();
+
+    // Make clicked tab navigable
+    $tab.attr('tabindex', '0');
+
+    // Give clicked tab focus
+    $tab.focus();
+
+    return true;
+  }
+
+  /**
+   * @method handleTabFocus 
+   * @param $tab {Object} jQuery object for tab being processed
+   * @return {Boolean} returns true
+   *
+   * Process focus events for a tab
+   */
+  handleTabFocus($tab) {
+    // Add the focus class to the tab
+    $tab.addClass('focus');
+
+    return true;
+  }
+
+  /**
+   * @method handleTabBlur 
+   * @param $tab {Object} jQuery object for tab being processed
+   * @return {Boolean} returns true
+   *
+   * Process blur events for a tab
+   */
+  handleTabBlur($tab) {
+    // Remove the focus class from the tab
+    $tab.removeClass('focus');
+
+    return true;
   }
 }
 
