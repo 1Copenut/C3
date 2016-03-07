@@ -14,7 +14,6 @@
 
   <!-- htmlbuild:css -->
   <link rel="stylesheet" href="styles/css/main.css">
-  <link rel="stylesheet" href="lib/video-js/video-js.css">
   <!-- endbuild -->
 
   <script src="lib/modernizr/modernizr.js"></script>
@@ -25,7 +24,6 @@
     {% block content %}
     {% endblock %}
   </div>
-  <script src="lib/video-js/video.js"></script>
   <!-- htmlbuild:js -->
   <script src="scripts/out/output.js"></script>
   <!-- endbuild -->

@@ -6,12 +6,11 @@
  */
 
 import $ from 'jquery';
-import KeyCode from './utilities/keyCodes';
+import TabPanel from './components/nav-tabPanel';
 
 $(document).ready(function() {
-  let keycode = new KeyCode();
+  let tabPanel = new TabPanel('tabpanel1', false);
 
   console.log('Smoke test. App main.js is loading ES6 modules correctly.');
-  console.log(keycode.down);
 });
 

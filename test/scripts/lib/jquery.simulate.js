@@ -21,7 +21,7 @@ $.fn.simulate = function( type, options ) {
 };
 
 $.simulate = function( elem, type, options ) {
-	var method = $.camelCase( "simulate-" + type );
+	let method = $.camelCase( "simulate-" + type );
 
 	this.target = elem;
 	this.options = options;
@@ -85,7 +85,7 @@ $.extend( $.simulate.prototype, {
 	},
 
 	mouseEvent: function( type, options ) {
-		var event, eventDoc, doc, body;
+		let event, eventDoc, doc, body;
 		options = $.extend({
 			bubbles: true,
 			cancelable: (type !== "mousemove"),
@@ -151,7 +151,7 @@ $.extend( $.simulate.prototype, {
 	},
 
 	keyEvent: function( type, options ) {
-		var event;
+		let event;
 		options = $.extend({
 			bubbles: true,
 			cancelable: true,
@@ -211,7 +211,7 @@ $.extend( $.simulate.prototype, {
 	},
 
 	simulateFocus: function() {
-		var focusinEvent,
+		let focusinEvent,
 			triggered = false,
 			element = $( this.target );
 
@@ -232,7 +232,7 @@ $.extend( $.simulate.prototype, {
 	},
 
 	simulateBlur: function() {
-		var focusoutEvent,
+		let focusoutEvent,
 			triggered = false,
 			element = $( this.target );
 
@@ -268,7 +268,7 @@ $.extend( $.simulate.prototype, {
 /** complex events **/
 
 function findCenter( elem ) {
-	var offset,
+	let offset,
 		document = $( elem.ownerDocument );
 	elem = $( elem );
 	offset = elem.offset();
@@ -280,7 +280,7 @@ function findCenter( elem ) {
 }
 
 function findCorner( elem ) {
-	var offset,
+	let offset,
 		document = $( elem.ownerDocument );
 	elem = $( elem );
 	offset = elem.offset();
@@ -293,7 +293,7 @@ function findCorner( elem ) {
 
 $.extend( $.simulate.prototype, {
 	simulateDrag: function() {
-		var i = 0,
+		let i = 0,
 			target = this.target,
 			eventDoc = target.ownerDocument,
 			options = this.options,

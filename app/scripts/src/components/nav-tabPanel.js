@@ -18,6 +18,7 @@
 
 import KeyCode from '../utilities/keyCodes';
 import $ from 'jquery';
+import '../lib/focusable.jquery.js';
 
 /**
  * @class TabPanel
@@ -57,6 +58,12 @@ class TabPanel {
      * @type Object
      */
     this.keys = new KeyCode();
+    
+    // Initiate the instance
+    this.init();
+
+    // Bind listeners for keyboard and mouse events
+    this.bindHandlers();
   }
 
   /**
@@ -91,9 +98,6 @@ class TabPanel {
     this.$panel.find('#' + $tab.attr('aria-controls'))
       .show()
       .attr('aria-hidden', 'false');
-    
-    // Bind listeners for keyboard and mouse events
-    this.bindHandlers();
   }
 
   /**
@@ -189,6 +193,16 @@ class TabPanel {
     // Bind a tab blur handler
     this.$tabs.blur(function(e) {
       return thisObj.handleTabBlur($(this), e);
+    });
+
+    // Bind a panel keydown handler
+    this.$panels.keydown(function(e) {
+      return thisObj.handlePanelKeyDown($(this), e);
+    });
+
+    // Bind a panel keypress handler
+    this.$panels.keypress(function(e) {
+      return thisObj.handlePanelKeyPress($(this), e);
     });
   }
 
@@ -390,6 +404,135 @@ class TabPanel {
   handleTabBlur($tab) {
     // Remove the focus class from the tab
     $tab.removeClass('focus');
+
+    return true;
+  }
+
+  /**
+   * @method handlePanelKeyDown
+   * @param $elem {Object} jQuery object for element being processed
+   * @param e {Object} e is the associated event object 
+   * @return {Boolean} returns true if propagating, false if consuming event
+   *
+   * Process keydown events for a panel 
+   */
+  handlePanelKeyDown($elem, e) {
+    if (e.altKey) {
+      // Do nothing
+      return true;
+    }
+
+    switch (e.keyCode) {
+      case this.keys.esc: {
+        e.stopPropagation();
+        return false;
+      }
+
+      case this.keys.left:
+      case this.keys.up: {
+        if (!e.ctrlKey) {
+          // Do not process
+          return true;
+        }
+
+        // Get the jQuery object of the tab
+        var $tab = $('#' + $elem.attr('aria-labelledby'));
+
+        // Move focus to the tab
+        $tab.focus();
+
+        e.stopPropagation();
+        return false;
+      }
+
+      case this.keys.pageup: {
+        let $newTab;
+
+        if (!e.ctrlKey) {
+          // Do not process
+          return true;
+        }
+
+        // Get the jQuery object of the tab
+        let curNdx = this.$tabs.index($tab);
+
+        if (curNdx === 0) {
+          // This is the first tab, set focus on the last one
+          $newTab = this.$tabs.last();
+        } else {
+          // Set focus on the previous tab
+          $newTab = this.$tabs.eq(curNdx - 1);
+        }
+
+        // Switch to the new tab
+        this.switchTabs($tab, $newTab);
+
+        e.stopPropagation();
+        e.preventDefault();
+        return false;
+      }
+
+      case this.keys.pagedown: {
+        let $newTab;
+
+        if (!e.ctrlKey) {
+          // Do not process
+          return true;
+        }
+
+        // Get the jQuery object of the tab
+        let $tab = $('#' + $elem.attr('aria-labelledby'));
+
+        // Get the index of the tab in the tab list
+        let curNdx = this.$tabs.index($tab);
+
+        if (curNdx === this.$tabs.length - 1) {
+          // This is the last tab, set focus on the first one
+          $newTab = this.$tabs.first();
+        } else {
+          // Set focus on the next tab
+          $newTab = this.$tabs.eq(curNdx + 1);
+        }
+
+        // Switch to the new tab
+        this.switchTabs($tab, $newTab);
+
+        e.stopPropagation();
+        e.preventDefault();
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  /**
+   * @method handlePanelKeyPress
+   * @param $elem {Object} jQuery object for element being processed
+   * @param e {Object} e is the associated event object 
+   * @return {Boolean} returns true if propagating, false if consuming event
+   *
+   * Process keypress events for a panel 
+   */
+  handlePanelKeyPress($elem, e) {
+    if (!e.altKey) {
+      // Do not process
+      return true;
+    }
+
+    if (e.ctrlKey && (e.keyCode == this.keys.pageup || e.keyCode == this.keys.pagedown)) {
+      e.stopPropagation();
+      e.preventDefault();
+      return false;
+    }
+
+    switch (e.keyCode) {
+      case this.keys.esc: {
+        e.stopPropagation();
+        e.preventDefault();
+        return false;
+      }
+    }
 
     return true;
   }

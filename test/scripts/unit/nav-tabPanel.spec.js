@@ -46,7 +46,6 @@ describe('Navigation--Accessible Tab Panel', function() {
 
     beforeEach(function() {
       tabPanel = new TabPanel('tabpanel1', false);
-      tabPanel.init();
     });
 
     it('Tab panel should be an object', function(done) {
@@ -75,7 +74,6 @@ describe('Navigation--Accessible Tab Panel', function() {
 
     beforeEach(function() {
       tabPanel = new TabPanel('tabpanel1', false);
-      tabPanel.init();
     });
 
     it('Tab panels should have attribute aria-hidden', function(done) {
@@ -144,7 +142,7 @@ describe('Navigation--Accessible Tab Panel', function() {
 
     it('Selected class should be updated dynamically', function(done) {
       $curTab[0].getAttribute('class').should.equal('tab');
-      $newTab[0].getAttribute('class').should.equal('tab selected');
+      $newTab[0].getAttribute('class').should.equal('tab selected focus');
 
       done();
     });
@@ -178,7 +176,7 @@ describe('Navigation--Accessible Tab Panel', function() {
     });
   });
 
-  describe('#TabKeyDown()', function() {
+  describe('#HandleTabKeyDown()', function() {
     let tabPanel;
     let $curTab;
     let $secondTab;
@@ -189,8 +187,6 @@ describe('Navigation--Accessible Tab Panel', function() {
       $curTab = $(this.result).find('#tab1');
       $secondTab = $(this.result).find('#tab2');
       $lastTab = $(this.result).find('#tab3');
-
-      tabPanel.init();
     });
 
     it('First tab should be selected on home keydown', function(done) {
@@ -255,15 +251,13 @@ describe('Navigation--Accessible Tab Panel', function() {
     });
   });
 
-  describe('#TabKeyPress()', function() {
+  describe('#HandleTabKeyPress()', function() {
     let tabPanel;
     let $curTab;
 
     beforeEach(function() {
       tabPanel = new TabPanel('tabpanel1', false);
       $curTab = $(this.result).find('#tab1');
-
-      tabPanel.init();
     });
 
     it('First tab should remain selected on keypress', function(done) {
@@ -277,11 +271,35 @@ describe('Navigation--Accessible Tab Panel', function() {
     });
   });
 
+  describe('#HandleTabClick()', function() {
+    let tabPanel;
+    let $curTab;
+    let $secondTab;
+
+    beforeEach(function() {
+      tabPanel = new TabPanel('tabpanel1', false);
+      $curTab = $(this.result).find('#tab1');
+      $secondTab = $(this.result).find('#tab2');
+    });
+
+    it('Class, tabindex, and aria-selected should be updated on tab click', function(done) {
+      tabPanel.handleTabClick($secondTab, $secondTab.simulate('click', { keyCode: 13 }));
+
+      $curTab[0].getAttribute('class').should.equal('tab');
+      $curTab[0].getAttribute('tabindex').should.equal('-1');
+      $curTab[0].getAttribute('aria-selected').should.equal('false');
+      $secondTab[0].getAttribute('class').should.equal('tab focus selected');
+      $secondTab[0].getAttribute('tabindex').should.equal('0');
+      $secondTab[0].getAttribute('aria-selected').should.equal('true');
+
+      done();
+    });
+  });
+
   describe('#Accessibility', function() {
     it('Tab panel should have 0 accessibility errors', function(done) {
       let tabPanel = new TabPanel('tabpanel1', false);
       let tabNav = document.querySelector('div.tabs__container');
-      tabPanel.init();
 
       axe.a11yCheck(tabNav, function(results) {
         if (results.violations.length > 0) {
