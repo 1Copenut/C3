@@ -7,8 +7,6 @@
  * Section 508
  * WCAG 2.0 Level AA 
  *
- * @requires utilities/keyCodes
- *
  * @main main
  * 
  * Usage: Requires a div container and children as follow:
@@ -25,6 +23,7 @@ import '../lib/focusable.jquery.js';
  * @constructor
  * @param id {String} id of the div containing tabPanel
  * @param {Boolean} true if TabPanel should operate as accordian
+ * @requires utilities/keyCodes
  */
 class TabPanel {
   constructor(id, accordian) {
@@ -68,9 +67,9 @@ class TabPanel {
 
   /**
    * @method init
-   * Initiates tabs, sets base class on first
+   *
    */
-  init() {
+   init() { // Initiates tabs, sets base class on first
     /**
      * @property $tab
      * @type Object|jQuery
@@ -147,10 +146,9 @@ class TabPanel {
   /**
    * @method bindHandlers 
    *
-   * bindHandlers is a member function to bind event
-   * handlers for the tabs
    */
-  bindHandlers() {
+  bindHandlers() { // Bind event handlers for tabs and panels
+
     /**
      * @property thisObj 
      * @type Object
