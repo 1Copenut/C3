@@ -1,9 +1,19 @@
 'use strict';
 
-import $ from 'jquery';
+// Assertion library
 import chai from 'chai';
+
+// Hand-rolled utilities
 import { render } from '../utilities/loadFixture.js';
+
+// jQuery and keyboard function libs
+import '../lib/bililiteRange.js';
+import $ from 'jquery';
 import '../lib/jquery.simulate.js';
+import '../lib/jquery.simulate.ext.js';
+import '../lib/jquery.simulate.key-combo.js';
+
+// Class under test
 import TabPanel from '../../../app/scripts/src/components/nav-tabPanel';
 
 const should = chai.should();
