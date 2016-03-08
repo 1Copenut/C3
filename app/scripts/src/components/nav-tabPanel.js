@@ -69,7 +69,7 @@ class TabPanel {
    * @method init
    *
    */
-   init() { // Initiates tabs, sets base class on first
+  init() { // Initiates tabs, sets base class on first
     /**
      * @property $tab
      * @type Object|jQuery
@@ -148,7 +148,6 @@ class TabPanel {
    *
    */
   bindHandlers() { // Bind event handlers for tabs and panels
-
     /**
      * @property thisObj 
      * @type Object
