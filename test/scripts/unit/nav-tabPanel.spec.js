@@ -305,6 +305,76 @@ describe('Navigation--Accessible Tab Panel', function() {
       done();
     });
   });
+  
+  describe('#HandlePanelKeyDown()', function() {
+    let tabPanel;
+    let $curTab;
+    let $curPanel;
+    let $curElem;
+
+    beforeEach(function() {
+      tabPanel = new TabPanel('tabpanel1', false);
+      $curTab = $(this.result).find('#tab1');
+      $curPanel = $(this.result).find('#panel1');
+      $curElem = $(this.result).find('#p1_opt1');
+    });
+
+    it('Ctrl+left should change focus to tab from panel element', function(done) {
+      $curTab[0].getAttribute('class').should.equal('tab selected');
+
+      $curElem.simulate('click', { keyCode: 13 });
+      tabPanel.handlePanelKeyDown($curElem, $curElem.simulate('key-combo', { combo: 'ctrl+left-arrow' }));
+
+      $curTab[0].getAttribute('class').should.equal('tab selected focus');
+
+      done();
+    });
+
+    it('Ctrl+up should change focus to tab from panel element', function(done) {
+      $curTab[0].getAttribute('class').should.equal('tab selected');
+
+      $curElem.simulate('click', { keyCode: 13 });
+      tabPanel.handlePanelKeyDown($curElem, $curElem.simulate('key-combo', { combo: 'ctrl+up-arrow' }));
+
+      $curTab[0].getAttribute('class').should.equal('tab selected focus');
+
+      done();
+    });
+
+    it('Esc should not change focus to tab from panel element', function(done) {
+      $curTab[0].getAttribute('class').should.equal('tab selected');
+
+      $curElem.simulate('keyDown', { keyCode: 27 });
+
+      $curTab[0].getAttribute('class').should.equal('tab selected');
+
+      done();
+    });
+  });
+
+  describe('#HandlePanelKeyPress()', function() {
+    let tabPanel;
+    let $curTab;
+    let $curPanel;
+    let $curElem;
+
+    beforeEach(function() {
+      tabPanel = new TabPanel('tabpanel1', false);
+      $curTab = $(this.result).find('#tab1');
+      $curPanel = $(this.result).find('#panel1');
+      $curElem = $(this.result).find('#p1_opt1');
+    });
+
+    it('Esc should not change focus to tab from panel element', function(done) {
+      $curTab[0].getAttribute('class').should.equal('tab selected');
+
+      $curElem.simulate('keyPress', { keyCode: 27 });
+
+      $curTab[0].getAttribute('class').should.equal('tab selected');
+
+      done();
+    });
+  });
 
   describe('#Accessibility', function() {
     it('Tab panel should have 0 accessibility errors', function(done) {
