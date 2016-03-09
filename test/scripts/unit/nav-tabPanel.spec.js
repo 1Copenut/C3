@@ -19,7 +19,6 @@ import TabPanel from '../../../app/scripts/src/components/nav-tabPanel';
 const should = chai.should();
 
 describe('Navigation--Accessible Tab Panel', function() {
-
   before(function() {
     fixture.setBase('test/fixtures');
   });
@@ -54,17 +53,15 @@ describe('Navigation--Accessible Tab Panel', function() {
   describe('#Constructor()', function() {
     let tabPanel;
 
-    beforeEach(function() {
-      tabPanel = new TabPanel('tabpanel1', false);
-    });
-
     it('Tab panel should be an object', function(done) {
+      tabPanel = new TabPanel('tabpanel1', false);
       tabPanel.should.be.an('object');
 
       done();
     });
 
     it('Tab panel should have 2 properties, ID and accordian', function(done) {
+      tabPanel = new TabPanel('tabpanel1', false);
       tabPanel.should.have.property('id');
       tabPanel.should.have.property('accordian');
 
@@ -72,6 +69,7 @@ describe('Navigation--Accessible Tab Panel', function() {
     });
 
     it('Tab panel properties should be correct type', function(done) {
+      tabPanel = new TabPanel('tabpanel1', false);
       tabPanel.id.should.be.a('string');
       tabPanel.accordian.should.be.a('boolean');
 
