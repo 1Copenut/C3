@@ -14,6 +14,7 @@
     "benv": "~3.0.0",
     "browser-sync": "^2.8.0",
     "browserify": "^12.0.0",
+    "browserify-istanbul": "^1.0.0",
     "browserify-shim": "^3.8.3",
     "chai": "^3.4.0",
     "clean": "^4.0.1",
@@ -39,7 +40,7 @@
     "gulp-plumber": "^1.0.0",
     "gulp-postcss": "^6.0.0",
     "gulp-rename": "^1.2.2",
-    "gulp-sass": "^2.0.4",
+    "gulp-sass": "^2.2.0",
     "gulp-scss-lint": "^0.3.7",
     "gulp-sourcemaps": "^1.5.1",
     "gulp-uglify": "^1.2.0",
@@ -48,11 +49,12 @@
     "gulp-watch": "^4.2.4",
     "gulp-yuidoc": "^0.1.2",
     "is-path-cwd": "^1.0.0",
+    "istanbul": "^0.4.2",
     "jade": "^1.9.2",
     "karma": "^0.13.15",
     "karma-browserify": "^4.4.0",
     "karma-chrome-launcher": "^0.2.1",
-    "karma-coverage": "^0.5.3",
+    "karma-coverage": "^0.5.5",
     "karma-fixture": "^0.2.5",
     "karma-html2js-preprocessor": "^0.1.0",
     "karma-json-fixtures-preprocessor": "0.0.5",
@@ -87,11 +89,11 @@
   },
   "scripts": {
     "test": "karma start karma.conf.js",
-    "js-lint": "gulp jsTest:lint",
+    "js-lint": "gulp js:lint",
     "full-test": "NODE_ENV=test karma start karma.conf.js --single-run --browsers Chrome"
   },
-  "pre-commit": [ 
+  "pre-commit": [
     "js-lint",
     "full-test"
-  ] 
+  ]
 }

@@ -2,7 +2,64 @@
 {% extends 'layout.nunjucks' %}
 
 {% block content %}
-    {% include 'partials/_header.nunjucks' %}
-    {% import 'macros/_navigation.nunjucks' as nav %}
-    {{ nav.active('home') }}
+  {% include 'partials/_header.nunjucks' %}
+  {% import 'macros/_navigation.nunjucks' as nav %}
+  {{ nav.active('home') }}
+
+  <div role="application" class="tabs__container">
+    <h2>User-selected preferences</h2>
+
+    <form action="#" method="get" accept-charset="utf-8">
+      <!-- Tab controls -->
+      <div id="tabpanel1" class="tabpanel">
+        <ul class="tablist" role="tablist">
+          <li id="tab1" class="tab selected" aria-controls="panel1" aria-selected="true" role="tab" tabindex="0">Colors</li>
+          <li id="tab2" class="tab" aria-controls="panel2" aria-selected="false" role="tab" tabindex="-1">Sizes</li>
+          <!-- Third <li> missing the role="tab" -->
+          <li id="tab3" class="tab" aria-controls="panel3" aria-selected="false" role="tab" tabindex="-1">Shipping</li>
+        </ul>
+
+        <!-- Tab Panel #1 -->
+        <div id="panel1" class="panel" aria-labelledby="tab1" role="tabpanel">
+          <h3 id="color__header">Colors</h3>
+
+          <ul class="controlList" aria-labelledby="color__header">
+            <li><label for="p1_opt1"><input id="p1_opt1" type="checkbox" name="red" value="Red" />Red</label></li>
+            <li><label for="p1_opt2"><input id="p1_opt2" type="checkbox" name="orange" value="Orange" />Orange</label></li>
+            <li><label for="p1_opt3"><input id="p1_opt3" type="checkbox" name="yellow" value="Yellow" />Yellow</label></li>
+            <li><label for="p1_opt4"><input id="p1_opt4" type="checkbox" name="green" value="Green" />Green</label></li>
+            <li><label for="p1_opt5"><input id="p1_opt5" type="checkbox" name="blue" value="Blue" />Blue</label></li>
+            <li><label for="p1_opt6"><input id="p1_opt6" type="checkbox" name="purple" value="Purple" />Purple</label></li>
+          </ul>
+        </div>
+
+        <!-- Tab Panel #2 -->
+        <div id="panel2" class="panel" aria-labelledby="tab2" role="tabpanel">
+          <h3 id="size__header">Sizes</h3>
+
+          <ul class="controlList" aria-labelledby="size__header">
+            <li><label for="p2_opt1"><input id="p2_opt1" type="checkbox" name="extra small" value="Extra Small" />Extra Small</label></li>
+            <li><label for="p2_opt2"><input id="p2_opt2" type="checkbox" name="small" value="Small" />Small</label></li>
+            <li><label for="p2_opt3"><input id="p2_opt3" type="checkbox" name="medium" value="Medium" />Medium</label></li>
+            <li><label for="p2_opt4"><input id="p2_opt4" type="checkbox" name="large" value="Large" />Large</label></li>
+            <li><label for="p2_opt5"><input id="p2_opt5" type="checkbox" name="extra large" value="Extra Large" />Extra Large</label></li>
+          </ul>
+        </div>
+
+        <!-- Tab Panel #3 -->
+        <div id="panel3" class="panel" aria-labelledby="tab3" role="tabpanel">
+          <h3 id="shipping__header">Shipping</h3>
+
+          <fieldset id="shipping-speed">
+            <legend>Select a shipping speed:</legend>
+            <ul class="controlList" aria-labelledby="shipping__header">
+              <li><label for="p3_opt1"><input id="p3_opt1" type="radio" name="shipping-radio" value="Standard" />Standard 3-5 Business Days</label></li> 
+              <li><label for="p3_opt2"><input id="p3_opt2" type="radio" name="shipping-radio" value="Two Day Air" />2 Day Air</label></li> 
+              <li><label for="p3_opt3"><input id="p3_opt3" type="radio" name="shipping-radio" value="Overnight" />Overnight Air</label></li> 
+            </ul>
+          </fieldset>
+        </div>
+      </div>
+    </form>
+  </div>
 {% endblock %}

@@ -5,7 +5,7 @@ module.exports = function(gulp, browsersync, reload) {
         
         var stream = browsersync.init(null, {
             proxy: 'http://localhost:3000',
-            files: ['app/**/*.html'],
+            files: ['app/**/*.html', 'app/scripts/out/output.js'],
             browser: 'google chrome',
             port: 7000
         });

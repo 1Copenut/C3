@@ -1,4 +1,4 @@
-@import 'color';
-@import 'reset';
-@import 'video';
-@import 'layout';
+@import './config/color';
+@import './config/reset';
+@import './config/layout';
+@import './components/tabPanel';

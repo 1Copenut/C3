@@ -12,9 +12,6 @@ module.exports = function(gulp, autoprefixer, browsersync, reload, $) {
             }))
             .pipe($.sourcemaps.write('./'))
             .pipe(filter)
-            .pipe($.postcss([
-                autoprefixer({ browsers: ['last 3 versions'] })
-            ]))
             .pipe(filter.restore)
             .pipe(gulp.dest('app/styles/css'))
             .pipe(reload({stream: true}))

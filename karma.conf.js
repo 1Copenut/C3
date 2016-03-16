@@ -1,7 +1,19 @@
 // Karma configuration
 'use strict';
 
-var appConfig = require('./config');
+var appConfig = require('./config'),
+    cover = require('browserify-istanbul');
+
+var coverOptions = {
+  ignore: [
+    'test/**/*.js',
+    'test/**/*.html',
+    'test/**/*.json',
+    'app/lib/**/*.js',
+    'app/scripts/out/*.js'
+  ],
+  defaultIgnore: true
+}
 
 module.exports = function(config) {
   config.set({
@@ -43,7 +55,12 @@ module.exports = function(config) {
     browserify: {
       debug: true,
       transform: [
-        ['babelify', { presets: 'es2015' }]
+        ['babelify', { presets: 'es2015' }],
+        ['browserify-istanbul', {
+          instrumenterConfig: {
+            embedSource: true
+          }
+        }]
       ]
     }, 
 
@@ -51,6 +68,9 @@ module.exports = function(config) {
     // possible values: 'dots', 'progress'
     // available reporters: https://npmjs.org/browse/keyword/karma-reporter
     reporters: appConfig.karma.reporters,
+
+    // coverage reporters
+    coverageReporter: appConfig.karma.coverageReporter,
 
     // web server port
     port: 9876,

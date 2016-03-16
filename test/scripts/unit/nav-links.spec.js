@@ -1,8 +1,8 @@
 'use strict';
 
-import * as chai from 'chai';
-import { render } from '../utilities/utils-unit.js';
+import chai from 'chai';
 import $ from 'jquery';
+import { render } from '../utilities/loadFixture.js';
 
 const should = chai.should();
 
@@ -13,7 +13,7 @@ describe('Navigation--Unordered List Links', function() {
   });
 
   beforeEach(function() {
-    this.result = fixture.load('tmpl__navigation.html');
+    this.result = fixture.load('tmpl__navigation--links.html');
     render('#fixtures', this.result);
   });
 
@@ -21,24 +21,27 @@ describe('Navigation--Unordered List Links', function() {
     fixture.cleanup();
   });
 
-  it('Navigation list jQuery object should have a length of 3', function(done) {
-    let navNodes = $(this.result).find('.load-content li');
-    let navLength = navNodes.length;
+  describe('#DOM Interaction', function() {
+    it('Navigation list jQuery object should have a length of 3', function(done) {
+      let navNodes = $(this.result).find('.load-content li');
 
-    navLength.should.equal(3);
-    done();
+      navNodes.should.have.length(3);
+      done();
+    });
   });
 
-  it('Navigation list should have 0 accessibility errors', function(done) {
-    let navList = document.getElementById('wrapper');
+  describe('#Accessibility', function() {
+    it('Navigation list should have 0 accessibility errors', function(done) {
+      let navList = document.getElementById('wrapper');
 
-    axe.a11yCheck(navList, function(results) {
-      if (results.violations.length > 0) {
-        console.log(results.violations);
-      }
+      axe.a11yCheck(navList, function(results) {
+        if (results.violations.length > 0) {
+          console.log(results.violations);
+        }
 
-      results.violations.length.should.equal(0);
-      done();  
+        results.violations.length.should.equal(0);
+        done();  
+      });
     });
   });
 });

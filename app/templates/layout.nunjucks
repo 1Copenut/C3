@@ -4,30 +4,28 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>C3 Toolchain</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>C3 Toolchain</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
 
-    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-    <!-- htmlbuild:css -->
-    <link rel="stylesheet" href="styles/css/main.css">
-    <link rel="stylesheet" href="lib/video-js/video-js.css">
-    <!-- endbuild -->
+  <!-- htmlbuild:css -->
+  <link rel="stylesheet" href="styles/css/main.css">
+  <!-- endbuild -->
 
-    <script src="lib/modernizr/modernizr.js"></script>
+  <script src="lib/modernizr/modernizr.js"></script>
 </head>
 
 <body>
-    <div id="wrapper">
-        {% block content %}
-        {% endblock %}
-        <script src="lib/video-js/video.js"></script>
-        <!-- htmlbuild:js -->
-        <script src="scripts/out/output.js"></script>
-        <!-- endbuild -->
-    </div>
+  <div id="wrapper">
+    {% block content %}
+    {% endblock %}
+  </div>
+  <!-- htmlbuild:js -->
+  <script src="scripts/out/output.js"></script>
+  <!-- endbuild -->
 </body>
 </html>
