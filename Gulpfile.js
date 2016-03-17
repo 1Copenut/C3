@@ -8,11 +8,17 @@ var gulp = require('gulp'),
     buffer = require('vinyl-buffer'),
     critical = require('critical').stream,
     del = require('del'),
+    minimist = require('minimist'),
     paths = require('vinyl-paths'),
     reload = browsersync.reload,
     sequence = require('run-sequence'),
     source = require('vinyl-source-stream'),
     $ = require('gulp-load-plugins')();
+
+var knownOptions = {
+  string: 'env',
+  default: { env: process.env.NODE_ENV || 'development' }
+};
 
 /* ======================================== 
  * Default task
@@ -75,7 +81,7 @@ gulp.task('nunjucks', ['js', 'sass'], require('./tasks/templates/tmplBuild')(gul
 /* ======================================== 
  * Test sub-modules 
  * ======================================== */ 
-gulp.task('jsTest:unit', require('./tasks/tests/jsTest-unit')(gulp, $));
+gulp.task('jsTest:unit', $.shell.task('npm run full-test'));
 gulp.task('jsTest:regression', require('./tasks/tests/jsTest-regression')(gulp, $));
 
 
@@ -83,3 +89,4 @@ gulp.task('jsTest:regression', require('./tasks/tests/jsTest-regression')(gulp, 
  * Utility sub-modules 
  * ======================================== */ 
 gulp.task('util:reloadBrowser', require('./tasks/utilities/utilReloadBrowser')(gulp, reload));
+

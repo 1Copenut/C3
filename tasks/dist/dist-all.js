@@ -5,11 +5,13 @@ module.exports = function(gulp, sequence) {
 
         var stream = sequence(
             'dist:remove',
+            'jsTest:unit',
             'dist:index',
             'dist:removeStyles',
             'dist:copyScripts',
             'dist:uglifyScripts',
-            'dist:critical'
+            'dist:critical',
+            'js:doc'
         );
 
         return stream;
