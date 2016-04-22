@@ -7,6 +7,7 @@ var gulp = require('gulp'),
     browsersync = require('browser-sync').create(),
     buffer = require('vinyl-buffer'),
     critical = require('critical').stream,
+    colorblind = require('postcss-colorblind'),
     del = require('del'),
     minimist = require('minimist'),
     paths = require('vinyl-paths'),
@@ -33,6 +34,12 @@ gulp.task('default', ['server:nodemon', 'server:browsersync'], function() {
 
 
 /* ======================================== 
+ * A11y sub-modules 
+ * ======================================== */ 
+gulp.task('colorblind', require('./tasks/a11y/colorblind.js')(gulp, colorblind, $));
+
+
+/* ======================================== 
  * Build task
  * ======================================== */ 
 gulp.task('build', require('./tasks/dist/dist-all.js')(gulp, sequence));
@@ -56,6 +63,7 @@ gulp.task('js', require('./tasks/javascript/js-all')(gulp, sequence));
 gulp.task('js:build', require('./tasks/javascript/js-build')(gulp, babelify, browserify, source, $));
 gulp.task('js:doc', require('./tasks/javascript/js-doc')(gulp, $));
 gulp.task('js:lint', require('./tasks/javascript/js-lint')(gulp, $));
+
 
 /* ======================================== 
  * Sass sub-modules 
