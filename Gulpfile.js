@@ -6,15 +6,17 @@ var gulp = require('gulp'),
     browserify = require('browserify'),
     browsersync = require('browser-sync').create(),
     buffer = require('vinyl-buffer'),
+    colortest = require('postcss-colorblind'),
     critical = require('critical').stream,
-    colorblind = require('postcss-colorblind'),
     del = require('del'),
     minimist = require('minimist'),
     paths = require('vinyl-paths'),
+    postcss = require('postcss'),
     reload = browsersync.reload,
     sequence = require('run-sequence'),
     source = require('vinyl-source-stream'),
     $ = require('gulp-load-plugins')();
+
 
 var knownOptions = {
   string: 'env',
@@ -34,15 +36,22 @@ gulp.task('default', ['server:nodemon', 'server:browsersync'], function() {
 
 
 /* ======================================== 
- * A11y sub-modules 
+ * A11y tasks 
  * ======================================== */ 
-gulp.task('colorblind', require('./tasks/a11y/colorblind.js')(gulp, colorblind, $));
+gulp.task('colortest', require('./tasks/a11y/colortest-default.js')(gulp, sequence));
 
 
 /* ======================================== 
  * Build task
  * ======================================== */ 
 gulp.task('build', require('./tasks/dist/dist-all.js')(gulp, sequence));
+
+
+/* ======================================== 
+ * A11y sub-modules
+ * ======================================== */ 
+gulp.task('colortest:achromatomaly', require('./tasks/a11y/colortest-achromatomaly.js')(gulp, $, colortest));
+gulp.task('colortest:achromatopsia', require('./tasks/a11y/colortest-achromatopsia.js')(gulp, $, colortest));
 
 
 /* ======================================== 
@@ -69,8 +78,8 @@ gulp.task('js:lint', require('./tasks/javascript/js-lint')(gulp, $));
  * Sass sub-modules 
  * ======================================== */ 
 gulp.task('sass', require('./tasks/sass/sass-default')(gulp, sequence, $));
-gulp.task('sassLint', require('./tasks/sass/sassLint')(gulp, $));
-gulp.task('sassBuild', require('./tasks/sass/sassBuild')(gulp, autoprefixer, browsersync, reload, $));
+gulp.task('sass:lint', require('./tasks/sass/sassLint')(gulp, $));
+gulp.task('sass:build', require('./tasks/sass/sassBuild')(gulp, autoprefixer, browsersync, reload, $));
 
 
 /* ======================================== 
