@@ -297,7 +297,7 @@ describe('Navigation--Accessible Tab Panel', function() {
       $curTab[0].getAttribute('class').should.equal('tab');
       $curTab[0].getAttribute('tabindex').should.equal('-1');
       $curTab[0].getAttribute('aria-selected').should.equal('false');
-      $secondTab[0].getAttribute('class').should.equal('tab focus selected');
+      $secondTab[0].getAttribute('class').should.contain('selected');
       $secondTab[0].getAttribute('tabindex').should.equal('0');
       $secondTab[0].getAttribute('aria-selected').should.equal('true');
 
@@ -324,7 +324,7 @@ describe('Navigation--Accessible Tab Panel', function() {
       $curElem.simulate('click', { keyCode: 13 });
       tabPanel.handlePanelKeyDown($curElem, $curElem.simulate('key-combo', { combo: 'ctrl+left-arrow' }));
 
-      $curTab[0].getAttribute('class').should.equal('tab selected focus');
+      $curTab[0].getAttribute('class').should.contain('tab selected');
 
       done();
     });
@@ -335,7 +335,7 @@ describe('Navigation--Accessible Tab Panel', function() {
       $curElem.simulate('click', { keyCode: 13 });
       tabPanel.handlePanelKeyDown($curElem, $curElem.simulate('key-combo', { combo: 'ctrl+up-arrow' }));
 
-      $curTab[0].getAttribute('class').should.equal('tab selected focus');
+      $curTab[0].getAttribute('class').should.contain('tab selected');
 
       done();
     });

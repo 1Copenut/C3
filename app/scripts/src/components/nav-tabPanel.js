@@ -118,7 +118,7 @@ class TabPanel {
       .attr('aria-selected', 'false');
 
     // Highlight the new tab and update aria-selected
-    $newTab.addClass('selected')
+    $newTab.addClass('selected focus')
       .attr('aria-selected', 'true');
 
     // If this is a tab panel, swap displayed tabs
