@@ -113,7 +113,7 @@ class TabPanel {
     // TODO: Add class focus to this function when needed
     $curTab.removeClass('selected');
 
-    // Remove tab from teh tab order and update aria-selected
+    // Remove tab from the tab order and update aria-selected
     $curTab.attr('tabindex', '-1')
       .attr('aria-selected', 'false');
 
@@ -168,37 +168,37 @@ class TabPanel {
      */
 
     // Bind a tab keydown handler
-    this.$tabs.keydown(function(e) {
+    this.$tabs.on('keydown', function(e) {
       return thisObj.handleTabKeyDown($(this), e);
     });
 
     // Bind a tab keypress handler
-    this.$tabs.keypress(function(e) {
+    this.$tabs.on('keypress', function(e) {
       return thisObj.handleTabKeyPress($(this), e);
     });
 
     // Bind a tab click handler
-    this.$tabs.click(function(e) {
+    this.$tabs.on('click', function(e) {
       return thisObj.handleTabClick($(this), e);
     });
 
     // Bind a tab focus handler
-    this.$tabs.focus(function(e) {
+    this.$tabs.on('focus', function(e) {
       return thisObj.handleTabFocus($(this), e);
     });
 
     // Bind a tab blur handler
-    this.$tabs.blur(function(e) {
+    this.$tabs.on('blur', function(e) {
       return thisObj.handleTabBlur($(this), e);
     });
 
     // Bind a panel keydown handler
-    this.$panels.keydown(function(e) {
+    this.$panels.on('keydown', function(e) {
       return thisObj.handlePanelKeyDown($(this), e);
     });
 
     // Bind a panel keypress handler
-    this.$panels.keypress(function(e) {
+    this.$panels.on('keypress', function(e) {
       return thisObj.handlePanelKeyPress($(this), e);
     });
   }

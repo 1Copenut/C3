@@ -283,6 +283,7 @@ describe('Navigation--Accessible Tab Panel', function() {
     let tabPanel;
     let $curTab;
     let $secondTab;
+    let secondTabDOM;
 
     beforeEach(function() {
       tabPanel = new TabPanel('tabpanel1', false);
