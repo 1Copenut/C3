@@ -50,6 +50,8 @@ gulp.task('build', require('./tasks/dist/dist-all.js')(gulp, sequence));
 /* ======================================== 
  * A11y sub-modules
  * ======================================== */ 
+gulp.task('colortest:protanomaly', require('./tasks/a11y/colortest-protanomaly.js')(gulp, $, colortest));
+gulp.task('colortest:deuteranomaly', require('./tasks/a11y/colortest-deuteranomaly.js')(gulp, $, colortest));
 gulp.task('colortest:achromatomaly', require('./tasks/a11y/colortest-achromatomaly.js')(gulp, $, colortest));
 gulp.task('colortest:achromatopsia', require('./tasks/a11y/colortest-achromatopsia.js')(gulp, $, colortest));
 
