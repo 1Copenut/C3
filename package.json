@@ -71,6 +71,7 @@
     "phantomjs": "^1.9.19",
     "pre-commit": "^1.1.2",
     "run-sequence": "^1.0.2",
+    "stylefmt": "^3.2.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-paths": "^2.0.0",
     "vinyl-source-stream": "^1.1.0",

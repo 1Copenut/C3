@@ -1,10 +1,11 @@
 /* global module */
-module.exports = function(gulp, autoprefixer, browsersync, reload, $) {
+module.exports = function(gulp, autoprefixer, stylefmt, browsersync, reload, $) {
     return function() {
         'use strict';
 
         var processors = [
-            autoprefixer({ browsers: ['last 2 versions'] })
+            autoprefixer({ browsers: ['last 2 versions'] }),
+            stylefmt()
         ];
         var filter = $.filter(['*.css', '!*.map'], { restore: true });
         var stream = gulp.src('app/styles/sass/*.scss')

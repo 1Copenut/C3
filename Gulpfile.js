@@ -13,6 +13,7 @@ var gulp = require('gulp'),
     reload = browsersync.reload,
     sequence = require('run-sequence'),
     source = require('vinyl-source-stream'),
+    stylefmt = require('stylefmt'),
     $ = require('gulp-load-plugins')();
 
 var knownOptions = {
@@ -62,7 +63,7 @@ gulp.task('js:lint', require('./tasks/javascript/js-lint')(gulp, $));
  * ======================================== */ 
 gulp.task('sass', require('./tasks/sass/sass-default')(gulp, sequence, $));
 gulp.task('sassLint', require('./tasks/sass/sassLint')(gulp, $));
-gulp.task('sassBuild', require('./tasks/sass/sassBuild')(gulp, autoprefixer, browsersync, reload, $));
+gulp.task('sassBuild', require('./tasks/sass/sassBuild')(gulp, autoprefixer, stylefmt, browsersync, reload, $));
 
 
 /* ======================================== 
