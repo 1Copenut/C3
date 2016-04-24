@@ -3,18 +3,17 @@ module.exports = function(gulp, $, colortest) {
     return function() {
         'use strict';
 
+        var a11yConfig = require('../../config/a11y/sources');
         var processors = [
-            colortest({ method: 'protanomaly' })
+            colortest({ method: 'deuteranomaly' })
         ];
-        var stream = gulp.src('dist/styles/main.css')
+        var stream = gulp.src(a11yConfig.css.app)
             .pipe($.postcss(processors))
-            .on('error', function(error) {
-              console.log(error)
-            })
-            .pipe(gulp.dest('dist/styles/colortest/deuteranomaly'))
+            .pipe($.plumber())
+            .pipe(gulp.dest(a11yConfig.css.output + 'deuteranomaly'))
             .pipe($.notify({
                 onLast: true,
-                message: 'Done CSS modifying CSS for deuteranomaly -- low green'
+                message: 'Done modifying CSS for deuteranomaly -- low green'
             }));
 
         return stream;

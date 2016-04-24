@@ -5,7 +5,11 @@ module.exports = function(gulp, sequence) {
 
         var stream = sequence(
             'colortest:protanomaly',
+            'colortest:protanopia',
             'colortest:deuteranomaly',
+            'colortest:deuteranopia',
+            'colortest:tritanomaly',
+            'colortest:tritanopia',
             'colortest:achromatomaly',
             'colortest:achromatopsia'
         );

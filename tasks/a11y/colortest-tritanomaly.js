@@ -5,15 +5,15 @@ module.exports = function(gulp, $, colortest) {
 
         var a11yConfig = require('../../config/a11y/sources');
         var processors = [
-            colortest({ method: 'protanomaly' })
+            colortest({ method: 'tritanomaly' })
         ];
         var stream = gulp.src(a11yConfig.css.app)
             .pipe($.postcss(processors))
             .pipe($.plumber())
-            .pipe(gulp.dest(a11yConfig.css.output + 'protanomaly'))
+            .pipe(gulp.dest(a11yConfig.css.output + 'tritanomaly'))
             .pipe($.notify({
                 onLast: true,
-                message: 'Done modifying CSS for protanomaly -- low red'
+                message: 'Done modifying CSS for tritanomaly -- low blue'
             }));
 
         return stream;

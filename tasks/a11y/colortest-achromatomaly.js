@@ -3,18 +3,17 @@ module.exports = function(gulp, $, colortest) {
     return function() {
         'use strict';
 
+        var a11yConfig = require('../../config/a11y/sources');
         var processors = [
             colortest({ method: 'achromatomaly' })
         ];
-        var stream = gulp.src('dist/styles/main.css')
+        var stream = gulp.src(a11yConfig.css.app)
             .pipe($.postcss(processors))
-            .on('error', function(error) {
-              console.log(error)
-            })
-            .pipe(gulp.dest('dist/styles/colortest/achromatomaly'))
+            .pipe($.plumber())
+            .pipe(gulp.dest(a11yConfig.css.output + 'achromatomaly'))
             .pipe($.notify({
                 onLast: true,
-                message: 'Done CSS modifying CSS for achromatomaly -- almost no color'
+                message: 'Done modifying CSS for achromatomaly -- almost no color'
             }));
 
         return stream;
