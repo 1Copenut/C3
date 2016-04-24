@@ -15,6 +15,7 @@ var gulp = require('gulp'),
     reload = browsersync.reload,
     sequence = require('run-sequence'),
     source = require('vinyl-source-stream'),
+    stylefmt = require('stylefmt'),
     $ = require('gulp-load-plugins')();
 
 
