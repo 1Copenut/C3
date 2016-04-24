@@ -1,11 +1,12 @@
 /* global module */
-module.exports = function(gulp, sequence, $) {
+module.exports = function(gulp, sequence) {
     return function() {
         'use strict';
 
         var stream = sequence(
-            'sassLint',
-            'sassBuild'
+            'sass:lint',
+            'sass:build',
+            'colortest'
         );
 
         return stream;

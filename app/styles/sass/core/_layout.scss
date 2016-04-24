@@ -1,0 +1,19 @@
+body {
+    background: $lightgray;
+}
+
+a {
+  color: $blue;
+
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    color: $blue;
+  }
+}
+
+#wrapper {
+    width: 80%;
+    margin: 0 auto;
+}
