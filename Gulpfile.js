@@ -86,7 +86,7 @@ gulp.task('js:lint', require('./tasks/javascript/js-lint')(gulp, $));
  * ======================================== */ 
 gulp.task('sass', require('./tasks/sass/sass-default')(gulp, sequence, $));
 gulp.task('sass:lint', require('./tasks/sass/sassLint')(gulp, $));
-gulp.task('sass:build', require('./tasks/sass/sassBuild')(gulp, autoprefixer, browsersync, reload, $));
+gulp.task('sass:build', require('./tasks/sass/sassBuild')(gulp, autoprefixer, stylefmt, browsersync, reload, $));
 
 
 /* ======================================== 
