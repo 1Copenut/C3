@@ -20,12 +20,23 @@
 </head>
 
 <body>
+  <!-- htmlbuild:remove -->
+  <div id="colorTest" style="position: fixed; top: 50px; right: 25px;">
+    <select id="colorSelect"></select>
+  </div>
+  <!-- endbuild -->
+
   <div id="wrapper">
     {% block content %}
     {% endblock %}
   </div>
-  <!-- htmlbuild:js -->
-  <script src="scripts/out/output.js"></script>
-  <!-- endbuild -->
+</div>
+<!-- htmlbuild:remove -->
+<script src="scripts/src/a11y/colortest.js"></script>
+<!-- endbuild -->
+
+<!-- htmlbuild:js -->
+<script src="scripts/out/output.js"></script>
+<!-- endbuild -->
 </body>
 </html>

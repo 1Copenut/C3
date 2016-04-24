@@ -98,7 +98,7 @@ gulp.task('server:browsersync', require('./tasks/server/browsersync')(gulp, brow
 /* ======================================== 
  * Template sub-modules 
  * ======================================== */ 
-gulp.task('nunjucks', ['js', 'sass'], require('./tasks/templates/tmplBuild')(gulp, $));
+gulp.task('nunjucks', ['js', 'sass', 'colortest'], require('./tasks/templates/tmplBuild')(gulp, $));
 
 
 /* ======================================== 
