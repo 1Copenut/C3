@@ -6,9 +6,10 @@
 /app/scripts/out/*
 /dist
 /dist/**/*
+/test/performance/*
+/test/results/*
 /test/scripts/out/*
 /test/screenshots/*
-/test/results/*
 /coverage/*
 
 # File types
