@@ -1,0 +1,17 @@
+{
+  "url": "http://continuumdesign.net",
+  "verbose": true,
+  "reporter": "tap:no-skip",
+  "asserts": {
+    "bodySize": 1024,
+    "requests": 20,
+    "cssCount": 1,
+    "cssSize": 1024,
+    "jsCount": 1,
+    "jsSize": 2048,
+    "imageCount": 10,
+    "imageSize": 4096,
+    "timeToFirstByte": 600,
+    "httpTrafficCompleted": 1000
+  }
+}

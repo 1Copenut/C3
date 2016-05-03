@@ -107,6 +107,7 @@ gulp.task('nunjucks', ['js', 'sass', 'colortest'], require('./tasks/templates/tm
  * ======================================== */ 
 gulp.task('jsTest:unit', $.shell.task('npm run full-test'));
 gulp.task('jsTest:regression', require('./tasks/tests/jsTest-regression')(gulp, $));
+gulp.task('jsTest:performance', $.shell.task('phantomas --config=phantomas.json --har=./test/performance/perfOutput.har', { "ignoreErrors": true }));
 
 
 /* ======================================== 
