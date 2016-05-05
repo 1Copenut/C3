@@ -1,4 +1,15 @@
+// Import Bourbon and Neat
+@import './lib/bourbon/bourbon';
+@import './lib/neat/neat';
+
+// Install my own core variables, and resets
 @import './core/color';
+@import './core/type-sizes';
+@import './core/breakpoints';
 @import './core/reset';
+@import './core/helpers';
 @import './core/layout';
+@import './core/typography';
+
+// Import single components
 @import './components/tabPanel';

@@ -1,5 +1,12 @@
+.tabs__container {
+  @include span-columns(10);
+
+  @include media($mobile) {
+    @include span-columns(1);
+  }
+}
+
 .tabpanel { 
-  margin: 20px; 
   padding: 0; 
   height: 1%; /* IE fix for float bug */ 
 } 
@@ -13,7 +20,7 @@
 .tab { 
   margin: .2em 1px 0 0; 
   padding: 10px; 
-  height: 1em; 
+  height: 2.25em; 
   font-weight: bold; 
   background-color: #ec9; 
   border: 1px solid black; 
@@ -32,7 +39,6 @@
   display: block; 
   margin: 0 0 0 0; 
   padding: 10px; 
-  width: 600px; 
   border: 1px solid black; 
   -webkit-border-radius-topright: 10px; 
   -webkit-border-radius-bottomleft: 10px; 
@@ -57,7 +63,6 @@ li.selected {
 
 .focus { 
   margin-top: 0; 
-  height: 1.2em; 
 } 
 
 .accordian { 
