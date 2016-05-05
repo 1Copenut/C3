@@ -22,6 +22,7 @@
 <body>
   <!-- htmlbuild:remove -->
   <div id="colorTest" style="position: fixed; top: 50px; right: 25px;">
+    <label for="colorSelect" class="hidden-accessible">Colorblind test</label>
     <select id="colorSelect"></select>
   </div>
   <!-- endbuild -->

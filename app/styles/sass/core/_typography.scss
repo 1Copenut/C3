@@ -1,0 +1,22 @@
+%font-normalize {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: $font-base;
+  font-weight: $font-light;
+  line-height: 1.15;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  @extend %font-normalize;
+}
+
+h1,
+h2,
+h3,
+h4, 
+h5,
+h6 {
+  font-size: $font-h5;
+}
+

@@ -1,5 +1,9 @@
+html {
+  font-size: 62.5%;
+}
+
 body {
-    background: $lightgray;
+  background: $lightgray;
 }
 
 a {
@@ -14,6 +18,11 @@ a {
 }
 
 #wrapper {
-    width: 80%;
-    margin: 0 auto;
+  @include outer-container;
+  margin: 0 auto;
+
+  header,
+  nav {
+    @include span-columns(6);
+  }
 }
