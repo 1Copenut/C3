@@ -378,7 +378,7 @@ describe('Navigation--Accessible Tab Panel', function() {
   describe('#Accessibility', function() {
     it('Tab panel should have 0 accessibility errors', function(done) {
       let tabPanel = new TabPanel('tabpanel1', false);
-      let tabNav = document.querySelector('div.tabs__container');
+      let tabNav = document.querySelector('div.tabs-container');
 
       axe.a11yCheck(tabNav, function(results) {
         if (results.violations.length > 0) {

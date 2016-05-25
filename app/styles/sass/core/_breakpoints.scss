@@ -1,4 +1,4 @@
-/* My media breakpoints */
+// My media breakpoints
 $mobile: new-breakpoint(max-width 480px 1);
 $small-tablet: new-breakpoint(min-width 481px max-width 600px 12);
 $tablet: new-breakpoint(min-width 601px max-width 768px 12);

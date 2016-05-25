@@ -27,7 +27,7 @@
   </div>
   <!-- endbuild -->
 
-  <div id="wrapper">
+  <div id="wrapper" class="layout-container">
     {% block content %}
     {% endblock %}
   </div>
