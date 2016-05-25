@@ -11,9 +11,11 @@ module.exports = function(gulp, autoprefixer, stylefmt, browsersync, reload, $) 
         var stream = gulp.src('app/styles/sass/*.scss')
             .pipe($.plumber())
             .pipe($.sourcemaps.init())
-            .pipe($.sass({
-                errLogToConsole: true
-            }))
+            .pipe($.sass())
+            .on('error', function(err) {
+              $.util.log(err.message);
+              this.emit('end');
+            })
             .pipe($.sourcemaps.write('./'))
             .pipe(filter)
             .pipe($.postcss(processors))
