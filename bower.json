@@ -1,0 +1,14 @@
+{
+  "name": "continuumDesign",
+  "version": "0.0.0",
+  "dependencies": {
+    "video.js": "5.10.1",
+    "modernizr-built": "~3.2.0"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test"
+  ]
+}

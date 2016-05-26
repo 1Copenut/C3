@@ -1,0 +1,24 @@
+{
+  "name": "modernizr-built",
+  "version": "3.2.0",
+  "authors": [
+    "Valentino Cossar"
+  ],
+  "description": "Built and minified version of Modernizr.",
+  "main": "dist/modernizr.min.js",
+  "keywords": [
+    "modernizr"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/itsensoul/modernizr-built",
+  "ignore": [],
+  "_release": "3.2.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "3.2.0",
+    "commit": "691f9667694580fc3b03d4b30f70e6c744d32e03"
+  },
+  "_source": "https://github.com/itsensoul/modernizr-built.git",
+  "_target": "~3.2.0",
+  "_originalSource": "modernizr-built"
+}

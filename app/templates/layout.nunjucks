@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="styles/css/main.css">
   <!-- endbuild -->
 
-  <script src="libs/modernizr/modernizr.js"></script>
+  <script src="libs/modernizr-built/dist/modernizr.min.js"></script>
 </head>
 
 <body>
@@ -31,13 +31,13 @@
     {% block content %}
     {% endblock %}
   </div>
-</div>
-<!-- htmlbuild:remove -->
-<script src="scripts/src/a11y/colortest.js"></script>
-<!-- endbuild -->
 
-<!-- htmlbuild:js -->
-<script src="scripts/out/output.js"></script>
-<!-- endbuild -->
+  <!-- htmlbuild:remove -->
+  <script src="scripts/src/a11y/colortest.js"></script>
+  <!-- endbuild -->
+
+  <!-- htmlbuild:js -->
+  <script src="scripts/out/output.js"></script>
+  <!-- endbuild -->
 </body>
 </html>
